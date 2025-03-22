@@ -3,9 +3,9 @@ const Order = require('../models/Order');
 
 exports.processPayment = async (req, res) => {
   try {
-    const { orderId, amount, paymentMethod } = req.body;
+    const { orderId, amount, paymentMethod, cardDetails } = req.body;
 
-    // Find the order first
+    // Find the order
     const order = await Order.findById(orderId);
     if (!order) {
       return res.status(404).json({ message: 'Order not found' });
@@ -13,7 +13,9 @@ exports.processPayment = async (req, res) => {
 
     // Verify amount matches order total
     if (amount !== order.totalAmount) {
-      return res.status(400).json({ message: 'Payment amount does not match order total' });
+      return res.status(400).json({ 
+        message: 'Payment amount does not match order total' 
+      });
     }
 
     // Create payment record
@@ -21,8 +23,8 @@ exports.processPayment = async (req, res) => {
       orderId,
       amount,
       paymentMethod,
-      status: 'completed',
-      transactionId: Math.random().toString(36).substring(2, 15),
+      status: 'completed', // In a real app, this would depend on payment gateway response
+      transactionId: `TXN${Date.now()}` // In a real app, this would come from payment gateway
     });
 
     // Update order payment status
@@ -30,9 +32,13 @@ exports.processPayment = async (req, res) => {
     order.orderStatus = 'processing';
     await order.save();
 
-    // Return payment details with order info
-    const populatedPayment = await Payment.findById(payment._id).populate('orderId');
-    res.status(201).json(populatedPayment);
+    res.status(201).json({
+      message: 'Payment processed successfully',
+      payment: {
+        ...payment.toObject(),
+        order: order
+      }
+    });
   } catch (error) {
     console.error('Payment processing error:', error);
     res.status(500).json({ message: error.message });
@@ -50,11 +56,64 @@ exports.getPaymentHistory = async (req, res) => {
 
 exports.getPaymentById = async (req, res) => {
   try {
-    const payment = await Payment.findById(req.params.id).populate('orderId');
+    const payment = await Payment.findById(req.params.id)
+      .populate({
+        path: 'orderId',
+        select: 'orderNumber totalAmount status',
+        populate: {
+          path: 'user',
+          select: 'name email'
+        }
+      })
+      .lean();
+
     if (!payment) {
       return res.status(404).json({ message: 'Payment not found' });
     }
+
     res.json(payment);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// Get all payments with order and user details
+exports.getAllPayments = async (req, res) => {
+  try {
+    const payments = await Payment.find()
+      .populate({
+        path: 'orderId',
+        select: 'orderNumber totalAmount status',
+        populate: {
+          path: 'user',
+          select: 'name email'
+        }
+      })
+      .sort('-createdAt')
+      .lean();
+
+    res.json(payments);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// Get payments by user ID
+exports.getUserPayments = async (req, res) => {
+  try {
+    const payments = await Payment.find({ 'orderId.user': req.params.userId })
+      .populate({
+        path: 'orderId',
+        select: 'orderNumber totalAmount status',
+        populate: {
+          path: 'user',
+          select: 'name email'
+        }
+      })
+      .sort('-createdAt')
+      .lean();
+
+    res.json(payments);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

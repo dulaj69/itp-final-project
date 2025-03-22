@@ -3,6 +3,8 @@ const cors = require('cors');
 const morgan = require('morgan');
 const dotenv = require('dotenv');
 const connectDB = require('./config/db');
+require('./models/Product');
+const productRoutes = require('./routes/productRoutes');
 
 // Load env vars
 dotenv.config();
@@ -19,11 +21,16 @@ app.use(morgan('dev'));
 
 // Routes
 try {
+  console.log('Registering routes...');
   app.use('/api/auth', require('./routes/authRoutes'));
+  app.use('/api/products', productRoutes);
   app.use('/api/payments', require('./routes/paymentRoutes'));
   app.use('/api/sales', require('./routes/salesRoutes'));
   app.use('/api/orders', require('./routes/orderRoutes'));
   app.use('/api/reports', require('./routes/reportRoutes'));
+  app.use('/api/admin', require('./routes/adminRoutes'));
+  app.use('/api/users', require('./routes/userRoutes'));
+  console.log('Routes registered successfully');
 } catch (error) {
   console.error('Error loading routes:', error);
 }

@@ -4,7 +4,7 @@ const bcrypt = require('bcryptjs');
 
 exports.register = async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    const { name, email, password, userType } = req.body;
 
     // Check if user exists
     const userExists = await User.findOne({ email });
@@ -16,11 +16,26 @@ exports.register = async (req, res) => {
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    // Create user
+    // Explicitly set role based on userType
+    const role = userType === 'admin' ? 'admin' : 'user';
+
+    // Log the role being set
+    console.log('Setting user role:', role);
+
+    // Create user with explicit role
     const user = await User.create({
       name,
       email,
       password: hashedPassword,
+      role: role // Explicitly set the role
+    });
+
+    // Log the created user
+    console.log('Created user:', {
+      id: user._id,
+      name: user.name,
+      email: user.email,
+      role: user.role
     });
 
     if (user) {
@@ -28,10 +43,12 @@ exports.register = async (req, res) => {
         _id: user._id,
         name: user.name,
         email: user.email,
+        role: user.role,
         token: generateToken(user._id),
       });
     }
   } catch (error) {
+    console.error('Registration error:', error);
     res.status(500).json({ message: error.message });
   }
 };
@@ -47,6 +64,7 @@ exports.login = async (req, res) => {
         _id: user._id,
         name: user.name,
         email: user.email,
+        role: user.role,
         token: generateToken(user._id),
       });
     } else {

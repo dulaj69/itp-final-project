@@ -1,45 +1,28 @@
 const mongoose = require('mongoose');
 
 const orderSchema = new mongoose.Schema({
+  orderNumber: {
+    type: String,
+    required: true,
+    unique: true
+  },
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
     required: true
   },
   items: [{
-    productName: {
-      type: String,
+    product: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Product',
       required: true
     },
-    quantity: {
-      type: Number,
-      required: true,
-      min: 1
-    },
-    price: {
-      type: Number,
-      required: true,
-      min: 0
-    },
-    subtotal: {
-      type: Number,
-      required: true,
-      min: 0
-    }
+    productName: String,
+    quantity: Number,
+    price: Number
   }],
   totalAmount: {
     type: Number,
-    required: true,
-    min: 0
-  },
-  paymentStatus: {
-    type: String,
-    enum: ['pending', 'paid', 'failed', 'refunded'],
-    default: 'pending'
-  },
-  paymentMethod: {
-    type: String,
-    enum: ['cash', 'credit_card', 'debit_card', 'bank_transfer'],
     required: true
   },
   orderStatus: {
@@ -47,11 +30,20 @@ const orderSchema = new mongoose.Schema({
     enum: ['pending', 'processing', 'completed', 'cancelled'],
     default: 'pending'
   },
+  paymentStatus: {
+    type: String,
+    enum: ['pending', 'paid', 'failed'],
+    default: 'pending'
+  },
+  paymentMethod: {
+    type: String,
+    required: true
+  },
   shippingAddress: {
     street: String,
     city: String,
     state: String,
-    postalCode: String,
+    zipCode: String,
     country: String
   },
   cancellationReason: {
@@ -84,16 +76,10 @@ orderSchema.virtual('payment', {
   justOne: true
 });
 
-// Remove the pre-validate hook and keep only one pre-save hook
-orderSchema.pre('save', function(next) {
-  if (this.items && this.items.length > 0) {
-    // Calculate subtotals and total amount in one go
-    let total = 0;
-    this.items.forEach(item => {
-      item.subtotal = item.price * item.quantity;
-      total += item.subtotal;
-    });
-    this.totalAmount = total;
+// Generate order number before validation
+orderSchema.pre('validate', function(next) {
+  if (!this.orderNumber) {
+    this.orderNumber = `ORD-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
   }
   next();
 });
@@ -124,4 +110,6 @@ orderSchema.methods.cancel = function(reason) {
   return false;
 };
 
-module.exports = mongoose.model('Order', orderSchema); 
+const Order = mongoose.model('Order', orderSchema);
+
+module.exports = Order; 
