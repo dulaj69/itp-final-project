@@ -11,6 +11,8 @@ import PaymentForm from './pages/payments/PaymentForm';
 import OrderTracking from './pages/orders/OrderTracking';
 import OrderHistory from './pages/orders/OrderHistory';
 import AdminDashboard from './pages/admin/dashboard/DashboardPage';
+import Payments from './pages/payments/Payments';
+import ShippingTracking from './pages/shipping/ShippingTracking';
 
 const ProtectedRoute = ({ children }) => {
   const { token } = useAuth();
@@ -56,6 +58,8 @@ function App() {
               <OrderTracking />
             </ProtectedRoute>
           } />
+          <Route path="/payments" element={<Payments />} />
+          <Route path="/shipping" element={<ShippingTracking />} />
           <Route path="/admin" element={
             <ProtectedRoute>
               <AdminRoute>

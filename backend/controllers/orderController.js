@@ -178,4 +178,46 @@ exports.getOrders = async (req, res) => {
     console.error('Error fetching orders:', error);
     res.status(500).json({ message: error.message });
   }
+};
+
+exports.getPendingPayments = async (req, res) => {
+  try {
+    const pendingOrders = await Order.find({
+      user: req.user._id,
+      paymentStatus: 'pending'
+    })
+    .populate('items.product', 'name price')
+    .sort({ createdAt: -1 });
+
+    // Return empty array instead of 404 if no orders found
+    res.status(200).json(pendingOrders || []);
+    
+  } catch (error) {
+    console.error('Error fetching pending payments:', error);
+    res.status(500).json({ 
+      message: 'Error fetching pending payments',
+      error: error.message 
+    });
+  }
+};
+
+exports.getShippingStatus = async (req, res) => {
+  try {
+    const orders = await Order.find({
+      user: req.user._id,
+      paymentStatus: 'paid',
+      orderStatus: { $in: ['processing', 'shipped'] }
+    })
+    .populate('items.product', 'name price')
+    .sort({ createdAt: -1 });
+
+    res.status(200).json(orders || []);
+    
+  } catch (error) {
+    console.error('Error fetching shipping status:', error);
+    res.status(500).json({ 
+      message: 'Error fetching shipping status',
+      error: error.message 
+    });
+  }
 }; 

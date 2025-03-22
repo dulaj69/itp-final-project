@@ -1,21 +1,18 @@
 const express = require('express');
 const router = express.Router();
 const { protect } = require('../middleware/auth');
-const {
-  getAllOrders,
-  getOrderById,
-  getUserOrders,
-  createOrder,
-  getOrders,
-  updateOrderStatus
-} = require('../controllers/orderController');
+const orderController = require('../controllers/orderController');
 
-// Test route without protection first
-router.get('/all', getAllOrders);  // Remove protect middleware temporarily
-router.get('/user', protect, getUserOrders);
-router.get('/:id', protect, getOrderById);
-router.post('/', protect, createOrder);
-router.get('/', protect, getOrders);
-router.patch('/:id/status', protect, updateOrderStatus);
+// Special routes first (before any :id parameters)
+router.get('/shipping-status', protect, orderController.getShippingStatus);
+router.get('/pending-payments', protect, orderController.getPendingPayments);
+
+// Regular routes
+router.get('/', protect, orderController.getOrders);
+router.post('/', protect, orderController.createOrder);
+
+// Parameter routes last
+router.get('/:id', protect, orderController.getOrderById);
+router.put('/:id/status', protect, orderController.updateOrderStatus);
 
 module.exports = router; 
