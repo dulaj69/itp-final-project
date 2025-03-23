@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    .receipt {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+      font-family: Arial, sans-serif;
+    }
+    .header {
+      text-align: center;
+      color: #1976d2;
+      margin-bottom: 20px;
+    }
+    .order-details {
+      margin-bottom: 20px;
+    }
+    .items-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+    }
+    .items-table th, .items-table td {
+      padding: 10px;
+      border: 1px solid #ddd;
+    }
+    .total {
+      text-align: right;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="receipt">
+    <div class="header">
+      <h1>Payment Receipt</h1>
+    </div>
+    <div class="order-details">
+      <p><strong>Order Number:</strong> {{orderNumber}}</p>
+      <p><strong>Date:</strong> {{date}}</p>
+      <p><strong>Transaction ID:</strong> {{transactionId}}</p>
+    </div>
+    <table class="items-table">
+      <thead>
+        <tr>
+          <th>Item</th>
+          <th>Quantity</th>
+          <th>Price</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each items}}
+        <tr>
+          <td>{{name}}</td>
+          <td>{{quantity}}</td>
+          <td>${{price}}</td>
+        </tr>
+        {{/each}}
+      </tbody>
+    </table>
+    <div class="total">
+      <p>Total Amount: ${{totalAmount}}</p>
+    </div>
+  </div>
+</body>
+</html> 
