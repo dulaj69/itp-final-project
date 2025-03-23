@@ -17,12 +17,16 @@ import {
   ShoppingCart,
   Payment as PaymentIcon,
   Assessment as StatsIcon,
+  GetApp as DownloadIcon,
+  PictureAsPdf as PdfIcon
 } from '@mui/icons-material';
 import api from '../../../services/api';
 import StatsCard from '../components/StatsCard';
 import OrdersTable from '../components/OrdersTable';
 import UsersTable from '../components/UsersTable';
 import PaymentsTable from '../components/PaymentsTable';
+import jsPDF from "jspdf";
+import "jspdf-autotable";
 
 const DashboardPage = () => {
   const [tabValue, setTabValue] = useState(0);
@@ -76,6 +80,144 @@ const DashboardPage = () => {
       console.error('Error updating order status:', error);
       setError('Failed to update order status');
     }
+  };
+
+  const generateUsersPdfReport = () => {
+    const doc = new jsPDF();
+    
+    doc.setFontSize(18);
+    doc.text('Users Report', 14, 22);
+    doc.setFontSize(11);
+    doc.text(`Generated on: ${new Date().toLocaleDateString()}`, 14, 30);
+    
+    const tableColumn = ["Name", "Email", "Role", "Join Date"];
+    const tableRows = data.users.map(user => [
+      user.name,
+      user.email,
+      user.role,
+      new Date(user.createdAt).toLocaleDateString()
+    ]);
+    
+    doc.autoTable({
+      head: [tableColumn],
+      body: tableRows,
+      startY: 40,
+      styles: { fontSize: 9 },
+      columnStyles: { 
+        0: { cellWidth: 40 },
+        1: { cellWidth: 60 },
+        2: { cellWidth: 30 },
+        3: { cellWidth: 30 }
+      },
+      headStyles: { fillColor: [41, 128, 185], textColor: 255 }
+    });
+    
+    doc.save('users_report.pdf');
+  };
+
+  const generateOrdersPdfReport = (filteredOrders, filters) => {
+    const doc = new jsPDF();
+    
+    doc.setFontSize(18);
+    doc.text('Orders Report', 14, 22);
+    doc.setFontSize(11);
+    doc.text(`Generated on: ${new Date().toLocaleDateString()}`, 14, 30);
+    
+    if (filters) {
+      doc.setFontSize(10);
+      doc.text('Applied Filters:', 14, 40);
+      let yPos = 46;
+      
+      if (filters.orderStatus !== 'all') {
+        doc.text(`Order Status: ${filters.orderStatus}`, 20, yPos);
+        yPos += 6;
+      }
+      if (filters.paymentStatus !== 'all') {
+        doc.text(`Payment Status: ${filters.paymentStatus}`, 20, yPos);
+        yPos += 6;
+      }
+      if (filters.startDate) {
+        doc.text(`From: ${filters.startDate}`, 20, yPos);
+        yPos += 6;
+      }
+      if (filters.endDate) {
+        doc.text(`To: ${filters.endDate}`, 20, yPos);
+        yPos += 6;
+      }
+      if (filters.search) {
+        doc.text(`Search: ${filters.search}`, 20, yPos);
+        yPos += 6;
+      }
+    }
+    
+    const tableColumn = ["Order Number", "Customer", "Items", "Total Amount", "Status", "Payment Status", "Date"];
+    const tableRows = filteredOrders.map(order => [
+      order.orderNumber,
+      order.user?.name || 'N/A',
+      order.items.map(item => `${item.productName} (${item.quantity})`).join(', '),
+      `$${order.totalAmount.toFixed(2)}`,
+      order.orderStatus,
+      order.paymentStatus,
+      new Date(order.createdAt).toLocaleDateString()
+    ]);
+    
+    doc.autoTable({
+      head: [tableColumn],
+      body: tableRows,
+      startY: filters ? 70 : 40,
+      styles: { fontSize: 9 },
+      columnStyles: { 
+        0: { cellWidth: 30 },
+        1: { cellWidth: 35 },
+        2: { cellWidth: 50 },
+        3: { cellWidth: 25 },
+        4: { cellWidth: 25 },
+        5: { cellWidth: 25 },
+        6: { cellWidth: 25 }
+      },
+      headStyles: { fillColor: [41, 128, 185], textColor: 255 }
+    });
+    
+    doc.save('orders_report.pdf');
+  };
+
+  const generatePaymentsPdfReport = () => {
+    const doc = new jsPDF();
+    
+    doc.setFontSize(18);
+    doc.text('Payments Report', 14, 22);
+    doc.setFontSize(11);
+    doc.text(`Generated on: ${new Date().toLocaleDateString()}`, 14, 30);
+    
+    const tableColumn = ["Transaction ID", "Order Number", "Customer", "Amount", "Method", "Status", "Date"];
+    const tableRows = data.payments.map(payment => [
+      payment.transactionId,
+      payment.orderId?.orderNumber || 'N/A',
+      payment.orderId?.user?.name || 'N/A',
+      `$${payment.amount.toFixed(2)}`,
+      payment.paymentMethod,
+      payment.status,
+      new Date(payment.createdAt).toLocaleDateString()
+    ]);
+    
+    doc.autoTable({
+      head: [tableColumn],
+      body: tableRows,
+      startY: 40,
+      styles: { fontSize: 9 },
+      columnStyles: { 
+        0: { cellWidth: 35 },
+        1: { cellWidth: 30 },
+        2: { cellWidth: 35 },
+        3: { cellWidth: 25 },
+        4: { cellWidth: 25 },
+        5: { cellWidth: 20 },
+        6: { cellWidth: 25 }
+      },
+      headStyles: { fillColor: [41, 128, 185], textColor: 255 }
+    });
+    
+    doc.save('payments_report.pdf');
   };
 
   useEffect(() => {
@@ -249,13 +391,20 @@ const DashboardPage = () => {
               <OrdersTable 
                 orders={data.orders}
                 onUpdateStatus={handleUpdateStatus}
+                onExportPdf={generateOrdersPdfReport}
               />
             )}
             {tabValue === 1 && (
-              <UsersTable users={data.users} />
+              <UsersTable 
+                users={data.users} 
+                onExportPdf={generateUsersPdfReport}
+              />
             )}
             {tabValue === 2 && (
-              <PaymentsTable payments={data.payments} />
+              <PaymentsTable 
+                payments={data.payments} 
+                onExportPdf={generatePaymentsPdfReport}
+              />
             )}
           </Box>
         </Paper>

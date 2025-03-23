@@ -13,6 +13,8 @@ import OrderHistory from './pages/orders/OrderHistory';
 import AdminDashboard from './pages/admin/dashboard/DashboardPage';
 import Payments from './pages/payments/Payments';
 import ShippingTracking from './pages/shipping/ShippingTracking';
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 
 const ProtectedRoute = ({ children }) => {
   const { token } = useAuth();
@@ -27,49 +29,51 @@ const AdminRoute = ({ children }) => {
 
 function App() {
   return (
-    <AuthProvider>
-      <BrowserRouter>
-        <CssBaseline />
-        <Routes>
-          <Route path="/register" element={<Register />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/" element={
-            <ProtectedRoute>
-              <Dashboard />
-            </ProtectedRoute>
-          } />
-          <Route path="/order/new" element={
-            <ProtectedRoute>
-              <OrderForm />
-            </ProtectedRoute>
-          } />
-          <Route path="/orders" element={
-            <ProtectedRoute>
-              <OrderHistory />
-            </ProtectedRoute>
-          } />
-          <Route path="/payment/:orderId" element={
-            <ProtectedRoute>
-              <PaymentForm />
-            </ProtectedRoute>
-          } />
-          <Route path="/track/:orderId" element={
-            <ProtectedRoute>
-              <OrderTracking />
-            </ProtectedRoute>
-          } />
-          <Route path="/payments" element={<Payments />} />
-          <Route path="/shipping" element={<ShippingTracking />} />
-          <Route path="/admin" element={
-            <ProtectedRoute>
-              <AdminRoute>
-                <AdminDashboard />
-              </AdminRoute>
-            </ProtectedRoute>
-          } />
-        </Routes>
-      </BrowserRouter>
-    </AuthProvider>
+    <LocalizationProvider dateAdapter={AdapterDateFns}>
+      <AuthProvider>
+        <BrowserRouter>
+          <CssBaseline />
+          <Routes>
+            <Route path="/register" element={<Register />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/" element={
+              <ProtectedRoute>
+                <Dashboard />
+              </ProtectedRoute>
+            } />
+            <Route path="/order/new" element={
+              <ProtectedRoute>
+                <OrderForm />
+              </ProtectedRoute>
+            } />
+            <Route path="/orders" element={
+              <ProtectedRoute>
+                <OrderHistory />
+              </ProtectedRoute>
+            } />
+            <Route path="/payment/:orderId" element={
+              <ProtectedRoute>
+                <PaymentForm />
+              </ProtectedRoute>
+            } />
+            <Route path="/track/:orderId" element={
+              <ProtectedRoute>
+                <OrderTracking />
+              </ProtectedRoute>
+            } />
+            <Route path="/payments" element={<Payments />} />
+            <Route path="/shipping" element={<ShippingTracking />} />
+            <Route path="/admin" element={
+              <ProtectedRoute>
+                <AdminRoute>
+                  <AdminDashboard />
+                </AdminRoute>
+              </ProtectedRoute>
+            } />
+          </Routes>
+        </BrowserRouter>
+      </AuthProvider>
+    </LocalizationProvider>
   );
 }
 
