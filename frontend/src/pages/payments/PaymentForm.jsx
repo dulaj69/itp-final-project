@@ -16,7 +16,8 @@ import {
   Divider,
   Alert,
   CircularProgress,
-  Grid
+  Grid,
+  Snackbar
 } from '@mui/material';
 import api from '../../services/api';
 
@@ -34,6 +35,7 @@ const PaymentForm = () => {
       cvv: ''
     }
   });
+  const [openSnackbar, setOpenSnackbar] = useState(false);
 
   useEffect(() => {
     fetchOrder();
@@ -85,7 +87,10 @@ const PaymentForm = () => {
       };
 
       await api.post('/payments/process', paymentRequest);
-      navigate(`/track/${orderId}`);
+      setOpenSnackbar(true);
+      setTimeout(() => {
+        navigate(`/track/${orderId}`);
+      }, 2000);
     } catch (error) {
       console.error('Payment error:', error);
       setError(error.response?.data?.message || 'Payment processing failed');
@@ -119,85 +124,102 @@ const PaymentForm = () => {
   }
 
   return (
-    <Container maxWidth="sm" sx={{ mt: 4 }}>
-      <Card>
-        <CardContent>
-          <Typography variant="h5" gutterBottom>
-            Payment Details
-          </Typography>
+    <>
+      <Container maxWidth="sm" sx={{ mt: 4 }}>
+        <Card>
+          <CardContent>
+            <Typography variant="h5" gutterBottom>
+              Payment Details
+            </Typography>
 
-          <Box sx={{ mb: 3 }}>
-            <Typography variant="h6">Order Summary</Typography>
-            <Typography>Order Number: {order.orderNumber}</Typography>
-            <Typography>Total Amount: ${order.totalAmount.toFixed(2)}</Typography>
-          </Box>
-
-          <Divider sx={{ mb: 3 }} />
-
-          <form onSubmit={handleSubmit}>
-            <FormControl component="fieldset" sx={{ mb: 3, width: '100%' }}>
-              <FormLabel>Payment Method</FormLabel>
-              <RadioGroup
-                value={paymentData.paymentMethod}
-                onChange={(e) => handleInputChange('paymentMethod', e.target.value)}
-              >
-                <FormControlLabel 
-                  value="credit_card" 
-                  control={<Radio />} 
-                  label="Credit Card" 
-                />
-                <FormControlLabel 
-                  value="debit_card" 
-                  control={<Radio />} 
-                  label="Debit Card" 
-                />
-              </RadioGroup>
-            </FormControl>
-
-            <Box sx={{ mb: 2 }}>
-              <TextField
-                fullWidth
-                label="Card Number"
-                value={paymentData.cardDetails.number}
-                onChange={(e) => handleInputChange('cardDetails.number', e.target.value)}
-                sx={{ mb: 2 }}
-              />
-              <Grid container spacing={2}>
-                <Grid item xs={6}>
-                  <TextField
-                    fullWidth
-                    label="Expiry Date"
-                    placeholder="MM/YY"
-                    value={paymentData.cardDetails.expiryDate}
-                    onChange={(e) => handleInputChange('cardDetails.expiryDate', e.target.value)}
-                  />
-                </Grid>
-                <Grid item xs={6}>
-                  <TextField
-                    fullWidth
-                    label="CVV"
-                    type="password"
-                    value={paymentData.cardDetails.cvv}
-                    onChange={(e) => handleInputChange('cardDetails.cvv', e.target.value)}
-                  />
-                </Grid>
-              </Grid>
+            <Box sx={{ mb: 3 }}>
+              <Typography variant="h6">Order Summary</Typography>
+              <Typography>Order Number: {order.orderNumber}</Typography>
+              <Typography>Total Amount: ${order.totalAmount.toFixed(2)}</Typography>
             </Box>
 
-            <Button
-              type="submit"
-              variant="contained"
-              color="primary"
-              fullWidth
-              disabled={loading}
-              sx={{ mt: 2 }}
-            >
-              {loading ? <CircularProgress size={24} /> : 'Pay Now'}
-            </Button>
-          </form>
-        </CardContent>
-      </Card>
-    </Container>
+            <Divider sx={{ mb: 3 }} />
+
+            <form onSubmit={handleSubmit}>
+              <FormControl component="fieldset" sx={{ mb: 3, width: '100%' }}>
+                <FormLabel>Payment Method</FormLabel>
+                <RadioGroup
+                  value={paymentData.paymentMethod}
+                  onChange={(e) => handleInputChange('paymentMethod', e.target.value)}
+                >
+                  <FormControlLabel 
+                    value="credit_card" 
+                    control={<Radio />} 
+                    label="Credit Card" 
+                  />
+                  <FormControlLabel 
+                    value="debit_card" 
+                    control={<Radio />} 
+                    label="Debit Card" 
+                  />
+                </RadioGroup>
+              </FormControl>
+
+              <Box sx={{ mb: 2 }}>
+                <TextField
+                  fullWidth
+                  label="Card Number"
+                  value={paymentData.cardDetails.number}
+                  onChange={(e) => handleInputChange('cardDetails.number', e.target.value)}
+                  sx={{ mb: 2 }}
+                />
+                <Grid container spacing={2}>
+                  <Grid item xs={6}>
+                    <TextField
+                      fullWidth
+                      label="Expiry Date"
+                      placeholder="MM/YY"
+                      value={paymentData.cardDetails.expiryDate}
+                      onChange={(e) => handleInputChange('cardDetails.expiryDate', e.target.value)}
+                    />
+                  </Grid>
+                  <Grid item xs={6}>
+                    <TextField
+                      fullWidth
+                      label="CVV"
+                      type="password"
+                      value={paymentData.cardDetails.cvv}
+                      onChange={(e) => handleInputChange('cardDetails.cvv', e.target.value)}
+                    />
+                  </Grid>
+                </Grid>
+              </Box>
+
+              <Button
+                type="submit"
+                variant="contained"
+                color="primary"
+                fullWidth
+                disabled={loading}
+                sx={{ mt: 2 }}
+              >
+                {loading ? <CircularProgress size={24} /> : 'Pay Now'}
+              </Button>
+            </form>
+          </CardContent>
+        </Card>
+      </Container>
+      
+      <Snackbar 
+        open={openSnackbar} 
+        autoHideDuration={2000} 
+        onClose={() => setOpenSnackbar(false)}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+      >
+        <Alert 
+          severity="success" 
+          variant="filled"
+          sx={{ width: '100%' }}
+        >
+          Payment successful! Receipt sent to your email.
+        </Alert>
+      </Snackbar>
+    </>
   );
 };
 

@@ -1,12 +1,13 @@
 const Payment = require('../models/Payment');
 const Order = require('../models/Order');
+const { sendPaymentReceipt } = require('../utils/emailService');
 
 exports.processPayment = async (req, res) => {
   try {
     const { orderId, amount, paymentMethod, cardDetails } = req.body;
 
-    // Find the order
-    const order = await Order.findById(orderId);
+    // Find the order and populate user details
+    const order = await Order.findById(orderId).populate('user', 'email');
     if (!order) {
       return res.status(404).json({ message: 'Order not found' });
     }
@@ -23,8 +24,8 @@ exports.processPayment = async (req, res) => {
       orderId,
       amount,
       paymentMethod,
-      status: 'completed', // In a real app, this would depend on payment gateway response
-      transactionId: `TXN${Date.now()}` // In a real app, this would come from payment gateway
+      status: 'completed',
+      transactionId: `TXN${Date.now()}`
     });
 
     // Update order payment status
@@ -32,8 +33,11 @@ exports.processPayment = async (req, res) => {
     order.orderStatus = 'processing';
     await order.save();
 
+    // Send payment receipt email
+    await sendPaymentReceipt(order, payment, order.user.email);
+
     res.status(201).json({
-      message: 'Payment processed successfully',
+      message: 'Payment processed successfully and receipt sent',
       payment: {
         ...payment.toObject(),
         order: order
