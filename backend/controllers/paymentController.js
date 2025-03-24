@@ -222,6 +222,59 @@ const paymentController = {
     } catch (error) {
       res.status(500).json({ message: error.message });
     }
+  },
+
+  completePayment: async (req, res) => {
+    try {
+      const { orderId } = req.params;
+      const { paymentIntentId } = req.body;
+      
+      console.log('Payment completion started:', { orderId, paymentIntentId });
+
+      const order = await Order.findById(orderId).populate('user', 'email');
+      if (!order) {
+        throw new Error('Order not found');
+      }
+
+      // Create payment record
+      const payment = await Payment.create({
+        orderId,
+        amount: order.totalAmount,
+        paymentMethod: 'stripe',
+        status: 'completed',
+        transactionId: paymentIntentId
+      });
+
+      // Update order status
+      order.paymentStatus = 'paid';
+      order.orderStatus = 'processing';
+      await order.save();
+
+      // Send email receipt
+      let emailStatus = { sent: false, error: null };
+      try {
+        await sendPaymentReceipt(order, payment, order.user.email);
+        emailStatus.sent = true;
+      } catch (emailError) {
+        console.error('Email sending failed:', emailError);
+        emailStatus.error = emailError.message;
+      }
+
+      res.status(200).json({
+        success: true,
+        message: 'Payment completed successfully',
+        payment: payment,
+        emailStatus
+      });
+
+    } catch (error) {
+      console.error('Payment completion error:', error);
+      res.status(500).json({
+        success: false,
+        message: error.message,
+        error: error
+      });
+    }
   }
 };
 

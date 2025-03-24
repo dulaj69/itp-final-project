@@ -15,7 +15,8 @@ import {
   Card,
   CardContent,
   useTheme,
-  IconButton
+  IconButton,
+  Snackbar
 } from '@mui/material';
 import {
   CheckCircle,
@@ -56,9 +57,11 @@ const OrderConfirmation = () => {
   const handleEmailReceipt = async () => {
     setEmailSending(true);
     try {
+      console.log('Sending email receipt for order:', orderId);
+      
       const response = await api.post('/orders/email-receipt', {
-        orderId: orderId,
-        email: order?.customerEmail,
+        orderId,
+        email: order?.user?.email || order?.customerEmail,
         orderDetails: {
           orderNumber: order?.orderNumber,
           items: order?.items,
@@ -68,19 +71,21 @@ const OrderConfirmation = () => {
         }
       });
       
-      if (response.status === 200) {
+      console.log('Email receipt response:', response.data);
+
+      if (response.data.success) {
         setEmailStatus({
           type: 'success',
           message: 'Receipt sent to your email successfully!'
         });
       } else {
-        throw new Error('Failed to send receipt');
+        throw new Error(response.data.message || 'Failed to send receipt');
       }
     } catch (error) {
       console.error('Error sending receipt:', error);
       setEmailStatus({
         type: 'error',
-        message: 'Failed to send receipt. Please check your email address and try again.'
+        message: error.response?.data?.message || 'Failed to send receipt. Please try again.'
       });
     } finally {
       setEmailSending(false);
@@ -108,10 +113,11 @@ const OrderConfirmation = () => {
       sx={{
         minHeight: '100vh',
         width: '100%',
-        position: 'relative',
-        bgcolor: theme.palette.grey[100],
-        p: 4,
-        overflow: 'auto'
+        bgcolor: 'background.default',
+        p: { xs: 2, md: 4 },
+        '& .MuiCard-root': {
+          overflow: 'visible'
+        }
       }}
     >
       <Container maxWidth={false} sx={{ px: { xs: 2, sm: 4, md: 6, lg: 8 } }}>
@@ -265,36 +271,42 @@ const OrderConfirmation = () => {
             </Card>
           </Grid>
         </Grid>
+      </Container>
 
-        {emailStatus && (
+      <style>
+        {`
+          @media print {
+            body * {
+              visibility: hidden;
+            }
+            #receipt-section, #receipt-section * {
+              visibility: visible;
+            }
+            #receipt-section {
+              position: absolute;
+              left: 0;
+              top: 0;
+            }
+          }
+        `}
+      </style>
+      
+      {emailStatus && (
+        <Snackbar
+          open={Boolean(emailStatus)}
+          autoHideDuration={5000}
+          onClose={() => setEmailStatus(null)}
+          anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+        >
           <Alert 
             severity={emailStatus.type} 
-            sx={{ 
-              mt: 3,
-              borderRadius: 2,
-              fontSize: '1rem',
-              maxWidth: '800px',
-              margin: '0 auto'
-            }}
             onClose={() => setEmailStatus(null)}
+            sx={{ width: '100%' }}
           >
             {emailStatus.message}
           </Alert>
-        )}
-      </Container>
-
-      <style jsx global>{`
-        @keyframes pulse {
-          0% { transform: scale(1); }
-          50% { transform: scale(1.05); }
-          100% { transform: scale(1); }
-        }
-        body {
-          margin: 0;
-          padding: 0;
-          overflow-x: hidden;
-        }
-      `}</style>
+        </Snackbar>
+      )}
     </Box>
   );
 };

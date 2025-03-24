@@ -44,10 +44,9 @@ const CheckoutForm = ({ orderId, amount, onSuccess }) => {
       // Create payment intent
       const { data: { clientSecret } } = await api.post('/payments/create-intent', {
         orderId,
-        amount: Math.round(amount * 100) // Convert to cents
+        amount: Math.round(amount * 100)
       });
 
-      // Confirm payment with Stripe
       const { error: stripeError, paymentIntent } = await stripe.confirmCardPayment(
         clientSecret,
         {
@@ -62,19 +61,28 @@ const CheckoutForm = ({ orderId, amount, onSuccess }) => {
         setShowNotification(true);
       } else if (paymentIntent.status === 'succeeded') {
         try {
-          // Update payment status
-          await api.post(`/payments/${orderId}/complete`, {
+          const response = await api.post(`/payments/${orderId}/complete`, {
             paymentIntentId: paymentIntent.id
           });
-          
+
           setPaymentSuccess(true);
+          
+          // Handle email status
+          if (response.data.emailStatus) {
+            if (!response.data.emailStatus.sent) {
+              setError('Payment successful but receipt email failed to send. Please check your email settings.');
+            } else {
+              setSuccess('Payment successful and receipt sent to your email!');
+            }
+          }
+          
           setShowNotification(true);
           setTimeout(() => {
             onSuccess(orderId);
           }, 2000);
         } catch (updateError) {
           console.error('Error updating payment status:', updateError);
-          setError('Payment completed but status update failed. Please contact support.');
+          setError('Payment completed but confirmation failed. Please contact support.');
           setShowNotification(true);
         }
       }
