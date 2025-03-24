@@ -6,7 +6,9 @@ const {
   getPaymentById,
   getUserPayments,
   processPayment,
-  getPaymentHistory
+  getPaymentHistory,
+  createPaymentIntent,
+  updatePaymentStatus
 } = require('../controllers/paymentController');
 
 // Get all payments (protected route)
@@ -21,5 +23,7 @@ router.get('/user/:userId', protect, getUserPayments);
 // Payment routes
 router.post('/process', protect, processPayment);
 router.get('/history', protect, getPaymentHistory);
+router.post('/create-intent', protect, createPaymentIntent);
+router.post('/:orderId/complete', protect, updatePaymentStatus);
 
 module.exports = router; 

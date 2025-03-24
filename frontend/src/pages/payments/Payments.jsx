@@ -132,10 +132,14 @@ const Payments = () => {
                         onClick={() => navigate(`/payment/${order._id}`)}
                         sx={{ 
                           borderRadius: 2,
-                          '&:hover': { transform: 'scale(1.05)' }
+                          bgcolor: theme.palette.primary.main,
+                          '&:hover': { 
+                            bgcolor: theme.palette.primary.dark,
+                            transform: 'scale(1.05)'
+                          }
                         }}
                       >
-                        Pay Now
+                        PAY NOW
                       </Button>
                     </TableCell>
                   </TableRow>

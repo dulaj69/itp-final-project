@@ -6,30 +6,29 @@ const paymentSchema = new mongoose.Schema({
     ref: 'Order',
     required: true
   },
+  paymentIntentId: {
+    type: String,
+    required: true
+  },
   amount: {
     type: Number,
     required: true
   },
   paymentMethod: {
     type: String,
-    enum: ['cash', 'credit_card', 'debit_card', 'bank_transfer'],
-    required: true
+    enum: ['STRIPE', 'CASH', 'BANK_TRANSFER'],
+    default: 'STRIPE'
   },
   status: {
     type: String,
-    enum: ['pending', 'completed', 'failed', 'refunded'],
+    enum: ['pending', 'completed', 'failed'],
     default: 'pending'
   },
-  transactionId: {
-    type: String,
-    unique: true
-  },
-  paymentDate: {
+  createdAt: {
     type: Date,
     default: Date.now
   }
-}, {
-  timestamps: true
 });
 
-module.exports = mongoose.model('Payment', paymentSchema); 
+const Payment = mongoose.model('Payment', paymentSchema);
+module.exports = Payment; 

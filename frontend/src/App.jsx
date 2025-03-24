@@ -7,7 +7,6 @@ import Register from './pages/auth/Register';
 import Login from './pages/auth/Login';
 import Dashboard from './pages/Dashboard';
 import OrderForm from './pages/orders/OrderForm';
-import PaymentForm from './pages/payments/PaymentForm';
 import OrderTracking from './pages/orders/OrderTracking';
 import OrderHistory from './pages/orders/OrderHistory';
 import AdminDashboard from './pages/admin/dashboard/DashboardPage';
@@ -15,6 +14,10 @@ import Payments from './pages/payments/Payments';
 import ShippingTracking from './pages/shipping/ShippingTracking';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import CreateOrder from './pages/orders/CreateOrder';
+import OrderConfirmation from './pages/orders/OrderConfirmation';
+import Navbar from './components/Navigation/Navbar';
+import PaymentPage from './pages/payments/PaymentPage';
 
 const ProtectedRoute = ({ children }) => {
   const { token } = useAuth();
@@ -33,6 +36,7 @@ function App() {
       <AuthProvider>
         <BrowserRouter>
           <CssBaseline />
+          <Navbar />
           <Routes>
             <Route path="/register" element={<Register />} />
             <Route path="/login" element={<Login />} />
@@ -41,19 +45,10 @@ function App() {
                 <Dashboard />
               </ProtectedRoute>
             } />
-            <Route path="/order/new" element={
-              <ProtectedRoute>
-                <OrderForm />
-              </ProtectedRoute>
-            } />
+            <Route path="/order/new" element={<OrderForm />} />
             <Route path="/orders" element={
               <ProtectedRoute>
                 <OrderHistory />
-              </ProtectedRoute>
-            } />
-            <Route path="/payment/:orderId" element={
-              <ProtectedRoute>
-                <PaymentForm />
               </ProtectedRoute>
             } />
             <Route path="/track/:orderId" element={
@@ -70,6 +65,9 @@ function App() {
                 </AdminRoute>
               </ProtectedRoute>
             } />
+            <Route path="/create-order" element={<CreateOrder />} />
+            <Route path="/order-confirmation/:orderId" element={<OrderConfirmation />} />
+            <Route path="/payment/:orderId" element={<PaymentPage />} />
           </Routes>
         </BrowserRouter>
       </AuthProvider>

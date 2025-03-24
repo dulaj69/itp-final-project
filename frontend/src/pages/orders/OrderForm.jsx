@@ -24,6 +24,7 @@ import {
   Home as HomeIcon
 } from '@mui/icons-material';
 import api from '../../services/api';
+import StripePayment from '../../components/Payment/StripePayment';
 
 const OrderForm = () => {
   const theme = useTheme();
@@ -31,6 +32,8 @@ const OrderForm = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [products, setProducts] = useState([]);
+  const [orderId, setOrderId] = useState(null);
+  const [step, setStep] = useState('order'); // 'order' or 'payment'
   const [orderData, setOrderData] = useState({
     items: [
       {
@@ -62,17 +65,22 @@ const OrderForm = () => {
     }
   };
 
-  const handleSubmit = async (e) => {
+  const handlePlaceOrder = async (e) => {
     e.preventDefault();
     setLoading(true);
     try {
       const response = await api.post('/orders', orderData);
-      navigate(`/payment/${response.data._id}`);
+      setOrderId(response.data._id);
+      setStep('payment');
     } catch (error) {
       setError(error.response?.data?.message || 'Failed to create order');
     } finally {
       setLoading(false);
     }
+  };
+
+  const handlePaymentSuccess = () => {
+    navigate('/order-confirmation/' + orderId);
   };
 
   const handleItemChange = (index, field, value) => {
@@ -127,6 +135,26 @@ const OrderForm = () => {
     }, 0);
   };
 
+  if (step === 'payment' && orderId) {
+    return (
+      <Box sx={{ maxWidth: 800, mx: 'auto', p: 3 }}>
+        <Card>
+          <CardContent>
+            <Typography variant="h5" gutterBottom>
+              Complete Payment
+            </Typography>
+            <Divider sx={{ my: 2 }} />
+            <StripePayment
+              orderId={orderId}
+              amount={calculateTotal()}
+              onSuccess={handlePaymentSuccess}
+            />
+          </CardContent>
+        </Card>
+      </Box>
+    );
+  }
+
   return (
     <Box
       sx={{
@@ -174,7 +202,7 @@ const OrderForm = () => {
 
           {error && <Alert severity="error" sx={{ mb: 3 }}>{error}</Alert>}
 
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handlePlaceOrder}>
             <Typography variant="h6" sx={{ mb: 2, display: 'flex', alignItems: 'center', gap: 1 }}>
               <ShoppingCart fontSize="small" />
               Order Items
