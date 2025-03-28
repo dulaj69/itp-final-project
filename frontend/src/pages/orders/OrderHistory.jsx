@@ -35,6 +35,7 @@ import api from '../../services/api';
 import jsPDF from "jspdf";
 import "jspdf-autotable";
 import * as XLSX from 'xlsx';
+import { useAuth } from '../../context/AuthContext';
 
 const OrderHistory = () => {
   const theme = useTheme();
@@ -45,32 +46,61 @@ const OrderHistory = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [reportMenuAnchor, setReportMenuAnchor] = useState(null);
+  const { user } = useAuth();
 
   useEffect(() => {
-    fetchOrders();
-  }, []);
+    const fetchOrderHistory = async () => {
+      if (!user?._id) {
+        console.log('No user ID found:', user);
+        setError('User not authenticated');
+        setLoading(false);
+        return;
+      }
 
-  const fetchOrders = async () => {
-    try {
-      const response = await api.get('/orders');
-      setOrders(response.data);
-    } catch (err) {
-      setError('Failed to fetch orders');
-      console.error('Error fetching orders:', err);
-    } finally {
-      setLoading(false);
-    }
-  };
+      try {
+        const token = localStorage.getItem('token');
+        console.log('Token present:', !!token);
+        
+        const response = await api.get('/orders/history', {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        
+        console.log('Response received:', response.status);
+        
+        if (response.data) {
+          console.log('Orders found:', response.data.length);
+          setOrders(response.data);
+        } else {
+          console.log('No orders found');
+          setOrders([]);
+        }
+      } catch (error) {
+        console.error('Error details:', {
+          message: error.message,
+          response: error.response?.data,
+          status: error.response?.status,
+          url: error.config?.url,
+          token: !!localStorage.getItem('token')
+        });
+        setError(error.response?.data?.message || 'Failed to load order history');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchOrderHistory();
+  }, [user]);
 
   const getStatusColor = (status) => {
     const statusColors = {
       pending: 'warning',
       processing: 'info',
-      shipped: 'primary',
-      delivered: 'success',
+      completed: 'success',
       cancelled: 'error'
     };
-    return statusColors[status.toLowerCase()] || 'default';
+    return statusColors[status] || 'default';
   };
 
   const handleChangePage = (event, newPage) => {
@@ -106,9 +136,9 @@ const OrderHistory = () => {
       order.orderNumber,
       order.items.map(item => `${item.productName} (${item.quantity})`).join(', '),
       `$${order.totalAmount.toFixed(2)}`,
-      order.orderStatus,
+      order.status,
       order.paymentStatus,
-      new Date(order.createdAt).toLocaleDateString()
+      new Date(order.date).toLocaleDateString()
     ]);
     
     // Generate table
@@ -139,9 +169,9 @@ const OrderHistory = () => {
       'Order Number': order.orderNumber,
       'Items': order.items.map(item => `${item.productName} (${item.quantity})`).join(', '),
       'Total Amount': `$${order.totalAmount.toFixed(2)}`,
-      'Order Status': order.orderStatus,
+      'Order Status': order.status,
       'Payment Status': order.paymentStatus,
-      'Date': new Date(order.createdAt).toLocaleDateString()
+      'Date': new Date(order.date).toLocaleDateString()
     }));
     
     // Create worksheet
@@ -182,9 +212,9 @@ const OrderHistory = () => {
       printWindow.document.write(`<td>${order.orderNumber}</td>`);
       printWindow.document.write(`<td>${order.items.map(item => `${item.productName} (${item.quantity})`).join(', ')}</td>`);
       printWindow.document.write(`<td>$${order.totalAmount.toFixed(2)}</td>`);
-      printWindow.document.write(`<td>${order.orderStatus}</td>`);
+      printWindow.document.write(`<td>${order.status}</td>`);
       printWindow.document.write(`<td>${order.paymentStatus}</td>`);
-      printWindow.document.write(`<td>${new Date(order.createdAt).toLocaleDateString()}</td>`);
+      printWindow.document.write(`<td>${new Date(order.date).toLocaleDateString()}</td>`);
       printWindow.document.write('</tr>');
     });
     
@@ -200,6 +230,14 @@ const OrderHistory = () => {
     
     handleReportMenuClose();
   };
+
+  if (loading) {
+    return (
+      <Box display="flex" justifyContent="center" alignItems="center" minHeight="400px">
+        <CircularProgress />
+      </Box>
+    );
+  }
 
   return (
     <Box
@@ -261,94 +299,88 @@ const OrderHistory = () => {
             </Box>
           </Box>
 
-          {loading ? (
-            <CircularProgress />
-          ) : (
-            <>
-              <TableContainer component={Paper} sx={{ borderRadius: 2, mb: 3 }} id="orderHistoryTable">
-                <Table>
-                  <TableHead>
-                    <TableRow sx={{ bgcolor: theme.palette.grey[50] }}>
-                      <TableCell sx={{ fontWeight: 'bold' }}>Order Number</TableCell>
-                      <TableCell sx={{ fontWeight: 'bold' }}>Items</TableCell>
-                      <TableCell sx={{ fontWeight: 'bold' }}>Total Amount</TableCell>
-                      <TableCell sx={{ fontWeight: 'bold' }}>Order Status</TableCell>
-                      <TableCell sx={{ fontWeight: 'bold' }}>Payment Status</TableCell>
-                      <TableCell sx={{ fontWeight: 'bold' }}>Date</TableCell>
-                      <TableCell sx={{ fontWeight: 'bold' }}>Actions</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {orders
-                      .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                      .map((order) => (
-                        <TableRow 
-                          key={order._id}
-                          hover
+          <TableContainer component={Paper} sx={{ borderRadius: 2, mb: 3 }} id="orderHistoryTable">
+            <Table>
+              <TableHead>
+                <TableRow sx={{ bgcolor: theme.palette.grey[50] }}>
+                  <TableCell sx={{ fontWeight: 'bold' }}>Order Number</TableCell>
+                  <TableCell sx={{ fontWeight: 'bold' }}>Items</TableCell>
+                  <TableCell sx={{ fontWeight: 'bold' }}>Total Amount</TableCell>
+                  <TableCell sx={{ fontWeight: 'bold' }}>Order Status</TableCell>
+                  <TableCell sx={{ fontWeight: 'bold' }}>Payment Status</TableCell>
+                  <TableCell sx={{ fontWeight: 'bold' }}>Date</TableCell>
+                  <TableCell sx={{ fontWeight: 'bold' }}>Actions</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {orders
+                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                  .map((order) => (
+                    <TableRow 
+                      key={order._id}
+                      hover
+                      sx={{ 
+                        cursor: 'pointer',
+                        '&:hover': { bgcolor: theme.palette.action.hover }
+                      }}
+                    >
+                      <TableCell>{order.orderNumber}</TableCell>
+                      <TableCell>
+                        {order.items.map(item => 
+                          `${item.productName} (${item.quantity})`
+                        ).join(', ')}
+                      </TableCell>
+                      <TableCell sx={{ fontWeight: 'bold', color: theme.palette.success.main }}>
+                        ${order.totalAmount.toFixed(2)}
+                      </TableCell>
+                      <TableCell>
+                        <Chip 
+                          label={order.status}
+                          color={getStatusColor(order.status)}
+                          size="small"
+                          sx={{ fontWeight: 'medium' }}
+                        />
+                      </TableCell>
+                      <TableCell>
+                        <Chip 
+                          label={order.paymentStatus}
+                          color={order.paymentStatus === 'paid' ? 'success' : 'warning'}
+                          size="small"
+                          sx={{ fontWeight: 'medium' }}
+                        />
+                      </TableCell>
+                      <TableCell>
+                        {new Date(order.date).toLocaleDateString()}
+                      </TableCell>
+                      <TableCell>
+                        <IconButton 
+                          color="primary"
+                          onClick={() => navigate(`/track/${order._id}`)}
                           sx={{ 
-                            cursor: 'pointer',
-                            '&:hover': { bgcolor: theme.palette.action.hover }
+                            '&:hover': { 
+                              transform: 'scale(1.1)',
+                              bgcolor: theme.palette.primary.light 
+                            }
                           }}
                         >
-                          <TableCell>{order.orderNumber}</TableCell>
-                          <TableCell>
-                            {order.items.map(item => 
-                              `${item.productName} (${item.quantity})`
-                            ).join(', ')}
-                          </TableCell>
-                          <TableCell sx={{ fontWeight: 'bold', color: theme.palette.success.main }}>
-                            ${order.totalAmount.toFixed(2)}
-                          </TableCell>
-                          <TableCell>
-                            <Chip 
-                              label={order.orderStatus}
-                              color={getStatusColor(order.orderStatus)}
-                              size="small"
-                              sx={{ fontWeight: 'medium' }}
-                            />
-                          </TableCell>
-                          <TableCell>
-                            <Chip 
-                              label={order.paymentStatus}
-                              color={order.paymentStatus === 'paid' ? 'success' : 'warning'}
-                              size="small"
-                              sx={{ fontWeight: 'medium' }}
-                            />
-                          </TableCell>
-                          <TableCell>
-                            {new Date(order.createdAt).toLocaleDateString()}
-                          </TableCell>
-                          <TableCell>
-                            <IconButton 
-                              color="primary"
-                              onClick={() => navigate(`/track/${order._id}`)}
-                              sx={{ 
-                                '&:hover': { 
-                                  transform: 'scale(1.1)',
-                                  bgcolor: theme.palette.primary.light 
-                                }
-                              }}
-                            >
-                              <NavigateNextIcon />
-                            </IconButton>
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                  </TableBody>
-                </Table>
-              </TableContainer>
+                          <NavigateNextIcon />
+                        </IconButton>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
 
-              <TablePagination
-                component="div"
-                count={orders.length}
-                page={page}
-                onPageChange={handleChangePage}
-                rowsPerPage={rowsPerPage}
-                onRowsPerPageChange={handleChangeRowsPerPage}
-                rowsPerPageOptions={[5, 10, 25]}
-              />
-            </>
-          )}
+          <TablePagination
+            component="div"
+            count={orders.length}
+            page={page}
+            onPageChange={handleChangePage}
+            rowsPerPage={rowsPerPage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
+            rowsPerPageOptions={[5, 10, 25]}
+          />
         </CardContent>
       </Card>
 

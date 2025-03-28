@@ -273,6 +273,66 @@ const orderController = {
         error: error.message 
       });
     }
+  },
+
+  // Get user's order history
+  getUserOrderHistory: async (req, res) => {
+    try {
+      const userId = req.user?._id;
+      console.log('Getting orders for user:', userId);
+
+      if (!userId) {
+        console.log('No user ID in request. User object:', req.user);
+        return res.status(401).json({ 
+          success: false,
+          message: 'User not authenticated'
+        });
+      }
+
+      // Check if Order model is properly imported
+      console.log('Attempting to find orders');
+      
+      const orders = await Order.find({ user: userId })
+        .populate({
+          path: 'items.product',
+          select: 'name price'
+        })
+        .sort('-createdAt')
+        .lean();
+
+      console.log(`Found ${orders?.length || 0} orders for user ${userId}`);
+
+      if (!orders) {
+        return res.json([]);
+      }
+
+      const orderHistory = orders.map(order => ({
+        _id: order._id,
+        orderNumber: order.orderNumber,
+        date: order.createdAt,
+        totalAmount: order.totalAmount,
+        status: order.orderStatus,
+        paymentStatus: order.paymentStatus,
+        items: order.items.map(item => ({
+          productName: item.product ? item.product.name : item.productName,
+          quantity: item.quantity,
+          price: item.price
+        }))
+      }));
+
+      res.json(orderHistory);
+    } catch (error) {
+      console.error('Order history error details:', {
+        error: error.message,
+        stack: error.stack,
+        userId: req.user?._id
+      });
+      res.status(500).json({ 
+        success: false,
+        message: 'Error fetching order history',
+        error: error.message 
+      });
+    }
   }
 };
 

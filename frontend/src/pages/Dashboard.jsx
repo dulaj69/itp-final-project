@@ -1,11 +1,12 @@
 import React from 'react';
-import { Box, Grid, Paper, Typography, useTheme } from '@mui/material';
+import { Box, Grid, Paper, Typography, useTheme, Button } from '@mui/material';
 import {
   ShoppingCart as OrderIcon,
   Payment as PaymentIcon,
   LocalShipping as ShippingIcon,
   History as HistoryIcon,
-  Dashboard as DashboardIcon
+  Dashboard as DashboardIcon,
+  Logout as LogoutIcon
 } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
@@ -56,7 +57,16 @@ const DashboardCard = ({ title, icon, value, onClick }) => {
 const Dashboard = () => {
   const navigate = useNavigate();
   const theme = useTheme();
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+      navigate('/login');
+    } catch (error) {
+      console.error('Logout failed:', error);
+    }
+  };
 
   return (
     <Box
@@ -75,18 +85,41 @@ const Dashboard = () => {
           mb: 6,
           display: 'flex',
           alignItems: 'center',
-          gap: 2
+          justifyContent: 'space-between'
         }}
       >
-        <DashboardIcon sx={{ fontSize: 40, color: theme.palette.primary.main }} />
-        <Box>
-          <Typography variant="h3" sx={{ fontWeight: 'bold', color: theme.palette.primary.main }}>
-            Dashboard
-          </Typography>
-          <Typography variant="h6" color="text.secondary">
-            Welcome back, {user?.name || 'User'}!
-          </Typography>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+          <DashboardIcon sx={{ fontSize: 40, color: theme.palette.primary.main }} />
+          <Box>
+            <Typography variant="h3" sx={{ fontWeight: 'bold', color: theme.palette.primary.main }}>
+              Dashboard
+            </Typography>
+            <Typography variant="h6" color="text.secondary">
+              Welcome back, {user?.name || 'User'}!
+            </Typography>
+          </Box>
         </Box>
+
+        <Button
+          variant="contained"
+          color="error"
+          startIcon={<LogoutIcon />}
+          onClick={handleLogout}
+          sx={{
+            py: 1.5,
+            px: 3,
+            borderRadius: 2,
+            textTransform: 'none',
+            fontSize: '1rem',
+            fontWeight: 'bold',
+            '&:hover': {
+              transform: 'translateY(-2px)',
+              boxShadow: theme.shadows[8]
+            }
+          }}
+        >
+          Logout
+        </Button>
       </Box>
       
       <Grid container spacing={4}>

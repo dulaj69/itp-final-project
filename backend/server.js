@@ -5,6 +5,7 @@ const dotenv = require('dotenv');
 const connectDB = require('./config/db');
 require('./models/Product');
 const productRoutes = require('./routes/productRoutes');
+const orderRoutes = require('./routes/orderRoutes');
 
 // Load env vars
 dotenv.config();
@@ -26,7 +27,7 @@ try {
   app.use('/api/products', productRoutes);
   app.use('/api/payments', require('./routes/paymentRoutes'));
   app.use('/api/sales', require('./routes/salesRoutes'));
-  app.use('/api/orders', require('./routes/orderRoutes'));
+  app.use('/api/orders', orderRoutes);
   app.use('/api/reports', require('./routes/reportRoutes'));
   app.use('/api/admin', require('./routes/adminRoutes'));
   app.use('/api/users', require('./routes/userRoutes'));
