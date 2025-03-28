@@ -124,42 +124,64 @@ const OrderHistory = () => {
   const generatePdfReport = () => {
     const doc = new jsPDF();
     
-    // Add title
-    doc.setFontSize(18);
-    doc.text('Order History Report', 14, 22);
-    doc.setFontSize(11);
-    doc.text(`Generated on: ${new Date().toLocaleDateString()}`, 14, 30);
+    // Add title and header
+    doc.setFontSize(20);
+    doc.setTextColor(41, 128, 185);
+    doc.text('Order History Report', 15, 20);
+    
+    doc.setFontSize(12);
+    doc.setTextColor(0, 0, 0);
+    doc.text(`Generated on: ${new Date().toLocaleDateString()}`, 15, 30);
     
     // Prepare table data
-    const tableColumn = ["Order Number", "Items", "Total Amount", "Order Status", "Payment Status", "Date"];
-    const tableRows = orders.map(order => [
-      order.orderNumber,
-      order.items.map(item => `${item.productName} (${item.quantity})`).join(', '),
-      `$${order.totalAmount.toFixed(2)}`,
-      order.status,
-      order.paymentStatus,
-      new Date(order.date).toLocaleDateString()
-    ]);
+    const tableColumn = [
+      "Order #",
+      "Date",
+      "Items",
+      "Amount",
+      "Status"
+    ];
     
-    // Generate table
+    const tableRows = orders.map(order => [
+      order.orderNumber || 'N/A',
+      new Date(order.date).toLocaleDateString(),
+      order.items.map(item => `${item.productName} (${item.quantity})`).join('\n'),
+      `$${order.totalAmount.toFixed(2)}`,
+      order.status
+    ]);
+
+    // Generate table with autoTable
     doc.autoTable({
       head: [tableColumn],
       body: tableRows,
       startY: 40,
-      styles: { fontSize: 9 },
-      columnStyles: { 
-        0: { cellWidth: 30 },
-        1: { cellWidth: 60 },
-        2: { cellWidth: 25 },
-        3: { cellWidth: 25 },
-        4: { cellWidth: 25 },
-        5: { cellWidth: 25 }
+      theme: 'grid',
+      styles: {
+        fontSize: 8,
+        cellPadding: 3,
+        overflow: 'linebreak',
+        halign: 'left'
       },
-      headStyles: { fillColor: [41, 128, 185], textColor: 255 }
+      columnStyles: {
+        0: { cellWidth: 30 }, // Order number
+        1: { cellWidth: 25 }, // Date
+        2: { cellWidth: 70 }, // Items
+        3: { cellWidth: 25 }, // Amount
+        4: { cellWidth: 25 }  // Status
+      },
+      headStyles: {
+        fillColor: [41, 128, 185],
+        textColor: 255,
+        fontSize: 9,
+        fontStyle: 'bold'
+      },
+      alternateRowStyles: {
+        fillColor: [245, 245, 245]
+      }
     });
     
-    // Save PDF
-    doc.save('order_history_report.pdf');
+    // Save the PDF
+    doc.save(`order_history_${new Date().getTime()}.pdf`);
     handleReportMenuClose();
   };
 
@@ -187,47 +209,86 @@ const OrderHistory = () => {
   };
 
   const printReport = () => {
-    const printContent = document.getElementById('orderHistoryTable');
-    const windowUrl = 'about:blank';
-    const uniqueName = new Date().getTime();
-    const windowName = 'Print_' + uniqueName;
-    const printWindow = window.open(windowUrl, windowName, 'height=600,width=800');
+    const printWindow = window.open('', '_blank');
     
-    printWindow.document.write('<html><head><title>Order History</title>');
-    printWindow.document.write('<style>');
     printWindow.document.write(`
-      table { border-collapse: collapse; width: 100%; }
-      th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
-      th { background-color: #f2f2f2; }
-      h2 { text-align: center; }
+      <html>
+        <head>
+          <title>Order History Report</title>
+          <style>
+            body { font-family: Arial, sans-serif; padding: 20px; }
+            table { 
+              border-collapse: collapse; 
+              width: 100%;
+              margin-top: 20px;
+            }
+            th, td { 
+              border: 1px solid #ddd; 
+              padding: 12px 8px; 
+              text-align: left; 
+            }
+            th { 
+              background-color: #2980b9; 
+              color: white;
+            }
+            tr:nth-child(even) { background-color: #f9f9f9; }
+            .header { 
+              text-align: center;
+              margin-bottom: 30px;
+            }
+            .date { 
+              text-align: right;
+              color: #666;
+              margin-bottom: 20px;
+            }
+          </style>
+        </head>
+        <body>
+          <div class="header">
+            <h2>Order History Report</h2>
+          </div>
+          <div class="date">
+            Generated on: ${new Date().toLocaleDateString()}
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>Order Number</th>
+                <th>Items</th>
+                <th>Total Amount</th>
+                <th>Order Status</th>
+                <th>Payment Status</th>
+                <th>Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${orders.map(order => `
+                <tr>
+                  <td>${order.orderNumber}</td>
+                  <td>${order.items.map(item => `${item.productName} (${item.quantity})`).join(', ')}</td>
+                  <td>$${order.totalAmount.toFixed(2)}</td>
+                  <td>${order.status}</td>
+                  <td>${order.paymentStatus}</td>
+                  <td>${new Date(order.date).toLocaleDateString()}</td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+        </body>
+      </html>
     `);
-    printWindow.document.write('</style></head><body>');
-    printWindow.document.write('<h2>Order History Report</h2>');
-    printWindow.document.write('<p>Generated on: ' + new Date().toLocaleDateString() + '</p>');
-    printWindow.document.write('<table>');
-    printWindow.document.write('<tr><th>Order Number</th><th>Items</th><th>Total Amount</th><th>Order Status</th><th>Payment Status</th><th>Date</th></tr>');
-    
-    orders.forEach(order => {
-      printWindow.document.write('<tr>');
-      printWindow.document.write(`<td>${order.orderNumber}</td>`);
-      printWindow.document.write(`<td>${order.items.map(item => `${item.productName} (${item.quantity})`).join(', ')}</td>`);
-      printWindow.document.write(`<td>$${order.totalAmount.toFixed(2)}</td>`);
-      printWindow.document.write(`<td>${order.status}</td>`);
-      printWindow.document.write(`<td>${order.paymentStatus}</td>`);
-      printWindow.document.write(`<td>${new Date(order.date).toLocaleDateString()}</td>`);
-      printWindow.document.write('</tr>');
-    });
-    
-    printWindow.document.write('</table></body></html>');
+
     printWindow.document.close();
-    printWindow.focus();
     
-    // Print after content is loaded
+    // Wait for content to load before printing
     printWindow.onload = function() {
+      printWindow.focus();
       printWindow.print();
-      printWindow.close();
+      setTimeout(() => {
+        printWindow.close();
+      }, 1000);
     };
-    
+
     handleReportMenuClose();
   };
 

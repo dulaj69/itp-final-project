@@ -41,7 +41,6 @@ const CheckoutForm = ({ orderId, amount, onSuccess }) => {
 
     setProcessing(true);
     try {
-      // Create payment intent
       const { data: { clientSecret } } = await api.post('/payments/create-intent', {
         orderId,
         amount: Math.round(amount * 100)
@@ -67,7 +66,6 @@ const CheckoutForm = ({ orderId, amount, onSuccess }) => {
 
           setPaymentSuccess(true);
           
-          // Handle email status
           if (response.data.emailStatus) {
             if (!response.data.emailStatus.sent) {
               setError('Payment successful but receipt email failed to send. Please check your email settings.');
@@ -141,7 +139,6 @@ const CheckoutForm = ({ orderId, amount, onSuccess }) => {
     >
       <form onSubmit={handleSubmit}>
         <Container maxWidth="xl" sx={{ py: 4 }}>
-          {/* Header Section */}
           <Paper 
             elevation={0} 
             sx={{ 
@@ -177,7 +174,6 @@ const CheckoutForm = ({ orderId, amount, onSuccess }) => {
               >
                 <CardContent sx={{ p: 5 }}>
                   <Stack spacing={4}>
-                    {/* Card Information Section */}
                     <Box>
                       <Typography variant="h5" gutterBottom sx={{ 
                         display: 'flex', 
@@ -247,7 +243,6 @@ const CheckoutForm = ({ orderId, amount, onSuccess }) => {
               </Card>
             </Grid>
 
-            {/* Order Summary & Security Info */}
             <Grid item xs={12} md={4}>
               <Stack spacing={4}>
                 <Card elevation={3} sx={{ borderRadius: 3 }}>

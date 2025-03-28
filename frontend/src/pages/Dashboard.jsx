@@ -102,7 +102,6 @@ const Dashboard = () => {
 
         <Button
           variant="contained"
-          color="error"
           startIcon={<LogoutIcon />}
           onClick={handleLogout}
           sx={{
@@ -112,7 +111,9 @@ const Dashboard = () => {
             textTransform: 'none',
             fontSize: '1rem',
             fontWeight: 'bold',
+            bgcolor: theme.palette.primary.main,
             '&:hover': {
+              bgcolor: theme.palette.primary.dark,
               transform: 'translateY(-2px)',
               boxShadow: theme.shadows[8]
             }

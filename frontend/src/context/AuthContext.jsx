@@ -16,7 +16,6 @@ export const AuthProvider = ({ children }) => {
       setToken(token);
       localStorage.setItem('token', token);
       
-      // Return the user role for redirect purposes
       return userData.role;
     } catch (error) {
       throw error;

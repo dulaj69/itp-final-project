@@ -9,7 +9,6 @@ const {
   updateOrderStatus
 } = require('../controllers/adminController');
 
-// Admin routes
 router.get('/stats', protect, admin, getDashboardStats);
 router.get('/orders', protect, admin, getAllOrders);
 router.get('/users', protect, admin, getAllUsers);

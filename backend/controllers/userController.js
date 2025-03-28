@@ -1,10 +1,9 @@
 const User = require('../models/User');
 
-// Get all users with their profile data
 exports.getAllUsers = async (req, res) => {
   try {
     const users = await User.find()
-      .select('-password') // Exclude password
+      .select('-password') 
       .populate({
         path: 'orders',
         select: 'orderNumber totalAmount status createdAt',
@@ -18,7 +17,6 @@ exports.getAllUsers = async (req, res) => {
   }
 };
 
-// Get single user profile
 exports.getUserProfile = async (req, res) => {
   try {
     const userId = req.params.userId;

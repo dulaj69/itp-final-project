@@ -4,7 +4,6 @@ const { sendOrderReceipt } = require('../utils/emailUtils');
 const { sendPaymentReceipt } = require('../utils/emailService');
 
 const orderController = {
-  // Get all orders
   getAllOrders: async (req, res) => {
     try {
       const orders = await Order.find()
@@ -16,7 +15,6 @@ const orderController = {
     }
   },
 
-  // Get order by ID
   getOrderById: async (req, res) => {
     try {
       const order = await Order.findById(req.params.id)
@@ -31,7 +29,6 @@ const orderController = {
     }
   },
 
-  // Create order
   createOrder: async (req, res) => {
     try {
       const { items, paymentMethod, shippingAddress } = req.body;
@@ -86,7 +83,6 @@ const orderController = {
     }
   },
 
-  // Update order
   updateOrder: async (req, res) => {
     try {
       const order = await Order.findByIdAndUpdate(
@@ -100,7 +96,6 @@ const orderController = {
     }
   },
 
-  // Delete order
   deleteOrder: async (req, res) => {
     try {
       await Order.findByIdAndDelete(req.params.id);
@@ -110,7 +105,6 @@ const orderController = {
     }
   },
 
-  // Send email receipt
   sendEmailReceipt: async (req, res) => {
     try {
       const { orderId, email, orderDetails } = req.body;
@@ -155,7 +149,6 @@ const orderController = {
     }
   },
 
-  // Get orders by user ID
   getUserOrders: async (req, res) => {
     try {
       const orders = await Order.find({ user: req.user._id })
@@ -170,7 +163,6 @@ const orderController = {
     }
   },
 
-  // Cancel order
   cancelOrder: async (req, res) => {
     try {
       const order = await Order.findById(req.params.id);
@@ -197,7 +189,6 @@ const orderController = {
     }
   },
 
-  // Update order status
   updateOrderStatus: async (req, res) => {
     try {
       const { status } = req.body;
@@ -218,7 +209,6 @@ const orderController = {
     }
   },
 
-  // Get all orders for the current user
   getOrders: async (req, res) => {
     try {
       const orders = await Order.find({ user: req.user._id })
@@ -242,7 +232,6 @@ const orderController = {
       .populate('items.product', 'name price')
       .sort({ createdAt: -1 });
 
-      // Return empty array instead of 404 if no orders found
       res.status(200).json(pendingOrders || []);
       
     } catch (error) {
@@ -256,10 +245,18 @@ const orderController = {
 
   getShippingStatus: async (req, res) => {
     try {
+      const userId = req.user._id;
+      
+      if (!userId) {
+        return res.status(401).json({ 
+          success: false,
+          message: 'User not authenticated'
+        });
+      }
+
       const orders = await Order.find({
-        user: req.user._id,
-        paymentStatus: 'paid',
-        orderStatus: { $in: ['processing', 'shipped'] }
+        user: userId,
+        orderStatus: { $in: ['pending', 'processing', 'shipped', 'delivered'] }
       })
       .populate('items.product', 'name price')
       .sort({ createdAt: -1 });
@@ -275,7 +272,6 @@ const orderController = {
     }
   },
 
-  // Get user's order history
   getUserOrderHistory: async (req, res) => {
     try {
       const userId = req.user?._id;
@@ -289,7 +285,6 @@ const orderController = {
         });
       }
 
-      // Check if Order model is properly imported
       console.log('Attempting to find orders');
       
       const orders = await Order.find({ user: userId })
@@ -330,6 +325,33 @@ const orderController = {
       res.status(500).json({ 
         success: false,
         message: 'Error fetching order history',
+        error: error.message 
+      });
+    }
+  },
+
+  getUserShippingStatus: async (req, res) => {
+    try {
+      if (req.user._id.toString() !== req.params.userId) {
+        return res.status(403).json({
+          success: false,
+          message: 'Not authorized to view these orders'
+        });
+      }
+
+      const orders = await Order.find({
+        user: req.user._id,
+        orderStatus: { $in: ['pending', 'processing', 'shipped', 'delivered'] }
+      })
+      .populate('items.product', 'name price')
+      .sort({ createdAt: -1 });
+
+      res.status(200).json(orders || []);
+      
+    } catch (error) {
+      console.error('Error fetching shipping status:', error);
+      res.status(500).json({ 
+        message: 'Error fetching shipping status',
         error: error.message 
       });
     }

@@ -26,6 +26,14 @@ import {
 import api from '../../services/api';
 import StripePayment from '../../components/Payment/StripePayment';
 
+const validateZipCode = (country, zipCode) => {
+  const patterns = {
+    'India': /^[1-9][0-9]{5}$/, // Indian PIN code: 6 digits
+    'Sri Lanka': /^[1-9][0-9]{4}$/ // Sri Lankan postal code: 5 digits
+  };
+  return patterns[country]?.test(zipCode) || false;
+};
+
 const OrderForm = () => {
   const theme = useTheme();
   const navigate = useNavigate();
@@ -50,6 +58,7 @@ const OrderForm = () => {
       country: ''
     }
   });
+  const [zipError, setZipError] = useState('');
 
   useEffect(() => {
     fetchProducts();
@@ -85,11 +94,25 @@ const OrderForm = () => {
 
   const handleItemChange = (index, field, value) => {
     const newItems = [...orderData.items];
-    newItems[index] = { ...newItems[index], [field]: value };
+    if (field === 'product') {
+      const selectedProduct = products.find(p => p._id === value);
+      newItems[index] = {
+        ...newItems[index],
+        product: value,
+        price: selectedProduct?.price || 0
+      };
+    } else {
+      newItems[index] = { ...newItems[index], [field]: value };
+    }
     setOrderData({ ...orderData, items: newItems });
   };
 
   const handleAddressChange = (field, value) => {
+    if (field === 'postalCode') {
+      const isValid = validateZipCode(orderData.shippingAddress.country, value);
+      setZipError(isValid ? '' : `Invalid ${orderData.shippingAddress.country} postal code`);
+    }
+    
     setOrderData({
       ...orderData,
       shippingAddress: {
@@ -263,7 +286,11 @@ const OrderForm = () => {
                       fullWidth
                       disabled
                       label="Subtotal"
-                      value={`$${(item.price * item.quantity).toFixed(2)}`}
+                      value={`$${(
+                        (products.find(p => p._id === item.product)?.price || 0) * 
+                          item.quantity
+                      ).toFixed(2)}`}
+                      sx={{ bgcolor: 'background.paper' }}
                     />
                   </Grid>
                   <Grid item xs={12} md={1}>
@@ -332,21 +359,27 @@ const OrderForm = () => {
               </Grid>
               <Grid item xs={12} md={6}>
                 <TextField
-                  fullWidth
-                  required
-                  label="Postal Code"
-                  value={orderData.shippingAddress.postalCode}
-                  onChange={(e) => handleAddressChange('postalCode', e.target.value)}
-                  sx={{ bgcolor: 'background.paper' }}
-                />
-              </Grid>
-              <Grid item xs={12} md={6}>
-                <TextField
+                  select
                   fullWidth
                   required
                   label="Country"
                   value={orderData.shippingAddress.country}
                   onChange={(e) => handleAddressChange('country', e.target.value)}
+                  sx={{ bgcolor: 'background.paper' }}
+                >
+                  <MenuItem value="India">India</MenuItem>
+                  <MenuItem value="Sri Lanka">Sri Lanka</MenuItem>
+                </TextField>
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <TextField
+                  fullWidth
+                  required
+                  label="Postal Code"
+                  value={orderData.shippingAddress.postalCode}
+                  onChange={(e) => handleAddressChange('postalCode', e.target.value)}
+                  error={Boolean(zipError)}
+                  helperText={zipError || (orderData.shippingAddress.country === 'India' ? 'Enter 6-digit PIN code' : 'Enter 5-digit postal code')}
                   sx={{ bgcolor: 'background.paper' }}
                 />
               </Grid>
