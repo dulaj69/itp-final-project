@@ -105,48 +105,76 @@ const paymentController = {
 
   processPayment: async (req, res) => {
     try {
-      const { orderId, amount, paymentMethod, cardDetails } = req.body;
+      const { orderId, amount, paymentMethod } = req.body;
 
-      // Find the order and populate user details
-      const order = await Order.findById(orderId).populate('user', 'email');
-      if (!order) {
-        return res.status(404).json({ message: 'Order not found' });
-      }
-
-      // Verify amount matches order total
-      if (amount !== order.totalAmount) {
-        return res.status(400).json({ 
-          message: 'Payment amount does not match order total' 
+      if (!orderId || !amount) {
+        return res.status(400).json({
+          success: false,
+          message: 'Order ID and amount are required'
         });
       }
 
-      // Create payment record
-      const payment = await Payment.create({
-        orderId,
-        amount,
-        paymentMethod,
-        status: 'completed',
-        transactionId: `TXN${Date.now()}`
-      });
+      const order = await Order.findById(orderId).populate('user', 'email');
+      if (!order) {
+        return res.status(404).json({
+          success: false,
+          message: 'Order not found'
+        });
+      }
 
-      // Update order payment status
-      order.paymentStatus = 'paid';
-      order.orderStatus = 'processing';
-      await order.save();
+      if (paymentMethod === 'CASH') {
+        // Handle cash on delivery
+        const payment = await Payment.create({
+          orderId,
+          amount,
+          paymentMethod: 'CASH',
+          status: 'pending'
+        });
 
-      // Send payment receipt email
-      await sendPaymentReceipt(order, payment, order.user.email);
+        // Update order status
+        order.paymentStatus = 'pending';
+        order.orderStatus = 'processing';
+        await order.save();
 
-      res.status(201).json({
-        message: 'Payment processed successfully and receipt sent',
-        payment: {
-          ...payment.toObject(),
-          order: order
+        // Send email confirmation
+        let emailStatus = { sent: false, error: null };
+        try {
+          await sendPaymentReceipt(order, payment, order.user.email);
+          emailStatus.sent = true;
+        } catch (emailError) {
+          console.error('Email sending failed:', emailError);
+          emailStatus.error = emailError.message;
         }
-      });
+
+        return res.status(200).json({
+          success: true,
+          message: 'Cash on delivery order confirmed',
+          payment,
+          emailStatus
+        });
+      } else {
+        // For card payments, create a Stripe payment intent
+        const paymentIntent = await stripe.paymentIntents.create({
+          amount: Math.round(amount * 100),
+          currency: 'usd',
+          metadata: { 
+            orderId,
+            userId: req.user._id.toString() 
+          }
+        });
+
+        return res.json({
+          success: true,
+          clientSecret: paymentIntent.client_secret
+        });
+      }
     } catch (error) {
       console.error('Payment processing error:', error);
-      res.status(500).json({ message: error.message });
+      res.status(500).json({
+        success: false,
+        message: 'Error processing payment',
+        error: error.message
+      });
     }
   },
 

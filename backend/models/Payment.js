@@ -8,7 +8,9 @@ const paymentSchema = new mongoose.Schema({
   },
   paymentIntentId: {
     type: String,
-    required: true
+    required: function() {
+      return this.paymentMethod === 'STRIPE';
+    }
   },
   amount: {
     type: Number,
@@ -21,7 +23,7 @@ const paymentSchema = new mongoose.Schema({
   },
   status: {
     type: String,
-    enum: ['pending', 'completed', 'failed'],
+    enum: ['pending', 'completed', 'failed', 'refunded'],
     default: 'pending'
   },
   createdAt: {

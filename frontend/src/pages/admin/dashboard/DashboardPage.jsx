@@ -447,32 +447,6 @@ const DashboardPage = () => {
           </Grid>
         </Grid>
 
-        <Box sx={{ mb: 3, display: 'flex', gap: 2, flexWrap: 'wrap' }}>
-          <Button 
-            variant="contained" 
-            color="primary" 
-            startIcon={<RefundIcon />}
-            component={RouterLink}
-            to="/admin/refunds"
-            sx={{ 
-              fontWeight: 'bold',
-              borderRadius: 2,
-              py: 1,
-              px: 2
-            }}
-          >
-            Manage Refunds
-            {data.stats.pendingRefunds > 0 && (
-              <Badge 
-                badgeContent={data.stats.pendingRefunds} 
-                color="error"
-                sx={{ ml: 1 }}
-              >
-                <NotificationIcon />
-              </Badge>
-            )}
-          </Button>
-        </Box>
 
         <Paper 
           sx={{ 
