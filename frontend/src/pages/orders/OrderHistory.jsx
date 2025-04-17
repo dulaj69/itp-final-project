@@ -19,7 +19,14 @@ import {
   Button,
   Menu,
   MenuItem,
-  Tooltip
+  Tooltip,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  TextField,
+  Alert,
+  Snackbar
 } from '@mui/material';
 import {
   History as HistoryIcon,
@@ -28,7 +35,8 @@ import {
   GetApp as DownloadIcon,
   PictureAsPdf as PdfIcon,
   TableChart as ExcelIcon,
-  Print as PrintIcon
+  Print as PrintIcon,
+  KeyboardReturn as RefundIcon
 } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import api from '../../services/api';
@@ -47,6 +55,17 @@ const OrderHistory = () => {
   const [error, setError] = useState('');
   const [reportMenuAnchor, setReportMenuAnchor] = useState(null);
   const { user } = useAuth();
+  
+  // New states for refund functionality
+  const [refundDialogOpen, setRefundDialogOpen] = useState(false);
+  const [selectedOrder, setSelectedOrder] = useState(null);
+  const [refundReason, setRefundReason] = useState('');
+  const [refundProcessing, setRefundProcessing] = useState(false);
+  const [snackbar, setSnackbar] = useState({
+    open: false,
+    message: '',
+    severity: 'success'
+  });
 
   useEffect(() => {
     const fetchOrderHistory = async () => {
@@ -71,6 +90,20 @@ const OrderHistory = () => {
         
         if (response.data) {
           console.log('Orders found:', response.data.length);
+          // Log more details about orders to debug refund button visibility
+          response.data.forEach(order => {
+            console.log(`Order ${order.orderNumber}:`, {
+              orderStatus: order.orderStatus,
+              paymentStatus: order.paymentStatus,
+              refundStatus: order.refundStatus,
+              refundEligible: (
+                order.paymentStatus === 'paid' &&
+                (order.orderStatus === 'completed' || order.orderStatus === 'processing') &&
+                order.orderStatus !== 'cancelled' &&
+                (!order.refundStatus || order.refundStatus === 'not_applicable')
+              )
+            });
+          });
           setOrders(response.data);
         } else {
           console.log('No orders found');
@@ -147,7 +180,7 @@ const OrderHistory = () => {
       new Date(order.date).toLocaleDateString(),
       order.items.map(item => `${item.productName} (${item.quantity})`).join('\n'),
       `$${order.totalAmount.toFixed(2)}`,
-      order.status
+      order.orderStatus
     ]);
 
     // Generate table with autoTable
@@ -191,7 +224,7 @@ const OrderHistory = () => {
       'Order Number': order.orderNumber,
       'Items': order.items.map(item => `${item.productName} (${item.quantity})`).join(', '),
       'Total Amount': `$${order.totalAmount.toFixed(2)}`,
-      'Order Status': order.status,
+      'Order Status': order.orderStatus,
       'Payment Status': order.paymentStatus,
       'Date': new Date(order.date).toLocaleDateString()
     }));
@@ -267,7 +300,7 @@ const OrderHistory = () => {
                   <td>${order.orderNumber}</td>
                   <td>${order.items.map(item => `${item.productName} (${item.quantity})`).join(', ')}</td>
                   <td>$${order.totalAmount.toFixed(2)}</td>
-                  <td>${order.status}</td>
+                  <td>${order.orderStatus}</td>
                   <td>${order.paymentStatus}</td>
                   <td>${new Date(order.date).toLocaleDateString()}</td>
                 </tr>
@@ -292,6 +325,79 @@ const OrderHistory = () => {
     handleReportMenuClose();
   };
 
+  // New function to check if an order is eligible for refund
+  const isRefundEligible = (order) => {
+    // Order must be paid and either completed or processing status
+    // And not already cancelled or refunded
+    return (
+      order.paymentStatus === 'paid' &&
+      (order.orderStatus === 'completed' || order.orderStatus === 'processing') &&
+      order.orderStatus !== 'cancelled' &&
+      (!order.refundStatus || order.refundStatus === 'not_applicable')
+    );
+  };
+
+  // New function to handle opening refund dialog
+  const handleOpenRefundDialog = (order) => {
+    setSelectedOrder(order);
+    setRefundReason('');
+    setRefundDialogOpen(true);
+  };
+
+  // New function to handle closing refund dialog
+  const handleCloseRefundDialog = () => {
+    setRefundDialogOpen(false);
+    setSelectedOrder(null);
+  };
+
+  // New function to handle submitting refund request
+  const handleSubmitRefundRequest = async () => {
+    if (!selectedOrder || !refundReason.trim()) {
+      setSnackbar({
+        open: true,
+        message: 'Please provide a reason for your refund request',
+        severity: 'error'
+      });
+      return;
+    }
+
+    try {
+      setRefundProcessing(true);
+      const response = await api.post(`/orders/${selectedOrder._id}/refund-request`, {
+        reason: refundReason
+      });
+
+      // Update the order in the local state
+      setOrders(prevOrders => 
+        prevOrders.map(order => 
+          order._id === selectedOrder._id 
+            ? { ...order, refundStatus: 'pending', refundReason } 
+            : order
+        )
+      );
+
+      setSnackbar({
+        open: true, 
+        message: 'Refund request submitted successfully',
+        severity: 'success'
+      });
+      handleCloseRefundDialog();
+    } catch (error) {
+      console.error('Error requesting refund:', error);
+      setSnackbar({
+        open: true,
+        message: error.response?.data?.message || 'Failed to submit refund request',
+        severity: 'error'
+      });
+    } finally {
+      setRefundProcessing(false);
+    }
+  };
+
+  const handleCloseSnackbar = () => {
+    setSnackbar(prev => ({ ...prev, open: false }));
+  };
+
   if (loading) {
     return (
       <Box display="flex" justifyContent="center" alignItems="center" minHeight="400px">
@@ -313,6 +419,23 @@ const OrderHistory = () => {
         overflow: 'auto'
       }}
     >
+      {/* Snackbar for notifications */}
+      <Snackbar 
+        open={snackbar.open} 
+        autoHideDuration={6000} 
+        onClose={handleCloseSnackbar}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+      >
+        <Alert 
+          onClose={handleCloseSnackbar} 
+          severity={snackbar.severity}
+          variant="filled"
+          sx={{ width: '100%' }}
+        >
+          {snackbar.message}
+        </Alert>
+      </Snackbar>
+
       <Card
         sx={{
           maxWidth: 1200,
@@ -396,8 +519,8 @@ const OrderHistory = () => {
                       </TableCell>
                       <TableCell>
                         <Chip 
-                          label={order.status}
-                          color={getStatusColor(order.status)}
+                          label={order.orderStatus}
+                          color={getStatusColor(order.orderStatus)}
                           size="small"
                           sx={{ fontWeight: 'medium' }}
                         />
@@ -414,18 +537,63 @@ const OrderHistory = () => {
                         {new Date(order.date).toLocaleDateString()}
                       </TableCell>
                       <TableCell>
-                        <IconButton 
-                          color="primary"
-                          onClick={() => navigate(`/track/${order._id}`)}
-                          sx={{ 
-                            '&:hover': { 
-                              transform: 'scale(1.1)',
-                              bgcolor: theme.palette.primary.light 
-                            }
-                          }}
-                        >
-                          <NavigateNextIcon />
-                        </IconButton>
+                        <Box sx={{ display: 'flex' }}>
+                          <IconButton 
+                            color="primary"
+                            onClick={() => navigate(`/track/${order._id}`)}
+                            sx={{ 
+                              '&:hover': { 
+                                transform: 'scale(1.1)',
+                                bgcolor: theme.palette.primary.light 
+                              }
+                            }}
+                          >
+                            <NavigateNextIcon />
+                          </IconButton>
+                          
+                          {/* Refund Request Button */}
+                          {isRefundEligible(order) && (
+                            <Tooltip title="Request Refund">
+                              <IconButton 
+                                color="error"
+                                onClick={() => handleOpenRefundDialog(order)}
+                                sx={{ 
+                                  '&:hover': { 
+                                    transform: 'scale(1.1)',
+                                    bgcolor: theme.palette.error.light 
+                                  }
+                                }}
+                              >
+                                <RefundIcon />
+                              </IconButton>
+                            </Tooltip>
+                          )}
+                          
+                          {/* Show refund status if applicable */}
+                          {order.refundStatus && order.refundStatus !== 'not_applicable' && (
+                            <Tooltip title={
+                              order.refundStatus === 'processed' ? 'Your refund has been processed and should reflect in your payment method within 3-5 business days.' :
+                              order.refundStatus === 'pending' ? 'Your refund request is being reviewed by our team.' :
+                              order.refundStatus === 'rejected' ? 'Your refund request was declined. Please contact customer support for more information.' :
+                              'Refund status: ' + order.refundStatus
+                            }>
+                              <Chip 
+                                label={
+                                  order.refundStatus === 'processed' ? 'Refunded' :
+                                  order.refundStatus === 'pending' ? 'Refund Pending' :
+                                  order.refundStatus === 'rejected' ? 'Refund Declined' :
+                                  order.refundStatus
+                                }
+                                color={
+                                  order.refundStatus === 'processed' ? 'success' :
+                                  order.refundStatus === 'pending' ? 'warning' : 'error'
+                                }
+                                size="small"
+                                sx={{ ml: 1 }}
+                              />
+                            </Tooltip>
+                          )}
+                        </Box>
                       </TableCell>
                     </TableRow>
                   ))}
@@ -464,6 +632,59 @@ const OrderHistory = () => {
           Print Report
         </MenuItem>
       </Menu>
+
+      {/* Refund Request Dialog */}
+      <Dialog open={refundDialogOpen} onClose={handleCloseRefundDialog} maxWidth="sm" fullWidth>
+        <DialogTitle sx={{ fontWeight: 'bold', bgcolor: theme.palette.error.light, color: theme.palette.error.contrastText }}>
+          Request Refund
+        </DialogTitle>
+        <DialogContent sx={{ pt: 3 }}>
+          {selectedOrder && (
+            <>
+              <Typography variant="subtitle1" gutterBottom>
+                <strong>Order Number:</strong> {selectedOrder.orderNumber}
+              </Typography>
+              <Typography variant="subtitle1" gutterBottom>
+                <strong>Total Amount:</strong> ${selectedOrder.totalAmount.toFixed(2)}
+              </Typography>
+              <Box sx={{ mt: 2 }}>
+                <TextField
+                  label="Reason for Refund Request"
+                  fullWidth
+                  multiline
+                  rows={4}
+                  value={refundReason}
+                  onChange={(e) => setRefundReason(e.target.value)}
+                  placeholder="Please explain why you're requesting a refund..."
+                  required
+                  sx={{ mb: 2 }}
+                />
+                <Typography variant="body2" color="text.secondary">
+                  Your refund request will be reviewed by our team. You will be notified once it's processed.
+                </Typography>
+              </Box>
+            </>
+          )}
+        </DialogContent>
+        <DialogActions sx={{ px: 3, pb: 3 }}>
+          <Button 
+            onClick={handleCloseRefundDialog} 
+            color="inherit"
+            disabled={refundProcessing}
+          >
+            Cancel
+          </Button>
+          <Button 
+            onClick={handleSubmitRefundRequest} 
+            variant="contained" 
+            color="error"
+            disabled={refundProcessing || !refundReason.trim()}
+            sx={{ minWidth: 100 }}
+          >
+            {refundProcessing ? <CircularProgress size={24} /> : "Submit Request"}
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 };

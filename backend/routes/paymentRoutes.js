@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { protect } = require('../middleware/auth');
+const { protect, admin } = require('../middleware/auth');
 const {
   getAllPayments,
   getPaymentById,
@@ -8,7 +8,8 @@ const {
   processPayment,
   getPaymentHistory,
   createPaymentIntent,
-  updatePaymentStatus
+  updatePaymentStatus,
+  processRefund
 } = require('../controllers/paymentController');
 
 // Get all payments (protected route)
@@ -25,5 +26,8 @@ router.post('/process', protect, processPayment);
 router.get('/history', protect, getPaymentHistory);
 router.post('/create-intent', protect, createPaymentIntent);
 router.post('/:orderId/complete', protect, updatePaymentStatus);
+
+// Refund route - admin only
+router.post('/refund/:orderId', protect, admin, processRefund);
 
 module.exports = router; 

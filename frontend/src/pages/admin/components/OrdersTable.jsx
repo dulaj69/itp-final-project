@@ -183,16 +183,28 @@ const OrdersTable = ({ orders, onUpdateStatus, onExportPdf }) => {
                 </TableCell>
                 <TableCell>${order.totalAmount.toFixed(2)}</TableCell>
                 <TableCell>
-                  <Select
-                    value={order.orderStatus}
-                    onChange={(e) => onUpdateStatus(order._id, e.target.value)}
-                    size="small"
-                  >
-                    <MenuItem value="pending">Pending</MenuItem>
-                    <MenuItem value="processing">Processing</MenuItem>
-                    <MenuItem value="completed">Completed</MenuItem>
-                    <MenuItem value="cancelled">Cancelled</MenuItem>
-                  </Select>
+                  <FormControl fullWidth size="small">
+                    <Select
+                      value={order.orderStatus}
+                      onChange={(e) => onUpdateStatus(order._id, e.target.value, 'order')}
+                      size="small"
+                      sx={{
+                        bgcolor: 
+                          order.orderStatus === 'pending' ? theme.palette.warning.light :
+                          order.orderStatus === 'processing' ? theme.palette.info.light :
+                          order.orderStatus === 'completed' ? theme.palette.success.light :
+                          theme.palette.error.light,
+                        '& .MuiSelect-select': {
+                          py: 1
+                        }
+                      }}
+                    >
+                      <MenuItem value="pending">Pending</MenuItem>
+                      <MenuItem value="processing">Processing</MenuItem>
+                      <MenuItem value="completed">Completed</MenuItem>
+                      <MenuItem value="cancelled">Cancelled</MenuItem>
+                    </Select>
+                  </FormControl>
                 </TableCell>
                 <TableCell>
                   <Chip 

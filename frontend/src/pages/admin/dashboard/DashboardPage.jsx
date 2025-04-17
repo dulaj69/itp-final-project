@@ -11,6 +11,18 @@ import {
   useTheme,
   Card,
   CardContent,
+  TableContainer,
+  Table,
+  TableHead,
+  TableBody,
+  TableRow,
+  TableCell,
+  Chip,
+  Badge,
+  Button,
+  FormControl,
+  Select,
+  MenuItem
 } from '@mui/material';
 import {
   Person as UserIcon,
@@ -18,8 +30,11 @@ import {
   Payment as PaymentIcon,
   Assessment as StatsIcon,
   GetApp as DownloadIcon,
-  PictureAsPdf as PdfIcon
+  PictureAsPdf as PdfIcon,
+  SettingsBackupRestore as RefundIcon,
+  Notifications as NotificationIcon
 } from '@mui/icons-material';
+import { Link as RouterLink } from 'react-router-dom';
 import api from '../../../services/api';
 import StatsCard from '../components/StatsCard';
 import OrdersTable from '../components/OrdersTable';
@@ -37,11 +52,13 @@ const DashboardPage = () => {
       totalOrders: 0,
       totalRevenue: 0,
       totalUsers: 0,
-      pendingOrders: 0
+      pendingOrders: 0,
+      pendingRefunds: 0
     },
     users: [],
     orders: [],
-    payments: []
+    payments: [],
+    refundRequests: []
   });
 
   const theme = useTheme();
@@ -58,11 +75,19 @@ const DashboardPage = () => {
         api.get('/admin/payments')
       ]);
 
+      const refundRequests = orders.data.filter(
+        order => order.refundStatus === 'pending'
+      );
+
       setData({
-        stats: stats.data,
+        stats: {
+          ...stats.data,
+          pendingRefunds: refundRequests.length
+        },
         users: users.data,
         orders: orders.data,
-        payments: payments.data
+        payments: payments.data,
+        refundRequests
       });
     } catch (error) {
       console.error('Error fetching dashboard data:', error);
@@ -72,13 +97,57 @@ const DashboardPage = () => {
     }
   };
 
-  const handleUpdateStatus = async (orderId, status) => {
+  const handleUpdateStatus = async (orderId, newStatus, type = 'order') => {
     try {
-      await api.put(`/admin/orders/${orderId}/status`, { status });
-      fetchDashboardData();
+      setError('');
+      let endpoint;
+      let method;
+      let payload;
+
+      if (type === 'refund') {
+        if (newStatus === 'processed') {
+          endpoint = `/payments/refund/${orderId}`;
+          method = 'post';
+          payload = {};
+        } else if (newStatus === 'rejected') {
+          endpoint = `/admin/orders/${orderId}/reject-refund`;
+          method = 'post';
+          payload = { reason: 'Rejected by admin' };
+        } else {
+          endpoint = `/admin/orders/${orderId}/update-refund-status`;
+          method = 'put';
+          payload = { status: newStatus };
+        }
+      } else {
+        // Order status update
+        endpoint = `/admin/orders/${orderId}/status`;
+        method = 'put';
+        payload = { status: newStatus };
+      }
+
+      console.log('Updating status:', { orderId, newStatus, type, endpoint, method, payload });
+
+      const response = await (method === 'post' 
+        ? api.post(endpoint, payload)
+        : api.put(endpoint, payload));
+
+      console.log('Update response:', response.data);
+      
+      await fetchDashboardData(); // Refresh data after successful update
+      setError(''); // Clear any existing error
     } catch (error) {
-      console.error('Error updating order status:', error);
-      setError('Failed to update order status');
+      console.error('Error updating status:', error);
+      setError(error.response?.data?.message || `Failed to update ${type} status`);
+    }
+  };
+
+  // Add this new function for handling refund status changes
+  const handleRefundStatusChange = async (orderId, newStatus) => {
+    try {
+      await handleUpdateStatus(orderId, newStatus, 'refund');
+    } catch (error) {
+      console.error('Error updating refund status:', error);
+      setError(error.response?.data?.message || 'Failed to update refund status');
     }
   };
 
@@ -261,7 +330,7 @@ const DashboardPage = () => {
       {/* Stats Cards */}
       <Box sx={{ p: 3, overflow: 'auto', height: 'calc(100vh - 76px)' }}>
         <Grid container spacing={3} sx={{ mb: 3 }}>
-          <Grid item xs={12} sm={6} lg={3}>
+          <Grid item xs={12} sm={6} lg={2}>
             <Card sx={{ 
               bgcolor: theme.palette.primary.light,
               color: theme.palette.primary.contrastText,
@@ -280,7 +349,7 @@ const DashboardPage = () => {
             </Card>
           </Grid>
 
-          <Grid item xs={12} sm={6} lg={3}>
+          <Grid item xs={12} sm={6} lg={2}>
             <Card sx={{ 
               bgcolor: theme.palette.success.light,
               color: theme.palette.success.contrastText,
@@ -299,7 +368,7 @@ const DashboardPage = () => {
             </Card>
           </Grid>
 
-          <Grid item xs={12} sm={6} lg={3}>
+          <Grid item xs={12} sm={6} lg={2}>
             <Card sx={{ 
               bgcolor: theme.palette.warning.light,
               color: theme.palette.warning.contrastText,
@@ -318,7 +387,7 @@ const DashboardPage = () => {
             </Card>
           </Grid>
 
-          <Grid item xs={12} sm={6} lg={3}>
+          <Grid item xs={12} sm={6} lg={2}>
             <Card sx={{ 
               bgcolor: theme.palette.info.light,
               color: theme.palette.info.contrastText,
@@ -336,9 +405,75 @@ const DashboardPage = () => {
               </CardContent>
             </Card>
           </Grid>
+
+          <Grid item xs={12} sm={6} lg={2}>
+            <Card sx={{ 
+              bgcolor: theme.palette.error.light,
+              color: theme.palette.error.contrastText,
+              boxShadow: theme.shadows[3],
+              height: '100%'
+            }}>
+              <CardContent>
+                <Box display="flex" alignItems="center" mb={2}>
+                  <RefundIcon sx={{ fontSize: 40, mr: 2 }} />
+                  <Typography variant="h6">Pending Refunds</Typography>
+                </Box>
+                <Box display="flex" justifyContent="space-between" alignItems="center">
+                  <Typography variant="h3" sx={{ fontWeight: 'bold' }}>
+                    {data.stats.pendingRefunds}
+                  </Typography>
+                  {data.stats.pendingRefunds > 0 && (
+                    <Button 
+                      variant="contained" 
+                      size="small"
+                      color="primary"
+                      component={RouterLink}
+                      to="/admin/refunds"
+                      sx={{ 
+                        bgcolor: 'white', 
+                        color: theme.palette.error.main,
+                        '&:hover': { 
+                          bgcolor: 'rgba(255,255,255,0.8)',
+                          color: theme.palette.error.dark
+                        }
+                      }}
+                    >
+                      View All
+                    </Button>
+                  )}
+                </Box>
+              </CardContent>
+            </Card>
+          </Grid>
         </Grid>
 
-        {/* Table Section */}
+        <Box sx={{ mb: 3, display: 'flex', gap: 2, flexWrap: 'wrap' }}>
+          <Button 
+            variant="contained" 
+            color="primary" 
+            startIcon={<RefundIcon />}
+            component={RouterLink}
+            to="/admin/refunds"
+            sx={{ 
+              fontWeight: 'bold',
+              borderRadius: 2,
+              py: 1,
+              px: 2
+            }}
+          >
+            Manage Refunds
+            {data.stats.pendingRefunds > 0 && (
+              <Badge 
+                badgeContent={data.stats.pendingRefunds} 
+                color="error"
+                sx={{ ml: 1 }}
+              >
+                <NotificationIcon />
+              </Badge>
+            )}
+          </Button>
+        </Box>
+
         <Paper 
           sx={{ 
             height: 'calc(100vh - 250px)',
@@ -361,22 +496,28 @@ const DashboardPage = () => {
             }}
           >
             <Tab 
-              label="Orders" 
-              icon={<ShoppingCart />} 
-              iconPosition="start"
-              sx={{ minHeight: 48 }}
+              label={
+                <Badge 
+                  color="warning" 
+                  badgeContent={data.stats.pendingOrders} 
+                  showZero={false}
+                >
+                  Orders
+                </Badge>
+              } 
             />
+            <Tab label="Users" />
+            <Tab label="Payments" />
             <Tab 
-              label="Users" 
-              icon={<UserIcon />} 
-              iconPosition="start"
-              sx={{ minHeight: 48 }}
-            />
-            <Tab 
-              label="Payments" 
-              icon={<PaymentIcon />} 
-              iconPosition="start"
-              sx={{ minHeight: 48 }}
+              label={
+                <Badge 
+                  color="error" 
+                  badgeContent={data.stats.pendingRefunds} 
+                  showZero={false}
+                >
+                  Refunds
+                </Badge>
+              } 
             />
           </Tabs>
 
@@ -405,6 +546,123 @@ const DashboardPage = () => {
                 payments={data.payments} 
                 onExportPdf={generatePaymentsPdfReport}
               />
+            )}
+            {tabValue === 3 && (
+              <Box>
+                <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2 }}>
+                  <Typography variant="h6">Refund Requests</Typography>
+                  <Button 
+                    variant="contained" 
+                    color="error"
+                    startIcon={<RefundIcon />}
+                    component={RouterLink}
+                    to="/admin/orders/refunds"
+                  >
+                    Manage All Refunds
+                  </Button>
+                </Box>
+
+                {data.refundRequests.length === 0 ? (
+                  <Paper sx={{ p: 3, textAlign: 'center' }}>
+                    <RefundIcon sx={{ fontSize: 60, color: theme.palette.grey[400], mb: 2 }} />
+                    <Typography variant="h6">No Pending Refund Requests</Typography>
+                    <Typography variant="body1" color="textSecondary">
+                      There are no refund requests awaiting your approval.
+                    </Typography>
+                  </Paper>
+                ) : (
+                  <TableContainer>
+                    <Table>
+                      <TableHead>
+                        <TableRow>
+                          <TableCell>Order #</TableCell>
+                          <TableCell>Customer</TableCell>
+                          <TableCell>Amount</TableCell>
+                          <TableCell>Refund Reason</TableCell>
+                          <TableCell>Request Date</TableCell>
+                          <TableCell>Status</TableCell>
+                          <TableCell>Actions</TableCell>
+                        </TableRow>
+                      </TableHead>
+                      <TableBody>
+                        {data.refundRequests.map((order) => (
+                          <TableRow key={order._id}>
+                            <TableCell>{order.orderNumber}</TableCell>
+                            <TableCell>{order.user?.name || 'N/A'}</TableCell>
+                            <TableCell>${order.totalAmount.toFixed(2)}</TableCell>
+                            <TableCell>
+                              {order.refundReason 
+                                ? (order.refundReason.length > 50 
+                                  ? `${order.refundReason.substring(0, 50)}...` 
+                                  : order.refundReason)
+                                : 'Not specified'
+                              }
+                            </TableCell>
+                            <TableCell>
+                              {order.refundRequestDate 
+                                ? new Date(order.refundRequestDate).toLocaleString()
+                                : new Date(order.updatedAt).toLocaleString()
+                              }
+                            </TableCell>
+                            <TableCell>
+                              <FormControl fullWidth size="small">
+                                <Select
+                                  value={order.refundStatus}
+                                  onChange={(e) => handleRefundStatusChange(order._id, e.target.value)}
+                                  size="small"
+                                  sx={{
+                                    bgcolor: order.refundStatus === 'pending' ? theme.palette.warning.light :
+                                           order.refundStatus === 'processed' ? theme.palette.success.light :
+                                           theme.palette.error.light,
+                                    '& .MuiSelect-select': {
+                                      py: 1
+                                    }
+                                  }}
+                                >
+                                  <MenuItem value="pending">Pending</MenuItem>
+                                  <MenuItem value="processed">Processed</MenuItem>
+                                  <MenuItem value="rejected">Rejected</MenuItem>
+                                </Select>
+                              </FormControl>
+                            </TableCell>
+                            <TableCell>
+                              {order.refundStatus === 'pending' && (
+                                <Box sx={{ display: 'flex', gap: 1 }}>
+                                  <Button
+                                    variant="contained"
+                                    size="small"
+                                    color="success"
+                                    onClick={() => handleRefundStatusChange(order._id, 'processed')}
+                                  >
+                                    Approve
+                                  </Button>
+                                  <Button
+                                    variant="contained"
+                                    size="small"
+                                    color="error"
+                                    onClick={() => handleRefundStatusChange(order._id, 'rejected')}
+                                  >
+                                    Reject
+                                  </Button>
+                                </Box>
+                              )}
+                              <Button
+                                variant="outlined"
+                                size="small"
+                                component={RouterLink}
+                                to={`/admin/orders/refunds?id=${order._id}`}
+                                sx={{ ml: order.refundStatus === 'pending' ? 1 : 0 }}
+                              >
+                                Details
+                              </Button>
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </TableContainer>
+                )}
+              </Box>
             )}
           </Box>
         </Paper>

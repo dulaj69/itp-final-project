@@ -275,6 +275,83 @@ const paymentController = {
         error: error
       });
     }
+  },
+
+  processRefund: async (req, res) => {
+    try {
+      const { orderId } = req.params;
+      
+      // Find the order
+      const order = await Order.findById(orderId).populate('user', 'name email');
+      
+      if (!order) {
+        return res.status(404).json({ message: 'Order not found' });
+      }
+      
+      // Verify refund eligibility
+      if (order.refundStatus !== 'pending') {
+        return res.status(400).json({ 
+          message: `This order does not have a pending refund request (current status: ${order.refundStatus})` 
+        });
+      }
+      
+      if (order.paymentStatus !== 'paid') {
+        return res.status(400).json({ message: 'Only paid orders can be refunded' });
+      }
+      
+      // Find the original payment
+      const originalPayment = await Payment.findOne({ orderId: order._id });
+      if (!originalPayment) {
+        return res.status(404).json({ message: 'No payment record found for this order' });
+      }
+      
+      // Process the refund
+      try {
+        // Create a new payment record for the refund
+        const refundPayment = await Payment.create({
+          orderId: order._id,
+          amount: -order.totalAmount, // Negative amount to indicate refund
+          paymentMethod: originalPayment.paymentMethod,
+          status: 'completed',
+          paymentIntentId: `REFUND-${originalPayment.paymentIntentId}`,
+        });
+        
+        // Update the order
+        order.refundStatus = 'processed';
+        order.refundProcessedDate = new Date();
+        await order.save();
+        
+        // Send email notification to the customer (if implemented)
+        if (order.user && order.user.email) {
+          // TODO: Implement refund notification email
+          console.log(`Refund notification would be sent to ${order.user.email}`);
+        }
+        
+        return res.status(200).json({
+          success: true,
+          message: 'Refund processed successfully',
+          order: {
+            _id: order._id,
+            orderNumber: order.orderNumber,
+            refundStatus: order.refundStatus,
+            refundProcessedDate: order.refundProcessedDate
+          },
+          refund: refundPayment
+        });
+      } catch (refundError) {
+        console.error('Refund processing error:', refundError);
+        return res.status(500).json({
+          message: 'Failed to process the refund payment',
+          error: refundError.message
+        });
+      }
+    } catch (error) {
+      console.error('Error in processRefund:', error);
+      return res.status(500).json({
+        message: 'Failed to process refund',
+        error: error.message
+      });
+    }
   }
 };
 

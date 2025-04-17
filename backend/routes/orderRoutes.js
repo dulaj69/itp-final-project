@@ -18,4 +18,7 @@ router.delete('/:id', protect, orderController.deleteOrder);
 
 router.get('/user-shipping/:userId', protect, orderController.getUserShippingStatus);
 
+// New route for refund requests
+router.post('/:id/refund-request', protect, orderController.requestRefund);
+
 module.exports = router; 

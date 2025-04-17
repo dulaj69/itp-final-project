@@ -306,8 +306,12 @@ const orderController = {
         orderNumber: order.orderNumber,
         date: order.createdAt,
         totalAmount: order.totalAmount,
-        status: order.orderStatus,
+        orderStatus: order.orderStatus,
         paymentStatus: order.paymentStatus,
+        refundStatus: order.refundStatus || 'not_applicable',
+        refundReason: order.refundReason,
+        refundRequestDate: order.refundRequestDate,
+        refundProcessedDate: order.refundProcessedDate,
         items: order.items.map(item => ({
           productName: item.product ? item.product.name : item.productName,
           quantity: item.quantity,
@@ -352,6 +356,73 @@ const orderController = {
       console.error('Error fetching shipping status:', error);
       res.status(500).json({ 
         message: 'Error fetching shipping status',
+        error: error.message 
+      });
+    }
+  },
+
+  requestRefund: async (req, res) => {
+    try {
+      const { id } = req.params;
+      const { reason } = req.body;
+      const userId = req.user._id;
+
+      if (!reason) {
+        return res.status(400).json({ message: 'Refund reason is required' });
+      }
+
+      // Find the order
+      const order = await Order.findById(id);
+      
+      if (!order) {
+        return res.status(404).json({ message: 'Order not found' });
+      }
+
+      // Check if the order belongs to the user making the request
+      if (order.user.toString() !== userId.toString()) {
+        return res.status(403).json({ message: 'Not authorized to request refund for this order' });
+      }
+
+      // Check if the order is eligible for refund
+      if (order.orderStatus === 'cancelled') {
+        return res.status(400).json({ message: 'Cannot request refund for cancelled order' });
+      }
+
+      if (order.paymentStatus !== 'paid') {
+        return res.status(400).json({ message: 'Cannot request refund for unpaid order' });
+      }
+
+      if (order.refundStatus && order.refundStatus !== 'not_applicable') {
+        return res.status(400).json({ 
+          message: `A refund is already ${order.refundStatus === 'processed' ? 'processed' : 'in progress'} for this order` 
+        });
+      }
+
+      // Update the order with refund request details
+      order.refundStatus = 'pending';
+      order.refundReason = reason;
+      order.refundRequestDate = new Date();
+
+      // Save the updated order
+      await order.save();
+
+      // Notify admin about the refund request (could add email notification here)
+      console.log(`Refund requested for order ${order.orderNumber} by user ${req.user.name}`);
+
+      return res.status(200).json({
+        success: true,
+        message: 'Refund request submitted successfully',
+        order: {
+          _id: order._id,
+          orderNumber: order.orderNumber,
+          refundStatus: order.refundStatus,
+          refundRequestDate: order.refundRequestDate
+        }
+      });
+    } catch (error) {
+      console.error('Error requesting refund:', error);
+      return res.status(500).json({ 
+        message: 'Failed to process refund request',
         error: error.message 
       });
     }

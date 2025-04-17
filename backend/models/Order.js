@@ -59,6 +59,18 @@ const orderSchema = new mongoose.Schema({
     enum: ['not_applicable', 'pending', 'processed', 'rejected'],
     default: 'not_applicable'
   },
+  refundReason: {
+    type: String,
+    default: null
+  },
+  refundRequestDate: {
+    type: Date,
+    default: null
+  },
+  refundProcessedDate: {
+    type: Date,
+    default: null
+  },
   notes: {
     type: String
   }
@@ -105,6 +117,18 @@ orderSchema.methods.cancel = function(reason) {
     this.orderStatus = 'cancelled';
     this.cancellationReason = reason;
     this.cancellationDate = new Date();
+    return true;
+  }
+  return false;
+};
+
+// Method to request refund
+orderSchema.methods.requestRefund = function(reason) {
+  // Can only request refund if the order is paid and not already refunded
+  if (this.paymentStatus === 'paid' && this.refundStatus === 'not_applicable') {
+    this.refundStatus = 'pending';
+    this.refundReason = reason;
+    this.refundRequestDate = new Date();
     return true;
   }
   return false;
