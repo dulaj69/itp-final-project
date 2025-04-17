@@ -28,8 +28,8 @@ import StripePayment from '../../components/Payment/StripePayment';
 
 const validateZipCode = (country, zipCode) => {
   const patterns = {
-    'India': /^[1-9][0-9]{5}$/, // Indian PIN code: 6 digits
-    'Sri Lanka': /^[1-9][0-9]{4}$/ // Sri Lankan postal code: 5 digits
+    'India': /^[1-9][0-9]{5}$/,
+    'Sri Lanka': /^[1-9][0-9]{4}$/
   };
   return patterns[country]?.test(zipCode) || false;
 };
@@ -76,6 +76,42 @@ const OrderForm = () => {
 
   const handlePlaceOrder = async (e) => {
     e.preventDefault();
+
+  
+    const isValidZip = validateZipCode(
+      orderData.shippingAddress.country,
+      orderData.shippingAddress.postalCode
+    );
+
+   
+    const requiredFields = [
+      'street',
+      'city',
+      'state',
+      'country',
+      'postalCode'
+    ];
+
+    const missingFields = requiredFields.filter(
+      field => !orderData.shippingAddress[field]
+    );
+
+    if (missingFields.length > 0) {
+      setError('Please fill in all required shipping fields');
+      return;
+    }
+
+    if (!isValidZip) {
+      setError(`Invalid postal code for ${orderData.shippingAddress.country}`);
+      return;
+    }
+
+    // Validate if products are selected
+    if (!orderData.items.some(item => item.product)) {
+      setError('Please select at least one product');
+      return;
+    }
+
     setLoading(true);
     try {
       const response = await api.post('/orders', orderData);

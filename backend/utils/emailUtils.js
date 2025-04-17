@@ -1,16 +1,42 @@
 const nodemailer = require('nodemailer');
+require('dotenv').config();
 
-// Create a transporter using SMTP
-const transporter = nodemailer.createTransport({
-  service: 'gmail',
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_APP_PASSWORD  // Changed from EMAIL_PASSWORD to EMAIL_APP_PASSWORD
-  },
-  tls: {
-    rejectUnauthorized: false
+// Create a transporter using SMTP with more detailed error logging
+const createTransporter = () => {
+  // Check if environment variables are set
+  if (!process.env.EMAIL_USER || !process.env.EMAIL_APP_PASSWORD) {
+    console.error('EMAIL_USER or EMAIL_APP_PASSWORD environment variables are not set!');
+    console.error('Current environment variables:', {
+      EMAIL_USER: process.env.EMAIL_USER ? 'Set' : 'Not set',
+      EMAIL_APP_PASSWORD: process.env.EMAIL_APP_PASSWORD ? 'Set' : 'Not set'
+    });
+    throw new Error('Email credentials not configured properly in environment variables');
   }
-});
+
+  console.log('Creating email transporter with configured credentials');
+  
+  return nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: process.env.EMAIL_USER,
+      pass: process.env.EMAIL_APP_PASSWORD
+    },
+    tls: {
+      rejectUnauthorized: false
+    },
+    debug: process.env.NODE_ENV === 'development'
+  });
+};
+
+// Only create the transporter when needed
+let transporter = null;
+
+const getTransporter = () => {
+  if (!transporter) {
+    transporter = createTransporter();
+  }
+  return transporter;
+};
 
 const sendOrderReceipt = async (orderDetails) => {
   const {
@@ -22,9 +48,22 @@ const sendOrderReceipt = async (orderDetails) => {
     orderDate
   } = orderDetails;
 
-  console.log('Sending email with credentials:', {
-    from: process.env.EMAIL_USER,
-    to: email
+  // Validate input data
+  if (!email || !orderNumber || !items || !totalAmount || !shippingAddress) {
+    console.error('Missing required order details:', { 
+      hasEmail: !!email,
+      hasOrderNumber: !!orderNumber,
+      hasItems: !!items,
+      hasTotalAmount: !!totalAmount,
+      hasShippingAddress: !!shippingAddress
+    });
+    throw new Error('Incomplete order details for email receipt');
+  }
+
+  console.log('Preparing to send email receipt to:', email);
+  console.log('Using email credentials:', {
+    user: process.env.EMAIL_USER,
+    passConfigured: !!process.env.EMAIL_APP_PASSWORD
   });
 
   // Create email HTML content with better styling
@@ -90,17 +129,27 @@ const sendOrderReceipt = async (orderDetails) => {
   };
 
   try {
+    const emailTransporter = getTransporter();
+
     // Verify connection configuration
-    await transporter.verify();
+    await emailTransporter.verify();
     console.log('SMTP connection verified');
 
     // Send email
-    const info = await transporter.sendMail(mailOptions);
+    const info = await emailTransporter.sendMail(mailOptions);
     console.log('Email sent successfully:', info.messageId);
     return { success: true, messageId: info.messageId };
   } catch (error) {
     console.error('Email sending error:', error);
-    throw new Error('Failed to send email receipt');
+    
+    // More detailed error logging
+    if (error.code === 'EAUTH') {
+      console.error('Authentication error - check your email credentials');
+    } else if (error.code === 'ESOCKET') {
+      console.error('Socket error - check your network connection or firewall settings');
+    }
+    
+    throw new Error(`Failed to send email receipt: ${error.message}`);
   }
 };
 
