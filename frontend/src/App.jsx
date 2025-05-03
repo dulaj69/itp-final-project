@@ -20,11 +20,13 @@ import Navbar from './components/Navigation/Navbar';
 import PaymentPage from './pages/payments/PaymentPage';
 import { ThemeProvider } from '@mui/material/styles';
 import theme from './theme';
+import HomePage from './pages/Home/HomePage';
+import AddProductPage from './pages/admin/products/AddProductPage';
 
 const ProtectedRoute = ({ children }) => {
   const { token } = useAuth();
   if (!token) return <Navigate to="/login" />;
-  return <DashboardLayout>{children}</DashboardLayout>;
+  return children;
 };
 
 const AdminRoute = ({ children }) => {
@@ -38,42 +40,31 @@ function App() {
         <AuthProvider>
           <BrowserRouter>
             <CssBaseline />
-            <Navbar />
             <Routes>
+              {/* Public Routes */}
+              <Route path="/" element={<HomePage />} />
               <Route path="/register" element={<Register />} />
               <Route path="/login" element={<Login />} />
-              <Route path="/" element={
-                <ProtectedRoute>
-                  <Dashboard />
-                </ProtectedRoute>
-              } />
-              <Route path="/order/new" element={<OrderForm />} />
-              <Route path="/orders" element={
-                <ProtectedRoute>
-                  <OrderHistory />
-                </ProtectedRoute>
-              } />
-              <Route path="/track/:orderId" element={
-                <ProtectedRoute>
-                  <OrderTracking />
-                </ProtectedRoute>
-              } />
-              <Route path="/payments" element={<Payments />} />
-              <Route path="/shipping" element={
-                <ProtectedRoute>
-                  <ShippingTracking />
-                </ProtectedRoute>
-              } />
-              <Route path="/admin" element={
-                <ProtectedRoute>
-                  <AdminRoute>
-                    <AdminDashboard />
-                  </AdminRoute>
-                </ProtectedRoute>
-              } />
+              
+              {/* Protected Routes with Dashboard Layout */}
+              <Route path="/" element={<ProtectedRoute><DashboardLayout /></ProtectedRoute>}>
+                <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="/orders" element={<OrderHistory />} />
+                <Route path="/order/new" element={<OrderForm />} />
+                <Route path="/track/:orderId" element={<OrderTracking />} />
+                <Route path="/payments" element={<Payments />} />
+                <Route path="/shipping" element={<ShippingTracking />} />
+                <Route path="/admin/dashboard" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
+                <Route path="/admin/products/new" element={<AdminRoute><AddProductPage /></AdminRoute>} />
+              </Route>
+              
+              {/* Routes with different layouts */}
               <Route path="/create-order" element={<CreateOrder />} />
               <Route path="/order-confirmation/:orderId" element={<OrderConfirmation />} />
               <Route path="/payment/:orderId" element={<PaymentPage />} />
+              
+              {/* Admin redirect */}
+              <Route path="/admin" element={<Navigate to="/admin/dashboard" replace />} />
             </Routes>
           </BrowserRouter>
         </AuthProvider>

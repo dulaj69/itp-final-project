@@ -3,6 +3,7 @@ const cors = require('cors');
 const morgan = require('morgan');
 const dotenv = require('dotenv');
 const connectDB = require('./config/db');
+const path = require('path');
 require('./models/Product');
 const productRoutes = require('./routes/productRoutes');
 const orderRoutes = require('./routes/orderRoutes');
@@ -20,6 +21,9 @@ app.use(cors());
 app.use(express.json());
 app.use(morgan('dev'));
 
+// Serve static files from the public directory
+app.use(express.static(path.join(__dirname, 'public')));
+
 // Routes
 try {
   console.log('Registering routes...');
@@ -34,6 +38,14 @@ try {
   console.log('Routes registered successfully');
 } catch (error) {
   console.error('Error loading routes:', error);
+}
+
+// Create uploads directory if it doesn't exist
+const fs = require('fs');
+const uploadDir = path.join(__dirname, 'public/uploads/products');
+if (!fs.existsSync(uploadDir)) {
+  fs.mkdirSync(uploadDir, { recursive: true });
+  console.log('Created uploads directory');
 }
 
 // Error handler

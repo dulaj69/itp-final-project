@@ -37,7 +37,13 @@ const Login = () => {
     e.preventDefault();
     try {
       const role = await login(formData.email, formData.password);
-      navigate(role === 'admin' ? '/admin' : '/');
+      
+      // Redirect based on user role
+      if (role === 'admin') {
+        navigate('/admin');
+      } else {
+        navigate('/dashboard');
+      }
     } catch (error) {
       setError(error.response?.data?.message || 'Login failed');
     }

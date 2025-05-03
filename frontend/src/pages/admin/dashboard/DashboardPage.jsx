@@ -32,7 +32,8 @@ import {
   GetApp as DownloadIcon,
   PictureAsPdf as PdfIcon,
   SettingsBackupRestore as RefundIcon,
-  Notifications as NotificationIcon
+  Notifications as NotificationIcon,
+  Inventory as ProductIcon
 } from '@mui/icons-material';
 import { Link as RouterLink } from 'react-router-dom';
 import api from '../../../services/api';
@@ -53,12 +54,14 @@ const DashboardPage = () => {
       totalRevenue: 0,
       totalUsers: 0,
       pendingOrders: 0,
-      pendingRefunds: 0
+      pendingRefunds: 0,
+      totalProducts: 0
     },
     users: [],
     orders: [],
     payments: [],
-    refundRequests: []
+    refundRequests: [],
+    products: []
   });
 
   const theme = useTheme();
@@ -68,6 +71,7 @@ const DashboardPage = () => {
       setLoading(true);
       setError('');
       
+      // First fetch the main data that's required
       const [stats, users, orders, payments] = await Promise.all([
         api.get('/admin/stats'),
         api.get('/admin/users'),
@@ -79,16 +83,37 @@ const DashboardPage = () => {
         order => order.refundStatus === 'pending'
       );
 
-      setData({
+      // Set initial data without products
+      const dashboardData = {
         stats: {
           ...stats.data,
-          pendingRefunds: refundRequests.length
+          pendingRefunds: refundRequests.length,
+          totalProducts: 0
         },
         users: users.data,
         orders: orders.data,
         payments: payments.data,
-        refundRequests
-      });
+        refundRequests,
+        products: []
+      };
+
+      setData(dashboardData);
+      
+      // Try to fetch products separately, so if it fails the dashboard will still work
+      try {
+        const products = await api.get('/products');
+        setData(prevData => ({
+          ...prevData,
+          products: products.data,
+          stats: {
+            ...prevData.stats,
+            totalProducts: products.data.length
+          }
+        }));
+      } catch (productError) {
+        console.log('Products API not available yet:', productError);
+        // Continue without products data
+      }
     } catch (error) {
       console.error('Error fetching dashboard data:', error);
       setError('Failed to load dashboard data');
@@ -289,6 +314,43 @@ const DashboardPage = () => {
     doc.save('payments_report.pdf');
   };
 
+  const generateProductsPdfReport = () => {
+    const doc = new jsPDF();
+    
+    doc.setFontSize(18);
+    doc.text('Products Report', 14, 22);
+    doc.setFontSize(11);
+    doc.text(`Generated on: ${new Date().toLocaleDateString()}`, 14, 30);
+    
+    const tableColumn = ["Product ID", "Name", "Category", "Price", "Stock", "Status"];
+    const tableRows = data.products.map(product => [
+      product._id,
+      product.name,
+      product.category,
+      `$${product.price.toFixed(2)}`,
+      product.stock,
+      product.status || 'Active'
+    ]);
+    
+    doc.autoTable({
+      head: [tableColumn],
+      body: tableRows,
+      startY: 40,
+      styles: { fontSize: 9 },
+      columnStyles: { 
+        0: { cellWidth: 35 },
+        1: { cellWidth: 40 },
+        2: { cellWidth: 30 },
+        3: { cellWidth: 25 },
+        4: { cellWidth: 25 },
+        5: { cellWidth: 25 }
+      },
+      headStyles: { fillColor: [41, 128, 185], textColor: 255 }
+    });
+    
+    doc.save('products_report.pdf');
+  };
+
   useEffect(() => {
     fetchDashboardData();
   }, []);
@@ -408,6 +470,25 @@ const DashboardPage = () => {
 
           <Grid item xs={12} sm={6} lg={2}>
             <Card sx={{ 
+              bgcolor: theme.palette.purple?.light || '#d1c4e9',
+              color: theme.palette.purple?.contrastText || '#311b92',
+              boxShadow: theme.shadows[3],
+              height: '100%'
+            }}>
+              <CardContent>
+                <Box display="flex" alignItems="center" mb={2}>
+                  <ProductIcon sx={{ fontSize: 40, mr: 2 }} />
+                  <Typography variant="h6">Total Products</Typography>
+                </Box>
+                <Typography variant="h3" sx={{ fontWeight: 'bold' }}>
+                  {data.stats.totalProducts}
+                </Typography>
+              </CardContent>
+            </Card>
+          </Grid>
+
+          <Grid item xs={12} sm={6} lg={2}>
+            <Card sx={{ 
               bgcolor: theme.palette.error.light,
               color: theme.palette.error.contrastText,
               boxShadow: theme.shadows[3],
@@ -492,6 +573,17 @@ const DashboardPage = () => {
                   Refunds
                 </Badge>
               } 
+            />
+            <Tab
+              label={
+                <Badge
+                  color="primary"
+                  badgeContent={data.stats.totalProducts}
+                  showZero={false}
+                >
+                  Products
+                </Badge>
+              }
             />
           </Tabs>
 
@@ -629,6 +721,116 @@ const DashboardPage = () => {
                               >
                                 Details
                               </Button>
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </TableContainer>
+                )}
+              </Box>
+            )}
+            {tabValue === 4 && (
+              <Box>
+                <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2 }}>
+                  <Typography variant="h6">Products Management</Typography>
+                  <Box sx={{ display: 'flex', gap: 2 }}>
+                    <Button 
+                      variant="contained" 
+                      color="primary"
+                      startIcon={<ProductIcon />}
+                      component={RouterLink}
+                      to="/admin/products/new"
+                    >
+                      Add New Product
+                    </Button>
+                    <Button
+                      variant="outlined"
+                      startIcon={<PdfIcon />}
+                      onClick={generateProductsPdfReport}
+                    >
+                      Export PDF
+                    </Button>
+                  </Box>
+                </Box>
+                
+                {data.products.length === 0 ? (
+                  <Paper sx={{ p: 3, textAlign: 'center' }}>
+                    <ProductIcon sx={{ fontSize: 60, color: theme.palette.grey[400], mb: 2 }} />
+                    <Typography variant="h6">No Products Found</Typography>
+                    <Typography variant="body1" color="textSecondary">
+                      Start by adding your first product.
+                    </Typography>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      sx={{ mt: 2 }}
+                      component={RouterLink}
+                      to="/admin/products/new"
+                    >
+                      Add Product
+                    </Button>
+                  </Paper>
+                ) : (
+                  <TableContainer>
+                    <Table>
+                      <TableHead>
+                        <TableRow>
+                          <TableCell>Image</TableCell>
+                          <TableCell>Name</TableCell>
+                          <TableCell>Category</TableCell>
+                          <TableCell>Price</TableCell>
+                          <TableCell>Stock</TableCell>
+                          <TableCell>Status</TableCell>
+                          <TableCell>Actions</TableCell>
+                        </TableRow>
+                      </TableHead>
+                      <TableBody>
+                        {data.products.map((product) => (
+                          <TableRow key={product._id}>
+                            <TableCell>
+                              <Box
+                                component="img"
+                                src={product.imageUrl || '/placeholder-product.png'}
+                                alt={product.name}
+                                sx={{ width: 50, height: 50, objectFit: 'cover', borderRadius: 1 }}
+                              />
+                            </TableCell>
+                            <TableCell>{product.name}</TableCell>
+                            <TableCell>{product.category}</TableCell>
+                            <TableCell>${product.price.toFixed(2)}</TableCell>
+                            <TableCell>
+                              <Chip 
+                                label={product.stock > 0 ? `${product.stock} in stock` : 'Out of stock'} 
+                                color={product.stock > 0 ? 'success' : 'error'}
+                                size="small"
+                              />
+                            </TableCell>
+                            <TableCell>
+                              <Chip 
+                                label={product.status || 'Active'} 
+                                color={product.status === 'Active' ? 'primary' : 'default'}
+                                size="small"
+                              />
+                            </TableCell>
+                            <TableCell>
+                              <Box sx={{ display: 'flex', gap: 1 }}>
+                                <Button
+                                  variant="outlined"
+                                  size="small"
+                                  component={RouterLink}
+                                  to={`/admin/products/edit/${product._id}`}
+                                >
+                                  Edit
+                                </Button>
+                                <Button
+                                  variant="outlined"
+                                  color="error"
+                                  size="small"
+                                >
+                                  Delete
+                                </Button>
+                              </Box>
                             </TableCell>
                           </TableRow>
                         ))}
