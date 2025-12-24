@@ -18,10 +18,18 @@ import {
   useTheme,
   Rating,
   AppBar,
-  Toolbar
+  Toolbar,
+  CircularProgress,
+  Badge,
+  Snackbar,
+  Alert
 } from '@mui/material';
-import { Search as SearchIcon, ArrowForward, Favorite, ShoppingCart } from '@mui/icons-material';
+import { Search as SearchIcon, ArrowForward, Favorite, ShoppingCart, AddShoppingCart } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
+import api from '../../services/api';
+import { useCart } from '../../context/CartContext';
+import ChatbotWidget from '../../components/ChatbotWidget';
+import AlertsWidget from '../../components/AlertsWidget';
 
 // Import assets
 import headerImg from '../../assets/header_img.png';
@@ -76,6 +84,54 @@ const HomePage = () => {
   const isTablet = useMediaQuery(theme.breakpoints.down('md'));
   
   const [searchTerm, setSearchTerm] = useState('');
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const { cart, addToCart } = useCart();
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      setLoading(true);
+      try {
+        const response = await api.get('/products');
+        setProducts(response.data);
+      } catch (err) {
+        console.error('Error fetching products:', err);
+        setError('Failed to load products. Please try again later.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProducts();
+  }, []);
+
+  // Helper function to get product image
+  const getProductImage = (product) => {
+    // First check if we have API-provided images
+    if (product.imageUrl) return product.imageUrl;
+    if (product.cloudinary && product.cloudinary.url) return product.cloudinary.url;
+    
+    // For default images, use a number format that's easier to store/retrieve
+    const defaultImages = [food1, food2, food3, food4, food5, food6, food7, food8, food9, food10];
+    const index = (typeof product._id === 'string' ? product._id.charCodeAt(0) : product.id) % defaultImages.length;
+    
+    // Instead of returning the object, return a identifier string
+    return `default-image-${index}`;
+  };
+
+  // Handle closing snackbar
+  const handleCloseSnackbar = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setSnackbarOpen(false);
+  };
+
+  // Calculate total items in cart
+  const cartItemCount = cart.reduce((total, item) => total + item.quantity, 0);
 
   return (
     <Box sx={{ 
@@ -153,9 +209,19 @@ const HomePage = () => {
               <IconButton size="small">
                 <SearchIcon />
               </IconButton>
-              <IconButton size="small">
-                <ShoppingCart />
+              <IconButton size="small" component={Link} to="/cart" onClick={(e) => {
+                // Check if cart is empty
+                if (cart.length === 0) {
+                  e.preventDefault(); // Prevent navigation
+                  setSnackbarMessage("Your cart is empty. Add some items first!");
+                  setSnackbarOpen(true);
+                }
+              }}>
+                <Badge badgeContent={cartItemCount} color="error">
+                  <ShoppingCart />
+                </Badge>
               </IconButton>
+              <AlertsWidget />
               <Button 
                 variant="outlined" 
                 component={Link}
@@ -306,136 +372,203 @@ const HomePage = () => {
       {/* Top Products Section */}
       <Box sx={{ width: '100%' }}>
         <Container maxWidth={false} disableGutters sx={{ my: 8, px: { xs: 2, sm: 4, md: 6, lg: 8 }, width: '100%' }}>
-          <Box sx={{ mb: 5 }}>
-            <Typography variant="h4" component="h2" sx={{ fontWeight: 600, mb: 1 }}>
-              Top Products Near You
-            </Typography>
+          <Box sx={{ mb: 5, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <div>
+              <Typography variant="h4" component="h2" sx={{ fontWeight: 600, mb: 1 }}>
+                All Products
+              </Typography>
+              <Typography variant="body1" sx={{ color: 'text.secondary' }}>
+                Explore our collection of high-quality spices
+              </Typography>
+            </div>
+            <Button 
+              component={Link}
+              to="/shop"
+              sx={{ 
+                color: '#ba6a34',
+                '&:hover': { bgcolor: 'rgba(186, 106, 52, 0.1)' }
+              }}
+              endIcon={<ArrowForward />}
+            >
+              View All
+            </Button>
           </Box>
           
-          <Grid container spacing={3}>
-            {featuredProducts.slice(0, 5).map((product) => (
-              <Grid item xs={12} sm={6} md={4} lg={2.4} key={product.id}>
-                <Card 
-                  sx={{ 
-                    borderRadius: 2, 
-                    overflow: 'hidden',
-                    boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-                    transition: 'transform 0.3s, box-shadow 0.3s',
-                    height: '100%',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    position: 'relative',
-                    '&:hover': {
-                      transform: 'translateY(-5px)',
-                      boxShadow: '0 6px 16px rgba(0,0,0,0.15)',
-                    }
-                  }}
-                >
-                  <Box 
-                    sx={{ 
-                      position: 'absolute', 
-                      top: 10, 
-                      right: 10, 
-                      bgcolor: 'white',
-                      borderRadius: '50%',
-                      width: 30,
-                      height: 30,
-                      display: 'flex',
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                      zIndex: 1,
-                      cursor: 'pointer'
-                    }}
-                  >
-                    <Favorite sx={{ fontSize: 16, color: '#999' }} />
-                  </Box>
-                  <CardMedia
-                    component="img"
-                    height="180"
-                    image={product.image}
-                    alt={product.name}
-                    sx={{ objectFit: 'cover' }}
-                  />
-                  <CardContent sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', p: 2 }}>
-                    <Box sx={{ display: 'flex', mb: 1 }}>
-                      <Rating value={product.rating} size="small" readOnly precision={0.5} />
-                    </Box>
-                    <Typography variant="subtitle1" component="h3" sx={{ fontWeight: 600, mb: 0.5 }}>
-                      {product.name}
-                    </Typography>
-                    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mt: 'auto' }}>
-                      <Typography variant="subtitle1" color="primary" sx={{ fontWeight: 600, color: '#ba6a34' }}>
-                        Rs.{product.price}
-                      </Typography>
-                    </Box>
-                  </CardContent>
-                </Card>
+          {loading ? (
+            <Box sx={{ display: 'flex', justifyContent: 'center', my: 5 }}>
+              <CircularProgress sx={{ color: '#ba6a34' }} />
+            </Box>
+          ) : error ? (
+            <Box sx={{ textAlign: 'center', my: 5, p: 3, bgcolor: '#f5f5f5', borderRadius: 2 }}>
+              <Typography color="error" sx={{ mb: 2 }}>{error}</Typography>
+              <Button 
+                variant="outlined" 
+                onClick={() => window.location.reload()}
+                sx={{ color: '#ba6a34', borderColor: '#ba6a34' }}
+              >
+                Try Again
+              </Button>
+            </Box>
+          ) : (
+            <>
+              <Grid container spacing={3}>
+                {(products.length > 0 ? products : featuredProducts).slice(0, 5).map((product) => (
+                  <Grid item xs={12} sm={6} md={4} lg={2.4} key={product._id || product.id}>
+                    <Card 
+                      sx={{ 
+                        borderRadius: 2, 
+                        overflow: 'hidden',
+                        boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+                        transition: 'transform 0.3s, box-shadow 0.3s',
+                        height: '100%',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        position: 'relative',
+                        '&:hover': {
+                          transform: 'translateY(-5px)',
+                          boxShadow: '0 6px 16px rgba(0,0,0,0.15)',
+                        }
+                      }}
+                    >
+                      <Box 
+                        sx={{ 
+                          position: 'absolute', 
+                          top: 10, 
+                          right: 10, 
+                          bgcolor: 'white',
+                          borderRadius: '50%',
+                          width: 30,
+                          height: 30,
+                          display: 'flex',
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                          zIndex: 1,
+                          cursor: 'pointer'
+                        }}
+                      >
+                        <Favorite sx={{ fontSize: 16, color: '#999' }} />
+                      </Box>
+                      <CardMedia
+                        component="img"
+                        height="180"
+                        image={getProductImage(product)}
+                        alt={product.name}
+                        sx={{ objectFit: 'cover' }}
+                      />
+                      <CardContent sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', p: 2 }}>
+                        <Box sx={{ display: 'flex', mb: 1 }}>
+                          <Rating value={product.rating || 4.5} size="small" readOnly precision={0.5} />
+                        </Box>
+                        <Typography variant="subtitle1" component="h3" sx={{ fontWeight: 600, mb: 0.5 }}>
+                          {product.name}
+                        </Typography>
+                        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mt: 'auto' }}>
+                          <Typography variant="subtitle1" color="primary" sx={{ fontWeight: 600, color: '#ba6a34' }}>
+                            Rs.{product.price}
+                          </Typography>
+                          <Button
+                            variant="contained"
+                            color="primary"
+                            size="small"
+                            startIcon={<AddShoppingCart />}
+                            onClick={() => addToCart(product)}
+                            sx={{
+                              bgcolor: '#ba6a34',
+                              '&:hover': {
+                                bgcolor: '#9e5a2c'
+                              },
+                              borderRadius: 2
+                            }}
+                          >
+                            Add
+                          </Button>
+                        </Box>
+                      </CardContent>
+                    </Card>
+                  </Grid>
+                ))}
               </Grid>
-            ))}
-          </Grid>
-          
-          {/* Second row */}
-          <Grid container spacing={3} sx={{ mt: 2 }}>
-            {featuredProducts.slice(5, 10).map((product) => (
-              <Grid item xs={12} sm={6} md={4} lg={2.4} key={product.id}>
-                <Card 
-                  sx={{ 
-                    borderRadius: 2, 
-                    overflow: 'hidden',
-                    boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-                    transition: 'transform 0.3s, box-shadow 0.3s',
-                    height: '100%',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    position: 'relative',
-                    '&:hover': {
-                      transform: 'translateY(-5px)',
-                      boxShadow: '0 6px 16px rgba(0,0,0,0.15)',
-                    }
-                  }}
-                >
-                  <Box 
-                    sx={{ 
-                      position: 'absolute', 
-                      top: 10, 
-                      right: 10, 
-                      bgcolor: 'white',
-                      borderRadius: '50%',
-                      width: 30,
-                      height: 30,
-                      display: 'flex',
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                      zIndex: 1,
-                      cursor: 'pointer'
-                    }}
-                  >
-                    <Favorite sx={{ fontSize: 16, color: '#999' }} />
-                  </Box>
-                  <CardMedia
-                    component="img"
-                    height="180"
-                    image={product.image}
-                    alt={product.name}
-                    sx={{ objectFit: 'cover' }}
-                  />
-                  <CardContent sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', p: 2 }}>
-                    <Box sx={{ display: 'flex', mb: 1 }}>
-                      <Rating value={product.rating} size="small" readOnly precision={0.5} />
-                    </Box>
-                    <Typography variant="subtitle1" component="h3" sx={{ fontWeight: 600, mb: 0.5 }}>
-                      {product.name}
-                    </Typography>
-                    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mt: 'auto' }}>
-                      <Typography variant="subtitle1" color="primary" sx={{ fontWeight: 600, color: '#ba6a34' }}>
-                        Rs.{product.price}
-                      </Typography>
-                    </Box>
-                  </CardContent>
-                </Card>
+              
+              {/* Second row */}
+              <Grid container spacing={3} sx={{ mt: 2 }}>
+                {(products.length > 0 ? products : featuredProducts).slice(5, 10).map((product) => (
+                  <Grid item xs={12} sm={6} md={4} lg={2.4} key={product._id || product.id}>
+                    <Card 
+                      sx={{ 
+                        borderRadius: 2, 
+                        overflow: 'hidden',
+                        boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+                        transition: 'transform 0.3s, box-shadow 0.3s',
+                        height: '100%',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        position: 'relative',
+                        '&:hover': {
+                          transform: 'translateY(-5px)',
+                          boxShadow: '0 6px 16px rgba(0,0,0,0.15)',
+                        }
+                      }}
+                    >
+                      <Box 
+                        sx={{ 
+                          position: 'absolute', 
+                          top: 10, 
+                          right: 10, 
+                          bgcolor: 'white',
+                          borderRadius: '50%',
+                          width: 30,
+                          height: 30,
+                          display: 'flex',
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                          zIndex: 1,
+                          cursor: 'pointer'
+                        }}
+                      >
+                        <Favorite sx={{ fontSize: 16, color: '#999' }} />
+                      </Box>
+                      <CardMedia
+                        component="img"
+                        height="180"
+                        image={getProductImage(product)}
+                        alt={product.name}
+                        sx={{ objectFit: 'cover' }}
+                      />
+                      <CardContent sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', p: 2 }}>
+                        <Box sx={{ display: 'flex', mb: 1 }}>
+                          <Rating value={product.rating || 4.5} size="small" readOnly precision={0.5} />
+                        </Box>
+                        <Typography variant="subtitle1" component="h3" sx={{ fontWeight: 600, mb: 0.5 }}>
+                          {product.name}
+                        </Typography>
+                        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mt: 'auto' }}>
+                          <Typography variant="subtitle1" color="primary" sx={{ fontWeight: 600, color: '#ba6a34' }}>
+                            Rs.{product.price}
+                          </Typography>
+                          <Button
+                            variant="contained"
+                            color="primary"
+                            size="small"
+                            startIcon={<AddShoppingCart />}
+                            onClick={() => addToCart(product)}
+                            sx={{
+                              bgcolor: '#ba6a34',
+                              '&:hover': {
+                                bgcolor: '#9e5a2c'
+                              },
+                              borderRadius: 2
+                            }}
+                          >
+                            Add
+                          </Button>
+                        </Box>
+                      </CardContent>
+                    </Card>
+                  </Grid>
+                ))}
               </Grid>
-            ))}
-          </Grid>
+            </>
+          )}
         </Container>
       </Box>
 
@@ -525,6 +658,20 @@ const HomePage = () => {
           </Grid>
         </Container>
       </Box>
+
+      {/* Snackbar for add to cart confirmation */}
+      <Snackbar 
+        open={snackbarOpen} 
+        autoHideDuration={3000} 
+        onClose={handleCloseSnackbar}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+      >
+        <Alert onClose={handleCloseSnackbar} severity="success" sx={{ width: '100%' }}>
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
+
+      <ChatbotWidget />
     </Box>
   );
 };

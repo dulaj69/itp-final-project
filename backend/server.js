@@ -7,6 +7,9 @@ const path = require('path');
 require('./models/Product');
 const productRoutes = require('./routes/productRoutes');
 const orderRoutes = require('./routes/orderRoutes');
+const inquiryRoutes = require('./routes/inquiryRoutes');
+const feedbackRoutes = require('./routes/feedbackRoutes');
+const chatbotRoutes = require('./routes/chatbotRoutes');
 
 // Load env vars
 dotenv.config();
@@ -35,6 +38,11 @@ try {
   app.use('/api/reports', require('./routes/reportRoutes'));
   app.use('/api/admin', require('./routes/adminRoutes'));
   app.use('/api/users', require('./routes/userRoutes'));
+  app.use('/api/notifications', require('./routes/notificationRoutes'));
+  app.use('/api/backup', require('./routes/backupRoutes'));
+  app.use('/api/inquiries', inquiryRoutes);
+  app.use('/api/feedback', feedbackRoutes);
+  app.use('/api/chatbot', chatbotRoutes);
   console.log('Routes registered successfully');
 } catch (error) {
   console.error('Error loading routes:', error);
@@ -51,7 +59,7 @@ if (!fs.existsSync(uploadDir)) {
 // Error handler
 app.use(require('./middleware/errorHandler'));
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5001;
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);

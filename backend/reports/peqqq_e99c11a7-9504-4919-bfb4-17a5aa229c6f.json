@@ -1,0 +1,142 @@
+[
+  {
+    "_id": "6819155cdb09e13c83cd0538",
+    "name": "Black Pepper",
+    "description": "Ceylon Pepper is rich in Piperine, which gives Ceylon Pepper its distinct pungency and a premium price in the global market driven by its plenitude of the alkaloid.",
+    "price": 100,
+    "rating": 0,
+    "category": "Seed Spices",
+    "stock": 44,
+    "imageUrl": "https://res.cloudinary.com/dkntplasg/image/upload/v1746474718/products/mdfbblirpl640r0kstpl.png",
+    "cloudinary": {
+      "public_id": "products/mdfbblirpl640r0kstpl",
+      "url": "https://res.cloudinary.com/dkntplasg/image/upload/v1746474718/products/mdfbblirpl640r0kstpl.png"
+    },
+    "status": "Active",
+    "addDate": "2025-05-07T00:00:00.000Z",
+    "expiryDate": "2025-05-22T00:00:00.000Z",
+    "createdAt": "2025-05-05T19:45:32.537Z",
+    "updatedAt": "2025-05-05T19:54:29.824Z",
+    "__v": 0
+  },
+  {
+    "_id": "68191669db09e13c83cd05dd",
+    "name": "Termic powder",
+    "description": "Turmeric products from Sri Lanka are renowned for their high quality and purity, harvested from the island’s rich, fertile soil. Sri Lankan turmeric, known for its vibrant color and strong aroma",
+    "price": 10,
+    "rating": 0,
+    "category": "Root Spices",
+    "stock": 10,
+    "imageUrl": "https://res.cloudinary.com/dkntplasg/image/upload/v1746474689/products/cxzc1b2aw4uausrtv82q.png",
+    "cloudinary": {
+      "public_id": "products/cxzc1b2aw4uausrtv82q",
+      "url": "https://res.cloudinary.com/dkntplasg/image/upload/v1746474689/products/cxzc1b2aw4uausrtv82q.png"
+    },
+    "status": "Active",
+    "addDate": "2025-05-10T00:00:00.000Z",
+    "expiryDate": "2025-05-30T00:00:00.000Z",
+    "createdAt": "2025-05-05T19:50:01.965Z",
+    "updatedAt": "2025-05-05T20:13:42.613Z",
+    "__v": 0
+  },
+  {
+    "_id": "68191b16f9c0ca0c6eb0a15f",
+    "name": "Cinnamon",
+    "description": "If there is a spice that Sri Lanka is particularly famous for, it’d undoubtedly be Cinnamon. 'Ceylon Cinnamon’ is world-renowned for its notable qualities such as unique flavour, colour and aroma in comparison with Cassia.",
+    "price": 50,
+    "rating": 0,
+    "category": "Fruit/Berry Spices",
+    "stock": 12,
+    "imageUrl": "https://res.cloudinary.com/dkntplasg/image/upload/v1746475797/products/wtfc4qunairq23gjptbj.png",
+    "cloudinary": {
+      "public_id": "products/wtfc4qunairq23gjptbj",
+      "url": "https://res.cloudinary.com/dkntplasg/image/upload/v1746475797/products/wtfc4qunairq23gjptbj.png"
+    },
+    "status": "Active",
+    "addDate": "2025-05-20T00:00:00.000Z",
+    "expiryDate": "2025-05-30T00:00:00.000Z",
+    "createdAt": "2025-05-05T20:09:58.388Z",
+    "updatedAt": "2025-05-06T09:33:38.430Z",
+    "__v": 0
+  },
+  {
+    "_id": "68198569387cf32f31b7377f",
+    "name": "Almonds",
+    "description": "Almonds contain lots of healthy fats, fiber, protein, magnesium, and vitamin E. The health benefits of almonds include lower blood sugar levels, reduced blood pressure, and lower cholesterol levels.",
+    "price": 190,
+    "rating": 0,
+    "category": "Flower Spices",
+    "stock": 46,
+    "imageUrl": "https://res.cloudinary.com/dkntplasg/image/upload/v1746505393/products/qvbg72ryaigptwwcierg.png",
+    "cloudinary": {
+      "public_id": "products/qvbg72ryaigptwwcierg",
+      "url": "https://res.cloudinary.com/dkntplasg/image/upload/v1746505393/products/qvbg72ryaigptwwcierg.png"
+    },
+    "status": "Active",
+    "addDate": "2025-05-15T00:00:00.000Z",
+    "expiryDate": "2025-05-22T00:00:00.000Z",
+    "createdAt": "2025-05-06T03:43:37.672Z",
+    "updatedAt": "2025-05-06T09:34:15.075Z",
+    "__v": 0
+  },
+  {
+    "_id": "68198e59387cf32f31b738f2",
+    "name": "Nutmeg",
+    "description": "Nutmeg, a prized spice from Sri Lanka, is renowned for its rich aroma and warm, slightly sweet flavor. Grown primarily in the tropical climate of Sri Lanka's central and southern regions,",
+    "price": 140,
+    "rating": 0,
+    "category": "Bark Spices",
+    "stock": 0,
+    "imageUrl": "https://res.cloudinary.com/dkntplasg/image/upload/v1746505305/products/nfv2w2exyinimvece1tp.png",
+    "cloudinary": {
+      "public_id": "products/nfv2w2exyinimvece1tp",
+      "url": "https://res.cloudinary.com/dkntplasg/image/upload/v1746505305/products/nfv2w2exyinimvece1tp.png"
+    },
+    "status": "Discontinued",
+    "addDate": "2025-05-07T00:00:00.000Z",
+    "expiryDate": "2025-05-22T00:00:00.000Z",
+    "createdAt": "2025-05-06T04:21:45.803Z",
+    "updatedAt": "2025-05-06T09:37:02.826Z",
+    "__v": 0
+  },
+  {
+    "_id": "68198f87387cf32f31b73985",
+    "name": "rear",
+    "description": "fife",
+    "price": 250,
+    "rating": 0,
+    "category": "Flower Spices",
+    "stock": 50,
+    "imageUrl": "https://res.cloudinary.com/dkntplasg/image/upload/v1746505607/products/ydpbfwrtpcmnao5oxkya.png",
+    "cloudinary": {
+      "public_id": "products/ydpbfwrtpcmnao5oxkya",
+      "url": "https://res.cloudinary.com/dkntplasg/image/upload/v1746505607/products/ydpbfwrtpcmnao5oxkya.png"
+    },
+    "status": "Active",
+    "addDate": "2025-05-08T00:00:00.000Z",
+    "expiryDate": "2025-05-27T00:00:00.000Z",
+    "createdAt": "2025-05-06T04:26:47.564Z",
+    "updatedAt": "2025-05-06T09:36:33.447Z",
+    "__v": 0
+  },
+  {
+    "_id": "6819d7e255d62520de2dff2a",
+    "name": "hshjsv",
+    "description": "vjhdljvdj",
+    "price": 120,
+    "rating": 0,
+    "category": "Bark Spices",
+    "stock": 197,
+    "imageUrl": "https://res.cloudinary.com/dkntplasg/image/upload/v1746524129/products/evxydzr3avt5em9c1giq.png",
+    "cloudinary": {
+      "public_id": "products/evxydzr3avt5em9c1giq",
+      "url": "https://res.cloudinary.com/dkntplasg/image/upload/v1746524129/products/evxydzr3avt5em9c1giq.png"
+    },
+    "status": "Active",
+    "addDate": "2025-05-03T00:00:00.000Z",
+    "expiryDate": "2025-05-17T00:00:00.000Z",
+    "createdAt": "2025-05-06T09:35:30.192Z",
+    "updatedAt": "2025-05-06T09:35:39.814Z",
+    "__v": 0
+  }
+]

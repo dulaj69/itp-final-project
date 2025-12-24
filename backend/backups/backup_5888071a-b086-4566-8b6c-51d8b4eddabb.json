@@ -1,0 +1,1849 @@
+{
+  "id": "5888071a-b086-4566-8b6c-51d8b4eddabb",
+  "timestamp": "2025-05-10T08:06:50.755Z",
+  "collections": [
+    "chatbotqas",
+    "qitems",
+    "users",
+    "payments",
+    "products",
+    "companies",
+    "quotas",
+    "orders",
+    "inquiries",
+    "feedbacks",
+    "notifications"
+  ],
+  "data": {
+    "chatbotqas": [
+      {
+        "_id": "681e715db96789bf412c88e7",
+        "question": "hi",
+        "answer": "hi, how may i assist you \n",
+        "createdAt": "2025-05-09T21:19:25.893Z",
+        "updatedAt": "2025-05-09T21:19:25.893Z",
+        "__v": 0
+      },
+      {
+        "_id": "681e718cb96789bf412c88ec",
+        "question": "when is pepper going to available ",
+        "answer": "no idea\n",
+        "createdAt": "2025-05-09T21:20:12.503Z",
+        "updatedAt": "2025-05-09T21:20:12.503Z",
+        "__v": 0
+      },
+      {
+        "_id": "681e71b7b96789bf412c88f1",
+        "question": "how to contact shop about a complain",
+        "answer": "go through the contact us page and submit a feedback form",
+        "createdAt": "2025-05-09T21:20:55.424Z",
+        "updatedAt": "2025-05-09T21:20:55.424Z",
+        "__v": 0
+      },
+      {
+        "_id": "681efa2e58d588dbaf8ece20",
+        "question": " are these products  natural?",
+        "answer": "Most of our products, including spices and dried fruits, are 100% natural and sourced from trusted suppliers. Specific items like Chilli Powder and Termic (Turmeric) Powder are marked organic.",
+        "createdAt": "2025-05-10T07:03:10.674Z",
+        "updatedAt": "2025-05-10T07:33:42.169Z",
+        "__v": 0
+      },
+      {
+        "_id": "681efa4c58d588dbaf8ece25",
+        "question": "How is product quality ensured?",
+        "answer": "We follow strict quality checks and source only from verified producers. Every product is packaged to preserve freshness and purity.",
+        "createdAt": "2025-05-10T07:03:40.102Z",
+        "updatedAt": "2025-05-10T07:03:40.102Z",
+        "__v": 0
+      },
+      {
+        "_id": "681efa6258d588dbaf8ece2a",
+        "question": " What is life of  products?",
+        "answer": "On average, our spices and dried items have a shelf life of 6 to 12 months. Exact expiry dates are mentioned on the packaging.",
+        "createdAt": "2025-05-10T07:04:02.344Z",
+        "updatedAt": "2025-05-10T07:33:04.572Z",
+        "__v": 0
+      },
+      {
+        "_id": "681efa7e58d588dbaf8ece2f",
+        "question": " can i return a product ",
+        "answer": "Yes, we offer a 7-day return policy for unopened and undamaged items. Please refer to our return policy page for more details.",
+        "createdAt": "2025-05-10T07:04:30.548Z",
+        "updatedAt": "2025-05-10T07:32:28.207Z",
+        "__v": 0
+      },
+      {
+        "_id": "681efa9f58d588dbaf8ece34",
+        "question": "do you have discount",
+        "answer": "The listed prices are retail. We occasionally offer discounts during sales and promotions—keep an eye on our homepage!",
+        "createdAt": "2025-05-10T07:05:03.487Z",
+        "updatedAt": "2025-05-10T07:32:02.578Z",
+        "__v": 0
+      },
+      {
+        "_id": "681efab158d588dbaf8ece39",
+        "question": " Do you deliver  India?",
+        "answer": "Yes, we deliver across India through reliable courier partners. Delivery time may vary depending on your location.",
+        "createdAt": "2025-05-10T07:05:21.500Z",
+        "updatedAt": "2025-05-10T07:31:31.757Z",
+        "__v": 0
+      },
+      {
+        "_id": "681efac858d588dbaf8ece3e",
+        "question": " is there a minimum order amount?",
+        "answer": "Orders above Rs. 500 are eligible for free delivery. A standard shipping fee applies otherwise.",
+        "createdAt": "2025-05-10T07:05:44.391Z",
+        "updatedAt": "2025-05-10T07:30:48.526Z",
+        "__v": 0
+      },
+      {
+        "_id": "681efadc58d588dbaf8ece43",
+        "question": "are the product photo is real",
+        "answer": "Yes, we aim to display accurate product visuals. However, packaging may vary slightly depending on batch and brand updates.",
+        "createdAt": "2025-05-10T07:06:04.613Z",
+        "updatedAt": "2025-05-10T07:30:10.698Z",
+        "__v": 0
+      },
+      {
+        "_id": "681efaf058d588dbaf8ece48",
+        "question": "Do you offer bulk or wholesale pricing?",
+        "answer": "Yes, for bulk or wholesale inquiries, please contact our support team directly via the contact form.",
+        "createdAt": "2025-05-10T07:06:24.632Z",
+        "updatedAt": "2025-05-10T07:06:24.632Z",
+        "__v": 0
+      },
+      {
+        "_id": "681efb0e58d588dbaf8ece4d",
+        "question": "How 0000 track my order? ",
+        "answer": "Once your order is shipped, you'll receive a tracking link via SMS or email",
+        "createdAt": "2025-05-10T07:06:54.723Z",
+        "updatedAt": "2025-05-10T07:29:21.023Z",
+        "__v": 0
+      },
+      {
+        "_id": "681f01ee58d588dbaf8ecea7",
+        "question": "how do i track my product",
+        "answer": "You’ll receive an SMS or email with a tracking link once your order is dispatched",
+        "createdAt": "2025-05-10T07:36:14.023Z",
+        "updatedAt": "2025-05-10T07:36:14.023Z",
+        "__v": 0
+      },
+      {
+        "_id": "681f025f58d588dbaf8eceac",
+        "question": "do you have shop",
+        "answer": "yes its located in Amblangoda,old Road its name like Liu Oasis ",
+        "createdAt": "2025-05-10T07:38:07.643Z",
+        "updatedAt": "2025-05-10T07:38:07.643Z",
+        "__v": 0
+      },
+      {
+        "_id": "681f028b58d588dbaf8eceb1",
+        "question": "how can i cancel order",
+        "answer": "You can cancel your order from your account dashboard before it is shipped",
+        "createdAt": "2025-05-10T07:38:51.257Z",
+        "updatedAt": "2025-05-10T07:38:51.257Z",
+        "__v": 0
+      },
+      {
+        "_id": "681f02c558d588dbaf8eceb6",
+        "question": "can i add items to my cart",
+        "answer": "not yet implemented\n",
+        "createdAt": "2025-05-10T07:39:49.554Z",
+        "updatedAt": "2025-05-10T07:39:49.554Z",
+        "__v": 0
+      },
+      {
+        "_id": "681f030158d588dbaf8ecebb",
+        "question": "the product have issues how can complain it",
+        "answer": "Please contact us immediately with photos. We’ll arrange a replacement or refund.",
+        "createdAt": "2025-05-10T07:40:49.651Z",
+        "updatedAt": "2025-05-10T07:40:49.651Z",
+        "__v": 0
+      },
+      {
+        "_id": "681f037158d588dbaf8ecec0",
+        "question": "cash on delivery available",
+        "answer": "Yes, but limited,  available for orders up to Rs 2,000",
+        "createdAt": "2025-05-10T07:42:41.861Z",
+        "updatedAt": "2025-05-10T07:42:41.861Z",
+        "__v": 0
+      },
+      {
+        "_id": "681f03e458d588dbaf8ecec5",
+        "question": "can i order by phone",
+        "answer": "We currently accept orders only through our website/app for accurate processing.",
+        "createdAt": "2025-05-10T07:44:36.562Z",
+        "updatedAt": "2025-05-10T07:44:36.562Z",
+        "__v": 0
+      },
+      {
+        "_id": "681f040858d588dbaf8ececa",
+        "question": "do your spices add salt",
+        "answer": "No, unless mentioned otherwise, our spices are pure and do not contain added salt.",
+        "createdAt": "2025-05-10T07:45:12.047Z",
+        "updatedAt": "2025-05-10T07:45:12.047Z",
+        "__v": 0
+      },
+      {
+        "_id": "681f047258d588dbaf8ececf",
+        "question": "do you have pepper",
+        "answer": "yes, look at Home page",
+        "createdAt": "2025-05-10T07:46:58.515Z",
+        "updatedAt": "2025-05-10T07:46:58.515Z",
+        "__v": 0
+      }
+    ],
+    "qitems": [
+      {
+        "_id": "681ae3d345955d063d6c67c5",
+        "itemName": "Black Pepper",
+        "itemQuantity": 100,
+        "itemWeight": 50,
+        "itemPrice": 1.5,
+        "availableItem": true,
+        "__v": 0,
+        "createdAt": "2025-05-07T04:38:43.367Z",
+        "updatedAt": "2025-05-07T04:38:43.367Z"
+      },
+      {
+        "_id": "681ae3d345955d063d6c67c6",
+        "itemName": "Black Pepper",
+        "itemQuantity": 80,
+        "itemWeight": 250,
+        "itemPrice": 5.8,
+        "availableItem": true,
+        "__v": 0,
+        "createdAt": "2025-05-07T04:38:43.367Z",
+        "updatedAt": "2025-05-07T04:38:43.367Z"
+      },
+      {
+        "_id": "681ae3d345955d063d6c67c7",
+        "itemName": "Black Pepper",
+        "itemQuantity": 60,
+        "itemWeight": 500,
+        "itemPrice": 10.5,
+        "availableItem": true,
+        "__v": 0,
+        "createdAt": "2025-05-07T04:38:43.367Z",
+        "updatedAt": "2025-05-07T04:38:43.367Z"
+      },
+      {
+        "_id": "681ae3d345955d063d6c67c8",
+        "itemName": "Turmeric Powder",
+        "itemQuantity": 90,
+        "itemWeight": 100,
+        "itemPrice": 2.5,
+        "availableItem": true,
+        "__v": 0,
+        "createdAt": "2025-05-07T04:38:43.367Z",
+        "updatedAt": "2025-05-07T04:38:43.367Z"
+      },
+      {
+        "_id": "681ae3d345955d063d6c67c9",
+        "itemName": "Turmeric Powder",
+        "itemQuantity": 70,
+        "itemWeight": 250,
+        "itemPrice": 5,
+        "availableItem": true,
+        "__v": 0,
+        "createdAt": "2025-05-07T04:38:43.367Z",
+        "updatedAt": "2025-05-07T04:38:43.367Z"
+      },
+      {
+        "_id": "681ae3d345955d063d6c67ca",
+        "itemName": "Turmeric Powder",
+        "itemQuantity": 40,
+        "itemWeight": 500,
+        "itemPrice": 8.9,
+        "availableItem": true,
+        "__v": 0,
+        "createdAt": "2025-05-07T04:38:43.367Z",
+        "updatedAt": "2025-05-07T04:38:43.367Z"
+      },
+      {
+        "_id": "681ae3d345955d063d6c67cb",
+        "itemName": "Cumin Seeds",
+        "itemQuantity": 120,
+        "itemWeight": 100,
+        "itemPrice": 2.8,
+        "availableItem": true,
+        "__v": 0,
+        "createdAt": "2025-05-07T04:38:43.367Z",
+        "updatedAt": "2025-05-07T04:38:43.367Z"
+      },
+      {
+        "_id": "681ae3d345955d063d6c67cc",
+        "itemName": "Cumin Seeds",
+        "itemQuantity": 75,
+        "itemWeight": 250,
+        "itemPrice": 6.2,
+        "availableItem": true,
+        "__v": 0,
+        "createdAt": "2025-05-07T04:38:43.368Z",
+        "updatedAt": "2025-05-07T04:38:43.368Z"
+      },
+      {
+        "_id": "681ae3d345955d063d6c67cd",
+        "itemName": "Red Chili Powder",
+        "itemQuantity": 80,
+        "itemWeight": 100,
+        "itemPrice": 3,
+        "availableItem": true,
+        "__v": 0,
+        "createdAt": "2025-05-07T04:38:43.368Z",
+        "updatedAt": "2025-05-07T04:38:43.368Z"
+      },
+      {
+        "_id": "681ae3d345955d063d6c67ce",
+        "itemName": "Red Chili Powder",
+        "itemQuantity": 45,
+        "itemWeight": 200,
+        "itemPrice": 5.5,
+        "availableItem": true,
+        "__v": 0,
+        "createdAt": "2025-05-07T04:38:43.368Z",
+        "updatedAt": "2025-05-07T04:38:43.368Z"
+      },
+      {
+        "_id": "681ae3d345955d063d6c67cf",
+        "itemName": "Red Chili Powder",
+        "itemQuantity": 30,
+        "itemWeight": 500,
+        "itemPrice": 12,
+        "availableItem": true,
+        "__v": 0,
+        "createdAt": "2025-05-07T04:38:43.368Z",
+        "updatedAt": "2025-05-07T04:38:43.368Z"
+      },
+      {
+        "_id": "681ae3d345955d063d6c67d0",
+        "itemName": "Cloves",
+        "itemQuantity": 60,
+        "itemWeight": 30,
+        "itemPrice": 2.8,
+        "availableItem": true,
+        "__v": 0,
+        "createdAt": "2025-05-07T04:38:43.368Z",
+        "updatedAt": "2025-05-07T04:38:43.368Z"
+      },
+      {
+        "_id": "681ae3d345955d063d6c67d1",
+        "itemName": "Cloves",
+        "itemQuantity": 40,
+        "itemWeight": 100,
+        "itemPrice": 6.5,
+        "availableItem": true,
+        "__v": 0,
+        "createdAt": "2025-05-07T04:38:43.368Z",
+        "updatedAt": "2025-05-07T04:38:43.368Z"
+      },
+      {
+        "_id": "681ae3d345955d063d6c67d2",
+        "itemName": "Cloves",
+        "itemQuantity": 20,
+        "itemWeight": 250,
+        "itemPrice": 14,
+        "availableItem": true,
+        "__v": 0,
+        "createdAt": "2025-05-07T04:38:43.368Z",
+        "updatedAt": "2025-05-07T04:38:43.368Z"
+      },
+      {
+        "_id": "681ae3d345955d063d6c67d3",
+        "itemName": "Cinnamon Sticks",
+        "itemQuantity": 70,
+        "itemWeight": 100,
+        "itemPrice": 4,
+        "availableItem": true,
+        "__v": 0,
+        "createdAt": "2025-05-07T04:38:43.368Z",
+        "updatedAt": "2025-05-07T04:38:43.368Z"
+      },
+      {
+        "_id": "681ae3d345955d063d6c67d4",
+        "itemName": "Cinnamon Sticks",
+        "itemQuantity": 40,
+        "itemWeight": 200,
+        "itemPrice": 7.8,
+        "availableItem": true,
+        "__v": 0,
+        "createdAt": "2025-05-07T04:38:43.368Z",
+        "updatedAt": "2025-05-07T04:38:43.368Z"
+      },
+      {
+        "_id": "681ae3d345955d063d6c67d5",
+        "itemName": "Cinnamon Sticks",
+        "itemQuantity": 25,
+        "itemWeight": 500,
+        "itemPrice": 16.5,
+        "availableItem": true,
+        "__v": 0,
+        "createdAt": "2025-05-07T04:38:43.368Z",
+        "updatedAt": "2025-05-07T04:38:43.368Z"
+      },
+      {
+        "_id": "681ae3d345955d063d6c67d6",
+        "itemName": "Coriander Powder",
+        "itemQuantity": 90,
+        "itemWeight": 100,
+        "itemPrice": 2.2,
+        "availableItem": true,
+        "__v": 0,
+        "createdAt": "2025-05-07T04:38:43.368Z",
+        "updatedAt": "2025-05-07T04:38:43.368Z"
+      },
+      {
+        "_id": "681ae3d345955d063d6c67d7",
+        "itemName": "Coriander Powder",
+        "itemQuantity": 60,
+        "itemWeight": 250,
+        "itemPrice": 4.9,
+        "availableItem": true,
+        "__v": 0,
+        "createdAt": "2025-05-07T04:38:43.368Z",
+        "updatedAt": "2025-05-07T04:38:43.368Z"
+      },
+      {
+        "_id": "681ae3d345955d063d6c67d8",
+        "itemName": "Garlic Powder",
+        "itemQuantity": 100,
+        "itemWeight": 50,
+        "itemPrice": 1.4,
+        "availableItem": true,
+        "__v": 0,
+        "createdAt": "2025-05-07T04:38:43.368Z",
+        "updatedAt": "2025-05-07T04:38:43.368Z"
+      },
+      {
+        "_id": "681ae3d345955d063d6c67d9",
+        "itemName": "Garlic Powder",
+        "itemQuantity": 70,
+        "itemWeight": 100,
+        "itemPrice": 2.4,
+        "availableItem": true,
+        "__v": 0,
+        "createdAt": "2025-05-07T04:38:43.368Z",
+        "updatedAt": "2025-05-07T04:38:43.368Z"
+      },
+      {
+        "_id": "681ae3d345955d063d6c67da",
+        "itemName": "Garlic Powder",
+        "itemQuantity": 30,
+        "itemWeight": 250,
+        "itemPrice": 5,
+        "availableItem": true,
+        "__v": 0,
+        "createdAt": "2025-05-07T04:38:43.368Z",
+        "updatedAt": "2025-05-07T04:38:43.368Z"
+      },
+      {
+        "_id": "681ae3d345955d063d6c67db",
+        "itemName": "Ginger Powder",
+        "itemQuantity": 80,
+        "itemWeight": 100,
+        "itemPrice": 2.9,
+        "availableItem": true,
+        "__v": 0,
+        "createdAt": "2025-05-07T04:38:43.368Z",
+        "updatedAt": "2025-05-07T04:38:43.368Z"
+      },
+      {
+        "_id": "681ae3d345955d063d6c67dc",
+        "itemName": "Ginger Powder",
+        "itemQuantity": 45,
+        "itemWeight": 250,
+        "itemPrice": 6.1,
+        "availableItem": true,
+        "__v": 0,
+        "createdAt": "2025-05-07T04:38:43.368Z",
+        "updatedAt": "2025-05-07T04:38:43.368Z"
+      },
+      {
+        "_id": "681ae3d345955d063d6c67dd",
+        "itemName": "Fennel Seeds",
+        "itemQuantity": 75,
+        "itemWeight": 100,
+        "itemPrice": 2.6,
+        "availableItem": true,
+        "__v": 0,
+        "createdAt": "2025-05-07T04:38:43.368Z",
+        "updatedAt": "2025-05-07T04:38:43.368Z"
+      },
+      {
+        "_id": "681ae3d345955d063d6c67de",
+        "itemName": "Fennel Seeds",
+        "itemQuantity": 50,
+        "itemWeight": 250,
+        "itemPrice": 5.8,
+        "availableItem": true,
+        "__v": 0,
+        "createdAt": "2025-05-07T04:38:43.368Z",
+        "updatedAt": "2025-05-07T04:38:43.368Z"
+      },
+      {
+        "_id": "681ae3d345955d063d6c67df",
+        "itemName": "Cardamom Pods",
+        "itemQuantity": 40,
+        "itemWeight": 20,
+        "itemPrice": 4.5,
+        "availableItem": true,
+        "__v": 0,
+        "createdAt": "2025-05-07T04:38:43.368Z",
+        "updatedAt": "2025-05-07T04:38:43.368Z"
+      },
+      {
+        "_id": "681ae3d345955d063d6c67e0",
+        "itemName": "Cardamom Pods",
+        "itemQuantity": 30,
+        "itemWeight": 50,
+        "itemPrice": 10.2,
+        "availableItem": true,
+        "__v": 0,
+        "createdAt": "2025-05-07T04:38:43.368Z",
+        "updatedAt": "2025-05-07T04:38:43.368Z"
+      },
+      {
+        "_id": "681ae3d345955d063d6c67e1",
+        "itemName": "Mustard Seeds",
+        "itemQuantity": 100,
+        "itemWeight": 100,
+        "itemPrice": 1.9,
+        "availableItem": true,
+        "__v": 0,
+        "createdAt": "2025-05-07T04:38:43.368Z",
+        "updatedAt": "2025-05-07T04:38:43.368Z"
+      },
+      {
+        "_id": "681ae3d345955d063d6c67e2",
+        "itemName": "Mustard Seeds",
+        "itemQuantity": 60,
+        "itemWeight": 250,
+        "itemPrice": 4.3,
+        "availableItem": true,
+        "__v": 0,
+        "createdAt": "2025-05-07T04:38:43.368Z",
+        "updatedAt": "2025-05-07T04:38:43.368Z"
+      }
+    ],
+    "users": [
+      {
+        "_id": "6816651e16445d3e01f9a1d3",
+        "name": "gihan",
+        "email": "sonalperera0@gmail.com",
+        "password": "$2b$10$NEAvJIoseyiczL.iPuigGe9ys0T2nsmgybP5BEzVdJFJ9zdCZUpbW",
+        "role": "user",
+        "createdAt": "2025-05-03T18:49:02.584Z",
+        "updatedAt": "2025-05-03T18:49:02.584Z",
+        "__v": 0
+      },
+      {
+        "_id": "68177d6eb5d85e9e6d816307",
+        "name": "Nirmal",
+        "email": "nirmal@gmail.com",
+        "password": "$2b$10$YTuipo.nNfdBWS0BJmO9iunSbxqRwY3ypxFGa/U8sjSGzsLVsXReK",
+        "role": "admin",
+        "createdAt": "2025-05-04T14:45:02.573Z",
+        "updatedAt": "2025-05-04T14:45:02.573Z",
+        "__v": 0
+      },
+      {
+        "_id": "68177f8a586e3511c52a7c94",
+        "name": "samajith",
+        "email": "samajith3@gmail.com",
+        "password": "$2b$10$KsDhsSJ5WlqacMqPTDcO6.0sG7ygk8TzjhxGbwq7a.suxIrG/5/Me",
+        "role": "admin",
+        "createdAt": "2025-05-04T14:54:02.878Z",
+        "updatedAt": "2025-05-04T14:54:02.878Z",
+        "__v": 0
+      },
+      {
+        "_id": "68189edce2c0450910c9633d",
+        "name": "sanmith",
+        "email": "sanmith@gmial.com",
+        "password": "$2b$10$rgighNIGFxeSjshevTYAvOx2Kg2UAfKV.lUtJicnD2/DMhI80f5IC",
+        "role": "user",
+        "createdAt": "2025-05-05T11:19:56.162Z",
+        "updatedAt": "2025-05-05T11:19:56.162Z",
+        "__v": 0
+      },
+      {
+        "_id": "681a111464e150a0d08eb50e",
+        "name": "chaminda",
+        "email": "chaminda@gmail.com",
+        "password": "$2b$10$ib9tuNOtf1tWYyOxBrTNfOY1aqTylZ1tjyASCgYvvB0stsDEpL7Wu",
+        "role": "user",
+        "createdAt": "2025-05-06T13:39:32.095Z",
+        "updatedAt": "2025-05-06T13:39:32.095Z",
+        "__v": 0
+      },
+      {
+        "_id": "681b241c2b3dc9468163d564",
+        "name": "aah",
+        "email": "aah@gmail.com",
+        "password": "$2b$10$SDnSnHSwy2bG3Sy5s525hunVUQSB7g0K31EvQzRb0z2g2BNznkGZi",
+        "role": "admin",
+        "createdAt": "2025-05-07T09:13:00.436Z",
+        "updatedAt": "2025-05-07T09:13:00.436Z",
+        "__v": 0
+      },
+      {
+        "_id": "681b7cef827b8c4f7c522a33",
+        "name": "Dulaj Sanmith",
+        "email": "dulaj.sanmith@gmail.com",
+        "password": "$2b$10$FKNS6FCUFZKpEFJqY4MAeeLodQ47bN0R4miwJYj98bILjQ.//qMVG",
+        "role": "user",
+        "createdAt": "2025-05-07T15:31:59.828Z",
+        "updatedAt": "2025-05-07T15:31:59.828Z",
+        "__v": 0
+      },
+      {
+        "_id": "681df523f174f1664007bce3",
+        "name": "sujayasamajith",
+        "email": "samajith4@gmail.com",
+        "password": "$2b$10$KazW8u3LmfprxW.n3NbkAOFUrSpL/pp5lnBB3jsaGB2QDmtG/BW6y",
+        "role": "user",
+        "createdAt": "2025-05-09T12:29:23.708Z",
+        "updatedAt": "2025-05-09T12:29:23.708Z",
+        "__v": 0
+      },
+      {
+        "_id": "681e0ad3e7755b0bf2fc0aa0",
+        "name": "lolo",
+        "email": "lol@dd",
+        "password": "$2b$10$n3mymNmHA/phecjPxU7IEO6K3oKzzio4rr110hqjVsz8/Rmt8uGMS",
+        "role": "user",
+        "createdAt": "2025-05-09T14:01:55.529Z",
+        "updatedAt": "2025-05-09T14:01:55.529Z",
+        "__v": 0
+      },
+      {
+        "_id": "681e194b8dbacd418ccf9e97",
+        "name": "dulaj amazing ",
+        "email": "amazing@gmail.com",
+        "password": "$2b$10$MrEBP5hIgXANN7sg25F5/eGi9RPooLfatAy8..jT.Eio6.nZR8NGW",
+        "role": "admin",
+        "createdAt": "2025-05-09T15:03:39.007Z",
+        "updatedAt": "2025-05-09T15:03:39.007Z",
+        "__v": 0
+      },
+      {
+        "_id": "681ead857c50d9612aedf6c6",
+        "name": "shan",
+        "email": "shan@gmail.com",
+        "password": "$2b$10$72orY0PdpHVGQi6P32WG3.NwQV.I8VxdS7xLA7SSDPqf24bjqKSnq",
+        "role": "admin",
+        "createdAt": "2025-05-10T01:36:05.661Z",
+        "updatedAt": "2025-05-10T01:36:05.661Z",
+        "__v": 0
+      },
+      {
+        "_id": "681f027e3cf230409264a287",
+        "name": "sujaya",
+        "email": "sujaya@gmail.com",
+        "password": "$2b$10$gnwJcjTH9UB3boqloWn9XOk9AvUnkTa4SSfumWox15gFPvLzGXYjy",
+        "role": "user",
+        "createdAt": "2025-05-10T07:38:38.341Z",
+        "updatedAt": "2025-05-10T07:38:38.341Z",
+        "__v": 0
+      },
+      {
+        "_id": "681f08a148abacf094d69783",
+        "name": "dulaj",
+        "email": "dulaj@gmail.com",
+        "password": "$2b$10$8gRO9TKrUUoCMjcVEZ6yXuUCyeCeBd6FI2HGUOJORP14hXIXpbC7y",
+        "role": "user",
+        "createdAt": "2025-05-10T08:04:49.196Z",
+        "updatedAt": "2025-05-10T08:04:49.196Z",
+        "__v": 0
+      }
+    ],
+    "payments": [
+      {
+        "_id": "681af106582f68a58c6c668e",
+        "orderId": "681ae6d7582f68a58c6c6683",
+        "amount": 10,
+        "paymentMethod": "CASH",
+        "status": "pending",
+        "createdAt": "2025-05-07T05:35:02.487Z",
+        "__v": 0
+      },
+      {
+        "_id": "681b7d3c827b8c4f7c522a4d",
+        "orderId": "681b7d2b827b8c4f7c522a40",
+        "paymentIntentId": "pi_3RM9yEQtHIgpSU040DVXhxgP",
+        "amount": 20,
+        "paymentMethod": "STRIPE",
+        "status": "completed",
+        "createdAt": "2025-05-07T15:33:16.670Z",
+        "__v": 0
+      },
+      {
+        "_id": "681ddff8ea3b518f16d22526",
+        "orderId": "681b54c9827b8c4f7c5226ae",
+        "paymentIntentId": "REFUND-undefined",
+        "amount": -140,
+        "paymentMethod": "CASH",
+        "status": "completed",
+        "createdAt": "2025-05-09T10:59:04.950Z",
+        "__v": 0
+      },
+      {
+        "_id": "681df4dc46bf34bdad32d184",
+        "orderId": "681df19946bf34bdad32d0b2",
+        "paymentIntentId": "pi_3RMq2CQtHIgpSU040gAK3Zdh",
+        "amount": 100,
+        "paymentMethod": "STRIPE",
+        "status": "completed",
+        "createdAt": "2025-05-09T12:28:12.162Z",
+        "__v": 0
+      },
+      {
+        "_id": "681dfa0f46bf34bdad32d41e",
+        "orderId": "681dfa0146bf34bdad32d411",
+        "paymentIntentId": "pi_3RMqNgQtHIgpSU041Aukqjlf",
+        "amount": 200,
+        "paymentMethod": "STRIPE",
+        "status": "completed",
+        "createdAt": "2025-05-09T12:50:23.721Z",
+        "__v": 0
+      },
+      {
+        "_id": "681e2c1446bf34bdad32d6ad",
+        "orderId": "681e2bfe46bf34bdad32d69d",
+        "paymentIntentId": "pi_3RMtiCQtHIgpSU040qOAvEgY",
+        "amount": 450,
+        "paymentMethod": "STRIPE",
+        "status": "completed",
+        "createdAt": "2025-05-09T16:23:48.436Z",
+        "__v": 0
+      },
+      {
+        "_id": "681eabb87c50d9612aedf67c",
+        "orderId": "681eab9e7c50d9612aedf66f",
+        "paymentIntentId": "pi_3RN2DFQtHIgpSU040gncc9XP",
+        "amount": 90,
+        "paymentMethod": "STRIPE",
+        "status": "completed",
+        "createdAt": "2025-05-10T01:28:24.908Z",
+        "__v": 0
+      },
+      {
+        "_id": "681ef9595fbe80f5f5153f69",
+        "orderId": "681ef94b5fbe80f5f5153f58",
+        "paymentIntentId": "pi_3RN7NnQtHIgpSU041L9dK0j2",
+        "amount": 110,
+        "paymentMethod": "STRIPE",
+        "status": "completed",
+        "createdAt": "2025-05-10T06:59:37.620Z",
+        "__v": 0
+      }
+    ],
+    "products": [
+      {
+        "_id": "6819155cdb09e13c83cd0538",
+        "name": "Pepper",
+        "description": "Ceylon Pepper is rich in Piperine, which gives Ceylon Pepper its distinct pungency and a premium price in the global market driven by its plenitude of the alkaloid.",
+        "price": 100,
+        "rating": 0,
+        "category": "Seed Spices",
+        "stock": 10,
+        "imageUrl": "https://res.cloudinary.com/dkntplasg/image/upload/v1746474718/products/mdfbblirpl640r0kstpl.png",
+        "cloudinary": {
+          "public_id": "products/mdfbblirpl640r0kstpl",
+          "url": "https://res.cloudinary.com/dkntplasg/image/upload/v1746474718/products/mdfbblirpl640r0kstpl.png"
+        },
+        "status": "Active",
+        "addDate": "2025-05-16T00:00:00.000Z",
+        "expiryDate": "2025-05-22T00:00:00.000Z",
+        "createdAt": "2025-05-05T19:45:32.537Z",
+        "updatedAt": "2025-05-10T07:31:57.618Z",
+        "__v": 0
+      },
+      {
+        "_id": "68191669db09e13c83cd05dd",
+        "name": "Termic powder",
+        "description": "Turmeric products from Sri Lanka are renowned for their high quality and purity, harvested from the island’s rich, fertile soil. Sri Lankan turmeric, known for its vibrant color and strong aroma",
+        "price": 10,
+        "rating": 0,
+        "category": "Root Spices",
+        "stock": 48,
+        "imageUrl": "https://res.cloudinary.com/dkntplasg/image/upload/v1746474689/products/cxzc1b2aw4uausrtv82q.png",
+        "cloudinary": {
+          "public_id": "products/cxzc1b2aw4uausrtv82q",
+          "url": "https://res.cloudinary.com/dkntplasg/image/upload/v1746474689/products/cxzc1b2aw4uausrtv82q.png"
+        },
+        "status": "Active",
+        "addDate": "2025-05-10T00:00:00.000Z",
+        "expiryDate": "2025-05-30T00:00:00.000Z",
+        "createdAt": "2025-05-05T19:50:01.965Z",
+        "updatedAt": "2025-05-10T07:32:23.884Z",
+        "__v": 0
+      },
+      {
+        "_id": "681ddf193f9f4fd447e1af43",
+        "name": "Cloves (Karambunatti)",
+        "description": "The dried unopened flower buds of an evergreen tree, this spice is easily identified by its incredibly intense spicy aroma and pungent bittersweet flavours. Cloves are an essential spice in Eastern cuisine and are primarily used to flavour and aromatize meat or rice-based dishes.",
+        "price": 450,
+        "category": "Leaf/Herb Spices",
+        "stock": 44,
+        "imageUrl": "https://res.cloudinary.com/dkntplasg/image/upload/v1746788120/products/ujajg57yho0uvxtkrovn.png",
+        "cloudinary": {
+          "public_id": "products/ujajg57yho0uvxtkrovn",
+          "url": "https://res.cloudinary.com/dkntplasg/image/upload/v1746788120/products/ujajg57yho0uvxtkrovn.png"
+        },
+        "status": "Active",
+        "addDate": "2025-05-15T00:00:00.000Z",
+        "expiryDate": "2025-05-30T00:00:00.000Z",
+        "createdAt": "2025-05-09T10:55:21.312Z",
+        "updatedAt": "2025-05-10T07:32:07.731Z",
+        "__v": 0
+      },
+      {
+        "_id": "681ddfc43f9f4fd447e1afbf",
+        "name": "Nuts",
+        "description": "Have a look at our premium selection of fresh and crunchy nuts from all over the world",
+        "price": 1500,
+        "category": "Seed Spices",
+        "stock": 145,
+        "imageUrl": "https://res.cloudinary.com/dkntplasg/image/upload/v1746788334/products/b0iusig9j1gned75on2f.png",
+        "cloudinary": {
+          "public_id": "products/b0iusig9j1gned75on2f",
+          "url": "https://res.cloudinary.com/dkntplasg/image/upload/v1746788334/products/b0iusig9j1gned75on2f.png"
+        },
+        "status": "Active",
+        "addDate": "2025-05-10T00:00:00.000Z",
+        "expiryDate": "2025-05-15T00:00:00.000Z",
+        "createdAt": "2025-05-09T10:58:12.316Z",
+        "updatedAt": "2025-05-10T08:00:33.997Z",
+        "__v": 0
+      },
+      {
+        "_id": "681de04d3f9f4fd447e1b013",
+        "name": "Chilli",
+        "description": "Simple yet effective chilli is an easily accessible avenue to pack a spicy punch into a dish. These fiery capsicums come in a wide range of colours, sizes and most importantly hotness. Sri Lanka cultivates several varieties of chillies that are widely used in Sri Lankan cuisine ranging from the famous red chillies that can be used in almost any dish powdered, sliced or even dried for preservation and an extra crunch to green chillies which are known to be even hotter and contain some added zest.",
+        "price": 100,
+        "category": "Fruit/Berry Spices",
+        "stock": 0,
+        "imageUrl": "https://res.cloudinary.com/dkntplasg/image/upload/v1746788429/products/ej4bbuvbtgruqsu1xly5.png",
+        "cloudinary": {
+          "public_id": "products/ej4bbuvbtgruqsu1xly5",
+          "url": "https://res.cloudinary.com/dkntplasg/image/upload/v1746788429/products/ej4bbuvbtgruqsu1xly5.png"
+        },
+        "status": "Active",
+        "addDate": "2025-05-10T00:00:00.000Z",
+        "expiryDate": "2025-05-17T00:00:00.000Z",
+        "createdAt": "2025-05-09T11:00:29.713Z",
+        "updatedAt": "2025-05-10T06:20:13.010Z",
+        "__v": 0
+      },
+      {
+        "_id": "681ea15ae2ddd668c460d7dd",
+        "name": "Chilli Powder",
+        "description": "bla bla",
+        "price": 120,
+        "category": "Seed Spices",
+        "stock": 11,
+        "imageUrl": "https://res.cloudinary.com/dkntplasg/image/upload/v1746837850/products/hy1fgsezkgcz96nfocdd.jpg",
+        "cloudinary": {
+          "public_id": "products/hy1fgsezkgcz96nfocdd",
+          "url": "https://res.cloudinary.com/dkntplasg/image/upload/v1746837850/products/hy1fgsezkgcz96nfocdd.jpg"
+        },
+        "status": "Active",
+        "addDate": "2025-05-09T00:00:00.000Z",
+        "expiryDate": "2025-06-29T00:00:00.000Z",
+        "createdAt": "2025-05-10T00:44:10.921Z",
+        "updatedAt": "2025-05-10T07:31:30.314Z",
+        "__v": 0
+      },
+      {
+        "_id": "681ea41fe2ddd668c460d906",
+        "name": "Date palm",
+        "description": "Phoenix dactylifera, commonly known as the date palm, is a flowering-plant species in the palm family Arecaceae,",
+        "price": 90,
+        "category": "Bark Spices",
+        "stock": 47,
+        "imageUrl": "https://res.cloudinary.com/dkntplasg/image/upload/v1746838559/products/r2hddgvwp2a5u4qrfqiq.jpg",
+        "cloudinary": {
+          "public_id": "products/r2hddgvwp2a5u4qrfqiq",
+          "url": "https://res.cloudinary.com/dkntplasg/image/upload/v1746838559/products/r2hddgvwp2a5u4qrfqiq.jpg"
+        },
+        "status": "Active",
+        "addDate": "2025-05-11T00:00:00.000Z",
+        "expiryDate": "2025-05-31T00:00:00.000Z",
+        "createdAt": "2025-05-10T00:55:59.987Z",
+        "updatedAt": "2025-05-10T07:32:43.806Z",
+        "__v": 0
+      },
+      {
+        "_id": "681ea7ed10803e9b9ff750cd",
+        "name": "Cardamom",
+        "description": "A spice among locals for its ability to send your taste buds into a spicy shock when bitten Cardamom is a small seed pod with black seeds inside that extrude its famous sweet fragrance. It is widely used in various meat curries and yellow rice dishes and is further utilized in making desserts or even added to your evening tea for a bit of spice.",
+        "price": 80,
+        "category": "Fruit/Berry Spices",
+        "stock": 10,
+        "imageUrl": "https://res.cloudinary.com/dkntplasg/image/upload/v1746839532/products/wuwiskwpjmflnq42zx2b.jpg",
+        "cloudinary": {
+          "public_id": "products/wuwiskwpjmflnq42zx2b",
+          "url": "https://res.cloudinary.com/dkntplasg/image/upload/v1746839532/products/wuwiskwpjmflnq42zx2b.jpg"
+        },
+        "status": "Active",
+        "addDate": "2025-05-10T00:00:00.000Z",
+        "expiryDate": "2025-05-31T00:00:00.000Z",
+        "createdAt": "2025-05-10T01:12:13.455Z",
+        "updatedAt": "2025-05-10T06:14:04.984Z",
+        "__v": 0
+      }
+    ],
+    "companies": [
+      {
+        "_id": "681cf1dd15b85b7f61eff834",
+        "companyId": "C001",
+        "companyName": "SrilankaSpiceProductions(pvt)ltd",
+        "category": "Spice Production",
+        "contactNumber": "+94 11 2345678",
+        "emailAddress": "info@srilankaspice.com",
+        "createdAt": "2025-05-08T18:03:09.526Z",
+        "updatedAt": "2025-05-08T18:03:09.526Z",
+        "__v": 0
+      },
+      {
+        "_id": "681cf1df15b85b7f61eff83a",
+        "companyId": "C002",
+        "companyName": "SouthSpice(pvt)ltd",
+        "category": "Spice Trading",
+        "contactNumber": "+94 41 2345678",
+        "emailAddress": "info@southspice.com",
+        "createdAt": "2025-05-08T18:03:11.550Z",
+        "updatedAt": "2025-05-08T18:03:11.550Z",
+        "__v": 0
+      },
+      {
+        "_id": "681cf1df15b85b7f61eff83c",
+        "companyId": "C003",
+        "companyName": "MatharaKulubadu(pvt)ltd",
+        "category": "Food Processing",
+        "contactNumber": "+94 41 3456789",
+        "emailAddress": "info@matharakulubadu.com",
+        "createdAt": "2025-05-08T18:03:11.686Z",
+        "updatedAt": "2025-05-08T18:03:11.686Z",
+        "__v": 0
+      },
+      {
+        "_id": "681cf1df15b85b7f61eff83e",
+        "companyId": "C004",
+        "companyName": "Liu Oasis",
+        "category": "Food & Beverage",
+        "contactNumber": "+94 11 9876543",
+        "emailAddress": "info@liuoasis.com",
+        "createdAt": "2025-05-08T18:03:11.827Z",
+        "updatedAt": "2025-05-08T18:03:11.827Z",
+        "__v": 0
+      }
+    ],
+    "quotas": [
+      {
+        "_id": "68178b09c1272a2ff6fffca3",
+        "quotaId": "Q1746373385402l026yw",
+        "items": [
+          {
+            "name": "chilli",
+            "quantity": 20,
+            "unitPrice": 100,
+            "unitWeight": 50,
+            "weightUnit": "g",
+            "totalPrice": 2000,
+            "_id": "68178b09c1272a2ff6fffca4"
+          }
+        ],
+        "createdAt": "2025-05-04T15:43:05.530Z",
+        "__v": 0
+      },
+      {
+        "_id": "68178d60eb4ce99dcfafdc77",
+        "quotaId": "Q174637398401688dhf2",
+        "items": [
+          {
+            "name": "chilli",
+            "quantity": 20,
+            "unitPrice": 100,
+            "unitWeight": 20,
+            "weightUnit": "g",
+            "totalPrice": 2000,
+            "_id": "68178d60eb4ce99dcfafdc78"
+          }
+        ],
+        "createdAt": "2025-05-04T15:53:04.155Z",
+        "__v": 0
+      },
+      {
+        "_id": "681795e006f1a30d6441ce58",
+        "quotaId": "Q1746376160056e1n3ua",
+        "items": [
+          {
+            "name": "chilli",
+            "quantity": 40,
+            "unitPrice": 100,
+            "unitWeight": 50,
+            "weightUnit": "g",
+            "totalPrice": 4000,
+            "_id": "681795e006f1a30d6441ce59"
+          }
+        ],
+        "createdAt": "2025-05-04T16:29:20.171Z",
+        "__v": 0
+      },
+      {
+        "_id": "6817966306f1a30d6441ce6d",
+        "quotaId": "Q17463762912341t6mqj",
+        "items": [
+          {
+            "name": "chilli",
+            "quantity": 40,
+            "unitPrice": 1000,
+            "unitWeight": 50,
+            "weightUnit": "g",
+            "totalPrice": 40000,
+            "_id": "6817966306f1a30d6441ce6e"
+          }
+        ],
+        "createdAt": "2025-05-04T16:31:31.351Z",
+        "__v": 0
+      },
+      {
+        "_id": "681796f006f1a30d6441ce7c",
+        "quotaId": "Q1746376432796l44ev5",
+        "items": [
+          {
+            "name": "chilli",
+            "quantity": 50,
+            "unitPrice": 200,
+            "unitWeight": 50,
+            "weightUnit": "g",
+            "totalPrice": 10000,
+            "_id": "681796f006f1a30d6441ce7d"
+          }
+        ],
+        "createdAt": "2025-05-04T16:33:52.918Z",
+        "__v": 0
+      },
+      {
+        "_id": "6817982306f1a30d6441cec1",
+        "quotaId": "Q1746376739474eagsu4",
+        "items": [
+          {
+            "name": "chilli",
+            "quantity": 30,
+            "unitPrice": 200,
+            "unitWeight": 150,
+            "weightUnit": "g",
+            "totalPrice": 6000,
+            "_id": "6817982306f1a30d6441cec2"
+          }
+        ],
+        "createdAt": "2025-05-04T16:38:59.606Z",
+        "__v": 0
+      },
+      {
+        "_id": "681ae4309d02c7936dd5df78",
+        "quotaId": "Q1746592816153j8xgik",
+        "items": [
+          {
+            "name": "Black Pepper",
+            "quantity": 20,
+            "unitPrice": 1.5,
+            "unitWeight": 50,
+            "weightUnit": "g",
+            "totalPrice": 30,
+            "_id": "681ae4309d02c7936dd5df79"
+          },
+          {
+            "name": "Turmeric Powder",
+            "quantity": 300,
+            "unitPrice": 8.9,
+            "unitWeight": 500,
+            "weightUnit": "g",
+            "totalPrice": 2670,
+            "_id": "681ae4309d02c7936dd5df7a"
+          },
+          {
+            "name": "Black Pepper",
+            "quantity": 23,
+            "unitPrice": 10.5,
+            "unitWeight": 500,
+            "weightUnit": "g",
+            "totalPrice": 241.5,
+            "_id": "681ae4309d02c7936dd5df7b"
+          },
+          {
+            "name": "Black Pepper",
+            "quantity": 50,
+            "unitPrice": 5.8,
+            "unitWeight": 250,
+            "weightUnit": "g",
+            "totalPrice": 290,
+            "_id": "681ae4309d02c7936dd5df7c"
+          }
+        ],
+        "createdAt": "2025-05-07T04:40:16.252Z",
+        "__v": 0
+      },
+      {
+        "_id": "681ae548a067fcd7bef188b4",
+        "quotaId": "Q1746593096446jqoiyl",
+        "company": "681ae511a067fcd7bef188aa",
+        "items": [
+          {
+            "name": "Black Pepper",
+            "quantity": 30,
+            "unitPrice": 1.5,
+            "unitWeight": 50,
+            "weightUnit": "g",
+            "totalPrice": 45,
+            "_id": "681ae548a067fcd7bef188b5"
+          },
+          {
+            "name": "Black Pepper",
+            "quantity": 40,
+            "unitPrice": 10.5,
+            "unitWeight": 500,
+            "weightUnit": "g",
+            "totalPrice": 420,
+            "_id": "681ae548a067fcd7bef188b6"
+          },
+          {
+            "name": "Turmeric Powder",
+            "quantity": 345,
+            "unitPrice": 2.5,
+            "unitWeight": 100,
+            "weightUnit": "g",
+            "totalPrice": 862.5,
+            "_id": "681ae548a067fcd7bef188b7"
+          },
+          {
+            "name": "Black Pepper",
+            "quantity": 34,
+            "unitPrice": 1.5,
+            "unitWeight": 50,
+            "weightUnit": "g",
+            "totalPrice": 51,
+            "_id": "681ae548a067fcd7bef188b8"
+          }
+        ],
+        "createdAt": "2025-05-07T04:44:56.567Z",
+        "__v": 0
+      },
+      {
+        "_id": "681ae5e5a067fcd7bef188d1",
+        "quotaId": "Q1746593253739wfvm2c",
+        "company": "681ae511a067fcd7bef188aa",
+        "items": [
+          {
+            "name": "Black Pepper",
+            "quantity": 344,
+            "unitPrice": 1.5,
+            "unitWeight": 50,
+            "weightUnit": "g",
+            "totalPrice": 516,
+            "_id": "681ae5e5a067fcd7bef188d2"
+          }
+        ],
+        "createdAt": "2025-05-07T04:47:33.839Z",
+        "__v": 0
+      },
+      {
+        "_id": "681ae66592d3493b66171ad8",
+        "quotaId": "Q1746593381329o3z6hy",
+        "company": "681ae63c92d3493b66171ace",
+        "items": [
+          {
+            "name": "Black Pepper",
+            "quantity": 4444,
+            "unitPrice": 1.5,
+            "unitWeight": 50,
+            "weightUnit": "g",
+            "totalPrice": 6666,
+            "_id": "681ae66592d3493b66171ad9"
+          }
+        ],
+        "createdAt": "2025-05-07T04:49:41.429Z",
+        "__v": 0
+      },
+      {
+        "_id": "681ae69a872e5081945f02e4",
+        "quotaId": "Q1746593434862fg41gz",
+        "company": "681ae681872e5081945f02da",
+        "items": [
+          {
+            "name": "Black Pepper",
+            "quantity": 22222,
+            "unitPrice": 1.5,
+            "unitWeight": 50,
+            "weightUnit": "g",
+            "totalPrice": 33333,
+            "_id": "681ae69a872e5081945f02e5"
+          }
+        ],
+        "createdAt": "2025-05-07T04:50:34.969Z",
+        "__v": 0
+      },
+      {
+        "_id": "681aed42159b0ac6c11f84c3",
+        "quotaId": "Q1746595138793sbgh7p",
+        "companies": [
+          "681aecff159b0ac6c11f84b7"
+        ],
+        "items": [
+          {
+            "name": "Black Pepper",
+            "quantity": 65,
+            "unitPrice": 1.5,
+            "unitWeight": 50,
+            "weightUnit": "g",
+            "totalPrice": 97.5,
+            "_id": "681aed42159b0ac6c11f84c4"
+          }
+        ],
+        "createdAt": "2025-05-07T05:18:58.898Z",
+        "__v": 0
+      },
+      {
+        "_id": "681b3c4f8a813d84ddeb5daa",
+        "quotaId": "Q1746615375825e4i1qg",
+        "items": [
+          {
+            "name": "Black Pepper",
+            "quantity": 100,
+            "unitPrice": 5.8,
+            "unitWeight": 250,
+            "weightUnit": "g",
+            "totalPrice": 580,
+            "_id": "681b3c4f8a813d84ddeb5dab"
+          }
+        ],
+        "createdAt": "2025-05-07T10:56:15.830Z",
+        "__v": 0
+      },
+      {
+        "_id": "681cf27515b85b7f61eff848",
+        "quotaId": "Q17467275416520dfdzj",
+        "companies": [
+          "681cf1df15b85b7f61eff83c"
+        ],
+        "items": [
+          {
+            "name": "Black Pepper",
+            "quantity": 778878,
+            "unitPrice": 1.5,
+            "unitWeight": 50,
+            "weightUnit": "g",
+            "totalPrice": 1168317,
+            "_id": "681cf27515b85b7f61eff849"
+          },
+          {
+            "name": "Black Pepper",
+            "quantity": 56565,
+            "unitPrice": 5.8,
+            "unitWeight": 250,
+            "weightUnit": "g",
+            "totalPrice": 328077,
+            "_id": "681cf27515b85b7f61eff84a"
+          }
+        ],
+        "createdAt": "2025-05-08T18:05:41.755Z",
+        "__v": 0
+      },
+      {
+        "_id": "681cf7e054a4e19e8484f56e",
+        "quotaId": "Q17467289287790xn2ou",
+        "items": [
+          {
+            "name": "Black Pepper",
+            "quantity": 2,
+            "unitPrice": 5.8,
+            "unitWeight": 250,
+            "weightUnit": "g",
+            "totalPrice": 11.6,
+            "_id": "681cf7e054a4e19e8484f56f"
+          },
+          {
+            "name": "Turmeric Powder",
+            "quantity": 33,
+            "unitPrice": 2.5,
+            "unitWeight": 100,
+            "weightUnit": "g",
+            "totalPrice": 82.5,
+            "_id": "681cf7e054a4e19e8484f570"
+          },
+          {
+            "name": "Red Chili Powder",
+            "quantity": 3,
+            "unitPrice": 3,
+            "unitWeight": 100,
+            "weightUnit": "g",
+            "totalPrice": 9,
+            "_id": "681cf7e054a4e19e8484f571"
+          }
+        ],
+        "createdAt": "2025-05-08T18:28:48.782Z",
+        "__v": 0
+      },
+      {
+        "_id": "681cf9f254a4e19e8484f8b6",
+        "quotaId": "Q174672945855795wnzk",
+        "items": [
+          {
+            "name": "Black Pepper",
+            "quantity": 33,
+            "unitPrice": 5.8,
+            "unitWeight": 250,
+            "weightUnit": "g",
+            "totalPrice": 191.4,
+            "_id": "681cf9f254a4e19e8484f8b7"
+          },
+          {
+            "name": "Coriander Powder",
+            "quantity": 33,
+            "unitPrice": 2.2,
+            "unitWeight": 100,
+            "weightUnit": "g",
+            "totalPrice": 72.60000000000001,
+            "_id": "681cf9f254a4e19e8484f8b8"
+          }
+        ],
+        "createdAt": "2025-05-08T18:37:38.558Z",
+        "__v": 0
+      },
+      {
+        "_id": "681d003254a4e19e8484fdf0",
+        "quotaId": "Q1746731058627h3rnxn",
+        "items": [
+          {
+            "name": "Mustard Seeds",
+            "quantity": 22,
+            "unitPrice": 4.3,
+            "unitWeight": 250,
+            "weightUnit": "g",
+            "totalPrice": 94.6,
+            "_id": "681d003254a4e19e8484fdf1"
+          },
+          {
+            "name": "Fennel Seeds",
+            "quantity": 22,
+            "unitPrice": 2.6,
+            "unitWeight": 100,
+            "weightUnit": "g",
+            "totalPrice": 57.2,
+            "_id": "681d003254a4e19e8484fdf2"
+          }
+        ],
+        "createdAt": "2025-05-08T19:04:18.629Z",
+        "__v": 0
+      },
+      {
+        "_id": "681f03273cf230409264a2c7",
+        "quotaId": "Q17468628878561tap38",
+        "items": [
+          {
+            "name": "Black Pepper",
+            "quantity": 12,
+            "unitPrice": 1.5,
+            "unitWeight": 50,
+            "weightUnit": "g",
+            "totalPrice": 18,
+            "_id": "681f03273cf230409264a2c8"
+          },
+          {
+            "name": "Black Pepper",
+            "quantity": 3,
+            "unitPrice": 5.8,
+            "unitWeight": 250,
+            "weightUnit": "g",
+            "totalPrice": 17.4,
+            "_id": "681f03273cf230409264a2c9"
+          },
+          {
+            "name": "Black Pepper",
+            "quantity": 56,
+            "unitPrice": 5.8,
+            "unitWeight": 250,
+            "weightUnit": "g",
+            "totalPrice": 324.8,
+            "_id": "681f03273cf230409264a2ca"
+          }
+        ],
+        "createdAt": "2025-05-10T07:41:27.859Z",
+        "__v": 0
+      }
+    ],
+    "orders": [
+      {
+        "_id": "6817acea4a6ddecdb8fa5371",
+        "orderNumber": "ORD1746382057814",
+        "user": "68177d6eb5d85e9e6d816307",
+        "items": [
+          {
+            "product": "68166c6b8d368f5a5812bfc8",
+            "productName": "cinnamon",
+            "quantity": 11,
+            "price": 500,
+            "_id": "6817acea4a6ddecdb8fa5372"
+          },
+          {
+            "product": "6816664816445d3e01f9a1fd",
+            "productName": "Pepper",
+            "quantity": 7,
+            "price": 200,
+            "_id": "6817acea4a6ddecdb8fa5373"
+          }
+        ],
+        "totalAmount": 6900,
+        "orderStatus": "pending",
+        "paymentStatus": "pending",
+        "paymentMethod": "credit_card",
+        "shippingAddress": {
+          "street": "gjrg",
+          "city": "hjrhkj",
+          "state": "yrkyrk",
+          "country": "Sri Lanka"
+        },
+        "cancellationReason": null,
+        "cancellationDate": null,
+        "refundStatus": "not_applicable",
+        "refundReason": null,
+        "refundRequestDate": null,
+        "refundProcessedDate": null,
+        "createdAt": "2025-05-04T18:07:38.221Z",
+        "updatedAt": "2025-05-04T18:07:38.221Z",
+        "__v": 0
+      },
+      {
+        "_id": "681ae6d7582f68a58c6c6683",
+        "orderNumber": "ORD1746593495017",
+        "user": "6816651e16445d3e01f9a1d3",
+        "items": [
+          {
+            "product": "68191669db09e13c83cd05dd",
+            "productName": "Termic powder",
+            "quantity": 1,
+            "price": 10,
+            "_id": "681ae6d7582f68a58c6c6684"
+          }
+        ],
+        "totalAmount": 10,
+        "orderStatus": "cancelled",
+        "paymentStatus": "pending",
+        "paymentMethod": "credit_card",
+        "shippingAddress": {
+          "street": "dddd",
+          "city": "d",
+          "state": "ddd",
+          "country": "Sri Lanka"
+        },
+        "cancellationReason": null,
+        "cancellationDate": null,
+        "refundStatus": "not_applicable",
+        "refundReason": null,
+        "refundRequestDate": null,
+        "refundProcessedDate": null,
+        "createdAt": "2025-05-07T04:51:35.112Z",
+        "updatedAt": "2025-05-07T05:40:29.803Z",
+        "__v": 0
+      },
+      {
+        "_id": "681b54c9827b8c4f7c5226ae",
+        "orderNumber": "ORD1746621641385",
+        "user": "6816651e16445d3e01f9a1d3",
+        "items": [
+          {
+            "product": "68198e59387cf32f31b738f2",
+            "productName": "Nutmeg",
+            "quantity": 1,
+            "price": 140,
+            "_id": "681b54c9827b8c4f7c5226af"
+          }
+        ],
+        "totalAmount": 140,
+        "orderStatus": "completed",
+        "paymentStatus": "paid",
+        "paymentMethod": "credit_card",
+        "shippingAddress": {
+          "street": "hhhh",
+          "city": "hhh",
+          "state": "hhh",
+          "country": "Sri Lanka"
+        },
+        "cancellationReason": null,
+        "cancellationDate": null,
+        "refundStatus": "processed",
+        "refundReason": "Package is damaged",
+        "refundRequestDate": "2025-05-09T10:49:42.281Z",
+        "refundProcessedDate": "2025-05-09T10:59:05.125Z",
+        "createdAt": "2025-05-07T12:40:41.474Z",
+        "updatedAt": "2025-05-09T10:59:05.132Z",
+        "__v": 0
+      },
+      {
+        "_id": "681b7d2b827b8c4f7c522a40",
+        "orderNumber": "ORD1746631979078",
+        "user": "681b7cef827b8c4f7c522a33",
+        "items": [
+          {
+            "product": "68191669db09e13c83cd05dd",
+            "productName": "Termic powder",
+            "quantity": 2,
+            "price": 10,
+            "_id": "681b7d2b827b8c4f7c522a41"
+          }
+        ],
+        "totalAmount": 20,
+        "orderStatus": "processing",
+        "paymentStatus": "paid",
+        "paymentMethod": "credit_card",
+        "shippingAddress": {
+          "street": "PAKAYA ",
+          "city": "CMB",
+          "state": "west",
+          "country": "India"
+        },
+        "cancellationReason": null,
+        "cancellationDate": null,
+        "refundStatus": "not_applicable",
+        "refundReason": null,
+        "refundRequestDate": null,
+        "refundProcessedDate": null,
+        "createdAt": "2025-05-07T15:32:59.186Z",
+        "updatedAt": "2025-05-08T07:20:52.867Z",
+        "__v": 0
+      },
+      {
+        "_id": "681df19946bf34bdad32d0b2",
+        "orderNumber": "ORD1746792857384",
+        "user": "6816651e16445d3e01f9a1d3",
+        "items": [
+          {
+            "product": "681de04d3f9f4fd447e1b013",
+            "productName": "Chilli",
+            "quantity": 1,
+            "price": 100,
+            "_id": "681df19946bf34bdad32d0b3"
+          }
+        ],
+        "totalAmount": 100,
+        "orderStatus": "pending",
+        "paymentStatus": "paid",
+        "paymentMethod": "credit_card",
+        "shippingAddress": {
+          "street": "rrrrr",
+          "city": "rrrrrr",
+          "state": "rrrrr",
+          "country": "Sri Lanka"
+        },
+        "cancellationReason": null,
+        "cancellationDate": null,
+        "refundStatus": "rejected",
+        "refundReason": "thgfvn",
+        "refundRequestDate": "2025-05-09T12:28:19.201Z",
+        "refundProcessedDate": "2025-05-09T12:28:32.442Z",
+        "createdAt": "2025-05-09T12:14:17.897Z",
+        "updatedAt": "2025-05-09T18:38:17.719Z",
+        "__v": 0,
+        "notes": "Rejected by admin"
+      },
+      {
+        "_id": "681df96a46bf34bdad32d2fa",
+        "orderNumber": "ORD1746794858491",
+        "user": "6816651e16445d3e01f9a1d3",
+        "items": [
+          {
+            "product": "681ddf193f9f4fd447e1af43",
+            "productName": "Cloves (Karambunatti)",
+            "quantity": 1,
+            "price": 450,
+            "_id": "681df96a46bf34bdad32d2fb"
+          },
+          {
+            "product": "681ddfc43f9f4fd447e1afbf",
+            "productName": "Nuts",
+            "quantity": 1,
+            "price": 1500,
+            "_id": "681df96a46bf34bdad32d2fc"
+          }
+        ],
+        "totalAmount": 1950,
+        "orderStatus": "pending",
+        "paymentStatus": "pending",
+        "paymentMethod": "credit_card",
+        "shippingAddress": {
+          "street": "dfhgfh",
+          "city": "rhg",
+          "state": "rhrhg",
+          "country": "India"
+        },
+        "cancellationReason": null,
+        "cancellationDate": null,
+        "refundStatus": "not_applicable",
+        "refundReason": null,
+        "refundRequestDate": null,
+        "refundProcessedDate": null,
+        "createdAt": "2025-05-09T12:47:38.904Z",
+        "updatedAt": "2025-05-09T12:47:38.904Z",
+        "__v": 0
+      },
+      {
+        "_id": "681dfa0146bf34bdad32d411",
+        "orderNumber": "ORD1746795009224",
+        "user": "6816651e16445d3e01f9a1d3",
+        "items": [
+          {
+            "product": "681de04d3f9f4fd447e1b013",
+            "productName": "Chilli",
+            "quantity": 2,
+            "price": 100,
+            "_id": "681dfa0146bf34bdad32d412"
+          }
+        ],
+        "totalAmount": 200,
+        "orderStatus": "processing",
+        "paymentStatus": "paid",
+        "paymentMethod": "credit_card",
+        "shippingAddress": {
+          "street": "nirmal",
+          "city": "yuty",
+          "state": "rtyy",
+          "country": "Sri Lanka"
+        },
+        "cancellationReason": null,
+        "cancellationDate": null,
+        "refundStatus": "rejected",
+        "refundReason": "damage",
+        "refundRequestDate": "2025-05-09T12:56:03.577Z",
+        "refundProcessedDate": "2025-05-09T16:26:11.967Z",
+        "createdAt": "2025-05-09T12:50:09.415Z",
+        "updatedAt": "2025-05-09T16:26:11.971Z",
+        "__v": 0,
+        "notes": "Rejected by admin"
+      },
+      {
+        "_id": "681e2bfe46bf34bdad32d69d",
+        "orderNumber": "ORD1746807806052",
+        "user": "6816651e16445d3e01f9a1d3",
+        "items": [
+          {
+            "product": "681ddf193f9f4fd447e1af43",
+            "productName": "Cloves (Karambunatti)",
+            "quantity": 1,
+            "price": 450,
+            "_id": "681e2bfe46bf34bdad32d69e"
+          }
+        ],
+        "totalAmount": 450,
+        "orderStatus": "completed",
+        "paymentStatus": "paid",
+        "paymentMethod": "credit_card",
+        "shippingAddress": {
+          "street": "sdddd",
+          "city": "dddd",
+          "state": "ffd",
+          "country": "Sri Lanka"
+        },
+        "cancellationReason": null,
+        "cancellationDate": null,
+        "refundStatus": "pending",
+        "refundReason": "Damage",
+        "refundRequestDate": "2025-05-09T16:50:14.993Z",
+        "refundProcessedDate": null,
+        "createdAt": "2025-05-09T16:23:26.292Z",
+        "updatedAt": "2025-05-09T17:04:30.472Z",
+        "__v": 0
+      },
+      {
+        "_id": "681eab9e7c50d9612aedf66f",
+        "orderNumber": "ORD1746840478169",
+        "user": "6816651e16445d3e01f9a1d3",
+        "items": [
+          {
+            "product": "681ea41fe2ddd668c460d906",
+            "productName": "Date palm",
+            "quantity": 1,
+            "price": 90,
+            "_id": "681eab9e7c50d9612aedf670"
+          }
+        ],
+        "totalAmount": 90,
+        "orderStatus": "pending",
+        "paymentStatus": "paid",
+        "paymentMethod": "credit_card",
+        "shippingAddress": {
+          "street": "23 malabe",
+          "city": "cmb",
+          "state": "west",
+          "country": "Sri Lanka"
+        },
+        "cancellationReason": null,
+        "cancellationDate": null,
+        "refundStatus": "not_applicable",
+        "refundReason": null,
+        "refundRequestDate": null,
+        "refundProcessedDate": null,
+        "createdAt": "2025-05-10T01:27:58.413Z",
+        "updatedAt": "2025-05-10T07:29:50.083Z",
+        "__v": 0
+      },
+      {
+        "_id": "681ef94b5fbe80f5f5153f58",
+        "orderNumber": "ORD1746860362676",
+        "user": "6816651e16445d3e01f9a1d3",
+        "items": [
+          {
+            "product": "6819155cdb09e13c83cd0538",
+            "productName": "Pepper",
+            "quantity": 1,
+            "price": 100,
+            "_id": "681ef94b5fbe80f5f5153f59"
+          },
+          {
+            "product": "68191669db09e13c83cd05dd",
+            "productName": "Termic powder",
+            "quantity": 1,
+            "price": 10,
+            "_id": "681ef94b5fbe80f5f5153f5a"
+          }
+        ],
+        "totalAmount": 110,
+        "orderStatus": "processing",
+        "paymentStatus": "paid",
+        "paymentMethod": "credit_card",
+        "shippingAddress": {
+          "street": "ddddd",
+          "city": "dddd",
+          "state": "dddd",
+          "country": "India"
+        },
+        "cancellationReason": null,
+        "cancellationDate": null,
+        "refundStatus": "not_applicable",
+        "refundReason": null,
+        "refundRequestDate": null,
+        "refundProcessedDate": null,
+        "createdAt": "2025-05-10T06:59:23.150Z",
+        "updatedAt": "2025-05-10T07:00:30.662Z",
+        "__v": 0
+      }
+    ],
+    "inquiries": [
+      {
+        "_id": "681d267de063321412bc4ea0",
+        "name": "jhsshh",
+        "description": "hshshsh",
+        "reply": "well. we willlfuck dd",
+        "createdAt": "2025-05-08T21:47:41.015Z",
+        "__v": 0
+      },
+      {
+        "_id": "681d2733e063321412bc4ead",
+        "name": "hahaha",
+        "description": "ssss",
+        "reply": "",
+        "createdAt": "2025-05-08T21:50:43.307Z",
+        "__v": 0
+      },
+      {
+        "_id": "681d2744e063321412bc4eb2",
+        "name": "hahaha",
+        "description": "sssss",
+        "reply": "baaaaa\n",
+        "createdAt": "2025-05-08T21:51:00.460Z",
+        "__v": 0
+      },
+      {
+        "_id": "681d4523398d03caf505b255",
+        "name": "eedd",
+        "description": "eee",
+        "reply": "uuuyyaa",
+        "createdAt": "2025-05-08T23:58:27.983Z",
+        "__v": 0
+      },
+      {
+        "_id": "681ed9103cf230409264a040",
+        "name": "kamiya ",
+        "description": "ado kurudu na ",
+        "reply": "hutto mama dan atenta enojo",
+        "createdAt": "2025-05-10T04:41:52.078Z",
+        "__v": 0
+      },
+      {
+        "_id": "681eef1d3cf230409264a220",
+        "name": "1223444",
+        "description": "fefefefefefefefefefefefe",
+        "reply": "",
+        "createdAt": "2025-05-10T06:15:57.856Z",
+        "__v": 0
+      },
+      {
+        "_id": "681f074858d588dbaf8eced9",
+        "name": "111111",
+        "description": "tttttttt",
+        "reply": "yes of course\n",
+        "createdAt": "2025-05-10T07:59:04.839Z",
+        "__v": 0
+      }
+    ],
+    "feedbacks": [
+      {
+        "_id": "681d33b2e9cf5ee91f83fe85",
+        "name": "hahaha",
+        "description": "ahahaha",
+        "status": "thanked",
+        "createdAt": "2025-05-08T22:44:02.912Z",
+        "__v": 0
+      },
+      {
+        "_id": "681d3ad599ea8e6fd3334264",
+        "name": "jjajajaj",
+        "description": "jajaja",
+        "status": "thanked",
+        "createdAt": "2025-05-08T23:14:29.917Z",
+        "__v": 0
+      },
+      {
+        "_id": "681d4554398d03caf505b260",
+        "name": "ssssss",
+        "description": "aaaa",
+        "status": "thanked",
+        "createdAt": "2025-05-08T23:59:16.913Z",
+        "__v": 0
+      },
+      {
+        "_id": "681f075258d588dbaf8ecedc",
+        "name": "44444444",
+        "description": "fffffffffffffffffffffffffff",
+        "status": "pending",
+        "createdAt": "2025-05-10T07:59:14.077Z",
+        "__v": 0
+      }
+    ],
+    "notifications": [
+      {
+        "_id": "681c4ebf1b0658a48d14269f",
+        "toWhom": "kew kew",
+        "description": "akkakakaka",
+        "date": "2025-05-08T06:27:11.547Z",
+        "__v": 0
+      },
+      {
+        "_id": "681f06e03cf230409264a360",
+        "toWhom": "to all users",
+        "description": "server will be down at 7pm tomorrow ",
+        "date": "2025-05-10T07:57:20.857Z",
+        "__v": 0
+      },
+      {
+        "_id": "681f08d448abacf094d6979a",
+        "toWhom": "to all",
+        "description": "testtt",
+        "date": "2025-05-10T08:05:40.409Z",
+        "__v": 0
+      }
+    ]
+  }
+}

@@ -22,7 +22,14 @@ import {
   Button,
   FormControl,
   Select,
-  MenuItem
+  MenuItem,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  TextField,
+  IconButton,
+  InputLabel
 } from '@mui/material';
 import {
   Person as UserIcon,
@@ -33,7 +40,9 @@ import {
   PictureAsPdf as PdfIcon,
   SettingsBackupRestore as RefundIcon,
   Notifications as NotificationIcon,
-  Inventory as ProductIcon
+  Inventory as ProductIcon,
+  Edit as EditIcon,
+  Delete as DeleteIcon
 } from '@mui/icons-material';
 import { Link as RouterLink } from 'react-router-dom';
 import api from '../../../services/api';
@@ -43,6 +52,12 @@ import UsersTable from '../components/UsersTable';
 import PaymentsTable from '../components/PaymentsTable';
 import jsPDF from "jspdf";
 import "jspdf-autotable";
+import AddUserPage from '../users/AddUserPage';
+import NotificationsPage from '../NotificationsPage';
+import ReportsPage from '../ReportsPage';
+import BackupPage from '../BackupPage';
+import QuotaPage from '../QuotaPage';
+import InquiriesPage from '../InquiriesPage';
 
 const DashboardPage = () => {
   const [tabValue, setTabValue] = useState(0);
@@ -62,6 +77,21 @@ const DashboardPage = () => {
     payments: [],
     refundRequests: [],
     products: []
+  });
+  const [feedbacks, setFeedbacks] = useState([]);
+  const [feedbackError, setFeedbackError] = useState('');
+  const [feedbackSuccess, setFeedbackSuccess] = useState('');
+  const [chatQAs, setChatQAs] = useState([]);
+  const [chatLoading, setChatLoading] = useState(false);
+  const [chatError, setChatError] = useState('');
+  const [chatSuccess, setChatSuccess] = useState('');
+  const [qaDialogOpen, setQaDialogOpen] = useState(false);
+  const [qaEditMode, setQaEditMode] = useState(false);
+  const [qaForm, setQaForm] = useState({ question: '', answer: '', id: null });
+  const [productFilters, setProductFilters] = useState({
+    search: '',
+    category: 'all',
+    status: 'all',
   });
 
   const theme = useTheme();
@@ -244,13 +274,12 @@ const DashboardPage = () => {
       }
     }
     
-    const tableColumn = ["Order Number", "Customer", "Items", "Total Amount", "Status", "Payment Status", "Date"];
+    const tableColumn = ["Order Number", "Customer", "Items", "Total Amount", "Payment Status", "Date"];
     const tableRows = filteredOrders.map(order => [
       order.orderNumber,
       order.user?.name || 'N/A',
       order.items.map(item => `${item.productName} (${item.quantity})`).join(', '),
       `$${order.totalAmount.toFixed(2)}`,
-      order.orderStatus,
       order.paymentStatus,
       new Date(order.createdAt).toLocaleDateString()
     ]);
@@ -266,8 +295,7 @@ const DashboardPage = () => {
         2: { cellWidth: 50 },
         3: { cellWidth: 25 },
         4: { cellWidth: 25 },
-        5: { cellWidth: 25 },
-        6: { cellWidth: 25 }
+        5: { cellWidth: 25 }     
       },
       headStyles: { fillColor: [41, 128, 185], textColor: 255 }
     });
@@ -351,8 +379,130 @@ const DashboardPage = () => {
     doc.save('products_report.pdf');
   };
 
+  // Add this function to handle product deletion
+  const handleDeleteProduct = async (productId) => {
+    try {
+      if (!window.confirm('Are you sure you want to delete this product?')) {
+        return;
+      }
+      
+      setError('');
+      await api.delete(`/products/${productId}`);
+      
+      // Update the products list after deletion
+      setData(prevData => ({
+        ...prevData,
+        products: prevData.products.filter(product => product._id !== productId),
+        stats: {
+          ...prevData.stats,
+          totalProducts: prevData.products.length - 1
+        }
+      }));
+      
+      console.log('Product deleted successfully');
+    } catch (error) {
+      console.error('Error deleting product:', error);
+      setError(error.response?.data?.message || 'Failed to delete product');
+    }
+  };
+
+  const fetchFeedbacks = async () => {
+    try {
+      const res = await api.get('/feedback');
+      setFeedbacks(res.data);
+    } catch (err) {
+      setFeedbackError('Failed to fetch feedbacks');
+    }
+  };
+
+  const handleThank = async (id) => {
+    try {
+      await api.patch(`/feedback/${id}/thank`);
+      setFeedbackSuccess('Feedback marked as thanked successfully');
+      fetchFeedbacks();
+    } catch (err) {
+      setFeedbackError('Failed to update feedback status');
+    }
+  };
+
+  // Fetch QAs
+  const fetchChatQAs = async () => {
+    setChatLoading(true);
+    setChatError('');
+    try {
+      const res = await api.get('/chatbot/qa');
+      setChatQAs(res.data);
+    } catch (err) {
+      setChatError('Failed to fetch Q&A pairs');
+    } finally {
+      setChatLoading(false);
+    }
+  };
+
+  // Add/Edit Q&A
+  const handleQaDialogOpen = (qa = null) => {
+    if (qa) {
+      setQaEditMode(true);
+      setQaForm({ question: qa.question, answer: qa.answer, id: qa._id });
+    } else {
+      setQaEditMode(false);
+      setQaForm({ question: '', answer: '', id: null });
+    }
+    setQaDialogOpen(true);
+  };
+  const handleQaDialogClose = () => {
+    setQaDialogOpen(false);
+    setQaForm({ question: '', answer: '', id: null });
+  };
+  const handleQaFormChange = (e) => {
+    setQaForm({ ...qaForm, [e.target.name]: e.target.value });
+  };
+  const handleQaSubmit = async () => {
+    try {
+      if (qaEditMode) {
+        await api.put(`/chatbot/qa/${qaForm.id}`, { question: qaForm.question, answer: qaForm.answer });
+        setChatSuccess('Q&A updated successfully');
+      } else {
+        await api.post('/chatbot/qa', { question: qaForm.question, answer: qaForm.answer });
+        setChatSuccess('Q&A added successfully');
+      }
+      fetchChatQAs();
+      handleQaDialogClose();
+    } catch (err) {
+      setChatError('Failed to save Q&A');
+    }
+  };
+  // Delete Q&A
+  const handleQaDelete = async (id) => {
+    if (!window.confirm('Delete this Q&A?')) return;
+    try {
+      await api.delete(`/chatbot/qa/${id}`);
+      setChatSuccess('Q&A deleted');
+      fetchChatQAs();
+    } catch (err) {
+      setChatError('Failed to delete Q&A');
+    }
+  };
+
+  const handleProductFilterChange = (field, value) => {
+    setProductFilters(prev => ({ ...prev, [field]: value }));
+  };
+
+  const clearProductFilters = () => {
+    setProductFilters({ search: '', category: 'all', status: 'all' });
+  };
+
+  const filteredProducts = data.products.filter(product => {
+    const matchesSearch = productFilters.search === '' || product.name.toLowerCase().includes(productFilters.search.toLowerCase());
+    const matchesCategory = productFilters.category === 'all' || product.category === productFilters.category;
+    const matchesStatus = productFilters.status === 'all' || (product.status || 'Active') === productFilters.status;
+    return matchesSearch && matchesCategory && matchesStatus;
+  });
+
   useEffect(() => {
     fetchDashboardData();
+    fetchFeedbacks();
+    fetchChatQAs();
   }, []);
 
   if (loading) {
@@ -366,13 +516,11 @@ const DashboardPage = () => {
   return (
     <Box
       sx={{
-        height: '100vh',
+        minHeight: '100vh',
         width: '100vw',
-        overflow: 'hidden',
+        overflowY: 'auto',
         bgcolor: theme.palette.grey[100],
-        position: 'fixed',
-        top: 0,
-        left: 0,
+        pb: 10, // padding for footer
       }}
     >
       {/* Header */}
@@ -404,7 +552,7 @@ const DashboardPage = () => {
                   <UserIcon sx={{ fontSize: 40, mr: 2 }} />
                   <Typography variant="h6">Total Users</Typography>
                 </Box>
-                <Typography variant="h3" sx={{ fontWeight: 'bold' }}>
+                <Typography variant="h5" sx={{ fontWeight: 'bold' }}>
                   {data.stats.totalUsers}
                 </Typography>
               </CardContent>
@@ -423,7 +571,7 @@ const DashboardPage = () => {
                   <ShoppingCart sx={{ fontSize: 40, mr: 2 }} />
                   <Typography variant="h6">Total Orders</Typography>
                 </Box>
-                <Typography variant="h3" sx={{ fontWeight: 'bold' }}>
+                <Typography variant="h5" sx={{ fontWeight: 'bold' }}>
                   {data.stats.totalOrders}
                 </Typography>
               </CardContent>
@@ -442,7 +590,7 @@ const DashboardPage = () => {
                   <PaymentIcon sx={{ fontSize: 40, mr: 2 }} />
                   <Typography variant="h6">Total Revenue</Typography>
                 </Box>
-                <Typography variant="h3" sx={{ fontWeight: 'bold' }}>
+                <Typography variant="h5" sx={{ fontWeight: 'bold' }}>
                   ${data.stats.totalRevenue.toFixed(2)}
                 </Typography>
               </CardContent>
@@ -461,7 +609,7 @@ const DashboardPage = () => {
                   <StatsIcon sx={{ fontSize: 40, mr: 2 }} />
                   <Typography variant="h6">Pending Orders</Typography>
                 </Box>
-                <Typography variant="h3" sx={{ fontWeight: 'bold' }}>
+                <Typography variant="h5" sx={{ fontWeight: 'bold' }}>
                   {data.stats.pendingOrders}
                 </Typography>
               </CardContent>
@@ -480,7 +628,7 @@ const DashboardPage = () => {
                   <ProductIcon sx={{ fontSize: 40, mr: 2 }} />
                   <Typography variant="h6">Total Products</Typography>
                 </Box>
-                <Typography variant="h3" sx={{ fontWeight: 'bold' }}>
+                <Typography variant="h5" sx={{ fontWeight: 'bold' }}>
                   {data.stats.totalProducts}
                 </Typography>
               </CardContent>
@@ -500,7 +648,7 @@ const DashboardPage = () => {
                   <Typography variant="h6">Pending Refunds</Typography>
                 </Box>
                 <Box display="flex" justifyContent="space-between" alignItems="center">
-                  <Typography variant="h3" sx={{ fontWeight: 'bold' }}>
+                  <Typography variant="h5" sx={{ fontWeight: 'bold' }}>
                     {data.stats.pendingRefunds}
                   </Typography>
                   {data.stats.pendingRefunds > 0 && (
@@ -531,12 +679,14 @@ const DashboardPage = () => {
 
         <Paper 
           sx={{ 
-            height: 'calc(100vh - 250px)',
+            minHeight: 400,
             display: 'flex',
             flexDirection: 'column',
-            overflow: 'hidden',
-            borderRadius: 2,
-            boxShadow: theme.shadows[3]
+            overflow: 'visible',
+            borderRadius: 4,
+            boxShadow: theme.shadows[2],
+            p: 2,
+            mb: 4,
           }}
         >
           <Tabs
@@ -585,6 +735,14 @@ const DashboardPage = () => {
                 </Badge>
               }
             />
+            <Tab label="Notifications" />
+            <Tab label="Reports" />
+            <Tab label="Add User" />
+            <Tab label="Backup" />
+            <Tab label="Quota" />
+            <Tab label="Inquiries" />
+            <Tab label="Feedback" />
+            <Tab label="Chat" />
           </Tabs>
 
           <Box sx={{ flex: 1, overflow: 'auto', p: 2 }}>
@@ -605,6 +763,7 @@ const DashboardPage = () => {
               <UsersTable 
                 users={data.users} 
                 onExportPdf={generateUsersPdfReport}
+                refreshUsers={fetchDashboardData}
               />
             )}
             {tabValue === 2 && (
@@ -613,7 +772,7 @@ const DashboardPage = () => {
                 onExportPdf={generatePaymentsPdfReport}
               />
             )}
-            {tabValue === 3 && (
+           {tabValue === 3 && (
               <Box>
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2 }}>
                   <Typography variant="h6">Refund Requests</Typography>
@@ -753,7 +912,55 @@ const DashboardPage = () => {
                     </Button>
                   </Box>
                 </Box>
-                
+
+                {/* Filter Bar */}
+                <Box sx={{ mb: 3, p: 2, bgcolor: 'background.paper', borderRadius: 1 }}>
+                  <Grid container spacing={2} alignItems="center">
+                    <Grid item xs={12} sm={4}>
+                      <TextField
+                        fullWidth
+                        size="small"
+                        label="Search Product Name"
+                        value={productFilters.search}
+                        onChange={e => handleProductFilterChange('search', e.target.value)}
+                      />
+                    </Grid>
+                    <Grid item xs={12} sm={4}>
+                      <FormControl fullWidth size="small">
+                        <InputLabel>Category</InputLabel>
+                        <Select
+                          value={productFilters.category}
+                          label="Category"
+                          onChange={e => handleProductFilterChange('category', e.target.value)}
+                        >
+                          <MenuItem value="all">All</MenuItem>
+                          {[...new Set(data.products.map(p => p.category))].map(cat => (
+                            <MenuItem key={cat} value={cat}>{cat}</MenuItem>
+                          ))}
+                        </Select>
+                      </FormControl>
+                    </Grid>
+                    <Grid item xs={12} sm={3}>
+                      <FormControl fullWidth size="small">
+                        <InputLabel>Status</InputLabel>
+                        <Select
+                          value={productFilters.status}
+                          label="Status"
+                          onChange={e => handleProductFilterChange('status', e.target.value)}
+                        >
+                          <MenuItem value="all">All</MenuItem>
+                          <MenuItem value="Active">Active</MenuItem>
+                          <MenuItem value="Inactive">Inactive</MenuItem>
+                          <MenuItem value="Discontinued">Discontinued</MenuItem>
+                        </Select>
+                      </FormControl>
+                    </Grid>
+                    <Grid item xs={12} sm={1}>
+                      <Button onClick={clearProductFilters} color="primary" variant="outlined">Clear</Button>
+                    </Grid>
+                  </Grid>
+                </Box>
+
                 {data.products.length === 0 ? (
                   <Paper sx={{ p: 3, textAlign: 'center' }}>
                     <ProductIcon sx={{ fontSize: 60, color: theme.palette.grey[400], mb: 2 }} />
@@ -786,7 +993,7 @@ const DashboardPage = () => {
                         </TableRow>
                       </TableHead>
                       <TableBody>
-                        {data.products.map((product) => (
+                        {filteredProducts.map((product) => (
                           <TableRow key={product._id}>
                             <TableCell>
                               <Box
@@ -827,6 +1034,7 @@ const DashboardPage = () => {
                                   variant="outlined"
                                   color="error"
                                   size="small"
+                                  onClick={() => handleDeleteProduct(product._id)}
                                 >
                                   Delete
                                 </Button>
@@ -838,6 +1046,135 @@ const DashboardPage = () => {
                     </Table>
                   </TableContainer>
                 )}
+              </Box>
+            )}
+            {tabValue === 5 && <NotificationsPage />}
+            {tabValue === 6 && <ReportsPage />}
+            {tabValue === 7 && <AddUserPage />}
+            {tabValue === 8 && <BackupPage />}
+            {tabValue === 9 && <QuotaPage />}
+            {tabValue === 10 && <InquiriesPage />}
+            {tabValue === 11 && (
+              <Box>
+                <Typography variant="h6" mb={2}>Feedback Management</Typography>
+                {feedbackSuccess && <Alert severity="success" sx={{ mb: 2 }}>{feedbackSuccess}</Alert>}
+                {feedbackError && <Alert severity="error" sx={{ mb: 2 }}>{feedbackError}</Alert>}
+                <Paper elevation={3}>
+                  <TableContainer>
+                    <Table>
+                      <TableHead>
+                        <TableRow>
+                          <TableCell>Name</TableCell>
+                          <TableCell>Feedback</TableCell>
+                          <TableCell>Status</TableCell>
+                          <TableCell>Date</TableCell>
+                          <TableCell>Action</TableCell>
+                        </TableRow>
+                      </TableHead>
+                      <TableBody>
+                        {feedbacks.length === 0 ? (
+                          <TableRow>
+                            <TableCell colSpan={5} align="center">No feedbacks found</TableCell>
+                          </TableRow>
+                        ) : (
+                          feedbacks.map((feedback) => (
+                            <TableRow key={feedback._id}>
+                              <TableCell>{feedback.name}</TableCell>
+                              <TableCell>{feedback.description}</TableCell>
+                              <TableCell>
+                                <span style={{ 
+                                  color: feedback.status === 'thanked' ? 'green' : 'orange',
+                                  fontWeight: 'bold'
+                                }}>
+                                  {feedback.status === 'thanked' ? 'Thanked' : 'Pending'}
+                                </span>
+                              </TableCell>
+                              <TableCell>{new Date(feedback.createdAt).toLocaleString()}</TableCell>
+                              <TableCell>
+                                {feedback.status === 'pending' && (
+                                  <Button
+                                    variant="contained"
+                                    color="primary"
+                                    size="small"
+                                    onClick={() => handleThank(feedback._id)}
+                                  >
+                                    Mark as Thanked
+                                  </Button>
+                                )}
+                              </TableCell>
+                            </TableRow>
+                          ))
+                        )}
+                      </TableBody>
+                    </Table>
+                  </TableContainer>
+                </Paper>
+              </Box>
+            )}
+            {tabValue === 12 && (
+              <Box>
+                <Typography variant="h6" mb={2}>Chatbot Q&A Management</Typography>
+                {chatSuccess && <Alert severity="success" sx={{ mb: 2 }}>{chatSuccess}</Alert>}
+                {chatError && <Alert severity="error" sx={{ mb: 2 }}>{chatError}</Alert>}
+                <Button variant="contained" color="primary" sx={{ mb: 2 }} onClick={() => handleQaDialogOpen()}>Add Q&A</Button>
+                <Paper elevation={3}>
+                  <TableContainer>
+                    <Table>
+                      <TableHead>
+                        <TableRow>
+                          <TableCell>Question</TableCell>
+                          <TableCell>Answer</TableCell>
+                          <TableCell>Actions</TableCell>
+                        </TableRow>
+                      </TableHead>
+                      <TableBody>
+                        {chatLoading ? (
+                          <TableRow><TableCell colSpan={3}>Loading...</TableCell></TableRow>
+                        ) : chatQAs.length === 0 ? (
+                          <TableRow><TableCell colSpan={3} align="center">No Q&A pairs found</TableCell></TableRow>
+                        ) : (
+                          chatQAs.map((qa) => (
+                            <TableRow key={qa._id}>
+                              <TableCell>{qa.question}</TableCell>
+                              <TableCell>{qa.answer}</TableCell>
+                              <TableCell>
+                                <IconButton onClick={() => handleQaDialogOpen(qa)}><EditIcon /></IconButton>
+                                <IconButton onClick={() => handleQaDelete(qa._id)} color="error"><DeleteIcon /></IconButton>
+                              </TableCell>
+                            </TableRow>
+                          ))
+                        )}
+                      </TableBody>
+                    </Table>
+                  </TableContainer>
+                </Paper>
+                <Dialog open={qaDialogOpen} onClose={handleQaDialogClose}>
+                  <DialogTitle>{qaEditMode ? 'Edit Q&A' : 'Add Q&A'}</DialogTitle>
+                  <DialogContent>
+                    <TextField
+                      label="Question"
+                      name="question"
+                      value={qaForm.question}
+                      onChange={handleQaFormChange}
+                      fullWidth
+                      margin="normal"
+                    />
+                    <TextField
+                      label="Answer"
+                      name="answer"
+                      value={qaForm.answer}
+                      onChange={handleQaFormChange}
+                      fullWidth
+                      margin="normal"
+                      multiline
+                      minRows={2}
+                    />
+                  </DialogContent>
+                  <DialogActions>
+                    <Button onClick={handleQaDialogClose}>Cancel</Button>
+                    <Button onClick={handleQaSubmit} variant="contained">{qaEditMode ? 'Update' : 'Add'}</Button>
+                  </DialogActions>
+                </Dialog>
               </Box>
             )}
           </Box>

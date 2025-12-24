@@ -287,3 +287,36 @@ exports.cancelOrderWithRefund = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 }; 
+
+exports.updateUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { name, email, role } = req.body;
+    const user = await User.findByIdAndUpdate(
+      id,
+      { name, email, role },
+      { new: true }
+    ).select('name email role');
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+    res.json(user);
+  } catch (error) {
+    console.error('Error updating user:', error);
+    res.status(500).json({ message: error.message });
+  }
+};
+
+exports.deleteUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const user = await User.findByIdAndDelete(id);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+    res.json({ message: 'User deleted' });
+  } catch (error) {
+    console.error('Error deleting user:', error);
+    res.status(500).json({ message: error.message });
+  }
+}; 

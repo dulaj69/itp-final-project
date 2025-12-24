@@ -1,0 +1,112 @@
+[
+  {
+    "_id": "6816651e16445d3e01f9a1d3",
+    "name": "gihan",
+    "email": "sonalperera0@gmail.com",
+    "password": "$2b$10$NEAvJIoseyiczL.iPuigGe9ys0T2nsmgybP5BEzVdJFJ9zdCZUpbW",
+    "role": "user",
+    "createdAt": "2025-05-03T18:49:02.584Z",
+    "updatedAt": "2025-05-03T18:49:02.584Z",
+    "__v": 0
+  },
+  {
+    "_id": "68177d6eb5d85e9e6d816307",
+    "name": "Nirmal",
+    "email": "nirmal@gmail.com",
+    "password": "$2b$10$YTuipo.nNfdBWS0BJmO9iunSbxqRwY3ypxFGa/U8sjSGzsLVsXReK",
+    "role": "admin",
+    "createdAt": "2025-05-04T14:45:02.573Z",
+    "updatedAt": "2025-05-04T14:45:02.573Z",
+    "__v": 0
+  },
+  {
+    "_id": "68177f8a586e3511c52a7c94",
+    "name": "samajith",
+    "email": "samajith3@gmail.com",
+    "password": "$2b$10$KsDhsSJ5WlqacMqPTDcO6.0sG7ygk8TzjhxGbwq7a.suxIrG/5/Me",
+    "role": "admin",
+    "createdAt": "2025-05-04T14:54:02.878Z",
+    "updatedAt": "2025-05-04T14:54:02.878Z",
+    "__v": 0
+  },
+  {
+    "_id": "68189edce2c0450910c9633d",
+    "name": "sanmith",
+    "email": "sanmith@gmial.com",
+    "password": "$2b$10$rgighNIGFxeSjshevTYAvOx2Kg2UAfKV.lUtJicnD2/DMhI80f5IC",
+    "role": "user",
+    "createdAt": "2025-05-05T11:19:56.162Z",
+    "updatedAt": "2025-05-05T11:19:56.162Z",
+    "__v": 0
+  },
+  {
+    "_id": "6818b57f04cd9c68b222d396",
+    "name": "wow",
+    "email": "woowo@gmail.com",
+    "password": "$2b$10$JlXPQoD3Naez1MdO2bNwH.TJrWEGRYde36QG0J3PTaztJm5XQ2iEO",
+    "role": "user",
+    "createdAt": "2025-05-05T12:56:31.299Z",
+    "updatedAt": "2025-05-05T12:56:31.299Z",
+    "__v": 0
+  },
+  {
+    "_id": "681a111464e150a0d08eb50e",
+    "name": "chaminda",
+    "email": "chaminda@gmail.com",
+    "password": "$2b$10$ib9tuNOtf1tWYyOxBrTNfOY1aqTylZ1tjyASCgYvvB0stsDEpL7Wu",
+    "role": "user",
+    "createdAt": "2025-05-06T13:39:32.095Z",
+    "updatedAt": "2025-05-06T13:39:32.095Z",
+    "__v": 0
+  },
+  {
+    "_id": "681a11c064e150a0d08eb568",
+    "name": "testtwo",
+    "email": "test2@gmail.com",
+    "password": "$2b$10$czqvcIfhvpoPqqCKYmPz5e1F8kF1L.9mzQSh/PSrBH9zLE8qTa5LG",
+    "role": "user",
+    "createdAt": "2025-05-06T13:42:24.801Z",
+    "updatedAt": "2025-05-06T13:42:24.801Z",
+    "__v": 0
+  },
+  {
+    "_id": "681ade26582f68a58c6c6636",
+    "name": "shan",
+    "email": "shan@gmail.com",
+    "password": "$2b$10$MBbyuj.fQxqyV5FQ4FifkunRjgkTq5wi2ykXQ3E8wEEs0x793553e",
+    "role": "admin",
+    "createdAt": "2025-05-07T04:14:30.623Z",
+    "updatedAt": "2025-05-07T04:14:30.623Z",
+    "__v": 0
+  },
+  {
+    "_id": "681b241c2b3dc9468163d564",
+    "name": "aah",
+    "email": "aah@gmail.com",
+    "password": "$2b$10$SDnSnHSwy2bG3Sy5s525hunVUQSB7g0K31EvQzRb0z2g2BNznkGZi",
+    "role": "admin",
+    "createdAt": "2025-05-07T09:13:00.436Z",
+    "updatedAt": "2025-05-07T09:13:00.436Z",
+    "__v": 0
+  },
+  {
+    "_id": "681b7cef827b8c4f7c522a33",
+    "name": "Dulaj Sanmith",
+    "email": "dulaj.sanmith@gmail.com",
+    "password": "$2b$10$FKNS6FCUFZKpEFJqY4MAeeLodQ47bN0R4miwJYj98bILjQ.//qMVG",
+    "role": "user",
+    "createdAt": "2025-05-07T15:31:59.828Z",
+    "updatedAt": "2025-05-07T15:31:59.828Z",
+    "__v": 0
+  },
+  {
+    "_id": "681c3bc68eaccf191f0837b5",
+    "name": "samajith sujaya",
+    "email": "ssujaya@gmail.com",
+    "password": "$2b$10$vfSA5MEbQFSjoJIr8/4fYeyABe52Q9Cr9Y3UVrVR36IjZOT7szpW6",
+    "role": "user",
+    "createdAt": "2025-05-08T05:06:14.030Z",
+    "updatedAt": "2025-05-08T05:06:14.030Z",
+    "__v": 0
+  }
+]

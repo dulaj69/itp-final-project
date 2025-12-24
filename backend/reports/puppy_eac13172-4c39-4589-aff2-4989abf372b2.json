@@ -1,0 +1,104 @@
+[
+  {
+    "_id": "68178b09c1272a2ff6fffca3",
+    "quotaId": "Q1746373385402l026yw",
+    "items": [
+      {
+        "name": "chilli",
+        "quantity": 20,
+        "unitPrice": 100,
+        "unitWeight": 50,
+        "weightUnit": "g",
+        "totalPrice": 2000,
+        "_id": "68178b09c1272a2ff6fffca4"
+      }
+    ],
+    "createdAt": "2025-05-04T15:43:05.530Z",
+    "__v": 0
+  },
+  {
+    "_id": "68178d60eb4ce99dcfafdc77",
+    "quotaId": "Q174637398401688dhf2",
+    "items": [
+      {
+        "name": "chilli",
+        "quantity": 20,
+        "unitPrice": 100,
+        "unitWeight": 20,
+        "weightUnit": "g",
+        "totalPrice": 2000,
+        "_id": "68178d60eb4ce99dcfafdc78"
+      }
+    ],
+    "createdAt": "2025-05-04T15:53:04.155Z",
+    "__v": 0
+  },
+  {
+    "_id": "681795e006f1a30d6441ce58",
+    "quotaId": "Q1746376160056e1n3ua",
+    "items": [
+      {
+        "name": "chilli",
+        "quantity": 40,
+        "unitPrice": 100,
+        "unitWeight": 50,
+        "weightUnit": "g",
+        "totalPrice": 4000,
+        "_id": "681795e006f1a30d6441ce59"
+      }
+    ],
+    "createdAt": "2025-05-04T16:29:20.171Z",
+    "__v": 0
+  },
+  {
+    "_id": "6817966306f1a30d6441ce6d",
+    "quotaId": "Q17463762912341t6mqj",
+    "items": [
+      {
+        "name": "chilli",
+        "quantity": 40,
+        "unitPrice": 1000,
+        "unitWeight": 50,
+        "weightUnit": "g",
+        "totalPrice": 40000,
+        "_id": "6817966306f1a30d6441ce6e"
+      }
+    ],
+    "createdAt": "2025-05-04T16:31:31.351Z",
+    "__v": 0
+  },
+  {
+    "_id": "681796f006f1a30d6441ce7c",
+    "quotaId": "Q1746376432796l44ev5",
+    "items": [
+      {
+        "name": "chilli",
+        "quantity": 50,
+        "unitPrice": 200,
+        "unitWeight": 50,
+        "weightUnit": "g",
+        "totalPrice": 10000,
+        "_id": "681796f006f1a30d6441ce7d"
+      }
+    ],
+    "createdAt": "2025-05-04T16:33:52.918Z",
+    "__v": 0
+  },
+  {
+    "_id": "6817982306f1a30d6441cec1",
+    "quotaId": "Q1746376739474eagsu4",
+    "items": [
+      {
+        "name": "chilli",
+        "quantity": 30,
+        "unitPrice": 200,
+        "unitWeight": 150,
+        "weightUnit": "g",
+        "totalPrice": 6000,
+        "_id": "6817982306f1a30d6441cec2"
+      }
+    ],
+    "createdAt": "2025-05-04T16:38:59.606Z",
+    "__v": 0
+  }
+]

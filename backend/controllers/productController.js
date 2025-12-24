@@ -2,21 +2,18 @@ const Product = require('../models/Product');
 const asyncHandler = require('express-async-handler');
 const fs = require('fs');
 const path = require('path');
+const { uploadToCloudinary, deleteFromCloudinary } = require('../utils/cloudinaryUpload');
 
-// @desc    Create a new product
-// @route   POST /api/products
-// @access  Admin
+
 const createProduct = asyncHandler(async (req, res) => {
   try {
-    // Log the received data for debugging
     console.log('Received product data:', {
       body: req.body,
-      file: req.file ? 'File received' : 'No file'
+      file: req.file ? `File received: ${req.file.originalname}` : 'No file'
     });
 
-    const { name, description, price, category, stock } = req.body;
+    const { name, description, price, category, stock, addDate, expiryDate } = req.body;
     
-    // Parse numeric values if they're strings
     const parsedPrice = typeof price === 'string' ? parseFloat(price) : price;
     const parsedStock = typeof stock === 'string' ? parseInt(stock, 10) : stock;
     
@@ -28,21 +25,52 @@ const createProduct = asyncHandler(async (req, res) => {
       stock: parsedStock 
     });
 
-    // Create product data
     const productData = {
       name,
       description: description || '',
       price: parsedPrice,
       category,
-      stock: parsedStock
+      stock: parsedStock,
+      addDate,
+      expiryDate
     };
 
-    // Handle image upload if present
     if (req.file) {
-      productData.imageUrl = `/uploads/products/${req.file.filename}`;
+      try {
+        console.log(`Attempting to upload image: ${req.file.originalname}, size: ${req.file.size} bytes, path: ${req.file.path}`);
+        
+        // Validate the file exists and has content before uploading
+        if (!fs.existsSync(req.file.path)) {
+          throw new Error(`File does not exist at path: ${req.file.path}`);
+        }
+        
+        const stats = fs.statSync(req.file.path);
+        if (stats.size === 0) {
+          throw new Error(`File at ${req.file.path} is empty (0 bytes)`);
+        }
+        
+        const cloudinaryResult = await uploadToCloudinary(req.file.path);
+        
+        console.log('Cloudinary upload successful:', cloudinaryResult);
+        
+        productData.imageUrl = cloudinaryResult.url;
+        productData.cloudinary = {
+          public_id: cloudinaryResult.public_id,
+          url: cloudinaryResult.url
+        };
+      } catch (uploadError) {
+        console.error('Error uploading to Cloudinary:', uploadError);
+        
+        if (req.file && fs.existsSync(req.file.path)) {
+          // Fallback to local storage if Cloudinary fails
+          productData.imageUrl = `/uploads/products/${req.file.filename}`;
+          console.log(`Fallback to local storage: ${productData.imageUrl}`);
+        } else {
+          console.warn('Could not use local fallback because file is not available');
+        }
+      }
     }
 
-    // Create and save the product
     const product = new Product(productData);
     const savedProduct = await product.save();
     
@@ -51,7 +79,6 @@ const createProduct = asyncHandler(async (req, res) => {
   } catch (error) {
     console.error('Error creating product:', error);
     
-    // Handle validation errors specifically
     if (error.name === 'ValidationError') {
       const validationErrors = {};
       
@@ -72,9 +99,7 @@ const createProduct = asyncHandler(async (req, res) => {
   }
 });
 
-// @desc    Get all products
-// @route   GET /api/products
-// @access  Public
+
 const getAllProducts = asyncHandler(async (req, res) => {
   try {
     const products = await Product.find({});
@@ -85,9 +110,6 @@ const getAllProducts = asyncHandler(async (req, res) => {
   }
 });
 
-// @desc    Get a single product by ID
-// @route   GET /api/products/:id
-// @access  Public
 const getProductById = asyncHandler(async (req, res) => {
   try {
     const product = await Product.findById(req.params.id);
@@ -103,12 +125,10 @@ const getProductById = asyncHandler(async (req, res) => {
   }
 });
 
-// @desc    Update a product
-// @route   PUT /api/products/:id
-// @access  Admin
+
 const updateProduct = asyncHandler(async (req, res) => {
   try {
-    const { name, description, price, category, stock, status } = req.body;
+    const { name, description, price, category, stock, status, addDate, expiryDate } = req.body;
     
     const product = await Product.findById(req.params.id);
     
@@ -116,25 +136,57 @@ const updateProduct = asyncHandler(async (req, res) => {
       return res.status(404).json({ message: 'Product not found' });
     }
     
-    // Update product fields
     if (name) product.name = name;
     if (description !== undefined) product.description = description;
     if (price) product.price = price;
     if (category) product.category = category;
     if (stock !== undefined) product.stock = stock;
     if (status) product.status = status;
+    if (addDate) product.addDate = addDate;
+    if (expiryDate) product.expiryDate = expiryDate;
     
-    // Handle image upload if present
     if (req.file) {
-      // Delete old image if exists
-      if (product.imageUrl) {
-        const oldImagePath = path.join(__dirname, '..', 'public', product.imageUrl);
-        if (fs.existsSync(oldImagePath)) {
-          fs.unlinkSync(oldImagePath);
+      try {
+        console.log(`Update: Attempting to upload image: ${req.file.originalname}, size: ${req.file.size} bytes, path: ${req.file.path}`);
+        
+        if (product.cloudinary && product.cloudinary.public_id) {
+          console.log(`Deleting previous Cloudinary image: ${product.cloudinary.public_id}`);
+          await deleteFromCloudinary(product.cloudinary.public_id);
+        } 
+        else if (product.imageUrl && product.imageUrl.startsWith('/uploads')) {
+          const oldImagePath = path.join(__dirname, '..', 'public', product.imageUrl);
+          if (fs.existsSync(oldImagePath)) {
+            fs.unlinkSync(oldImagePath);
+            console.log(`Deleted previous local image: ${oldImagePath}`);
+          }
+        }
+        
+        const cloudinaryResult = await uploadToCloudinary(req.file.path);
+        console.log('Cloudinary upload successful:', cloudinaryResult);
+        
+        product.imageUrl = cloudinaryResult.url;
+        product.cloudinary = {
+          public_id: cloudinaryResult.public_id,
+          url: cloudinaryResult.url
+        };
+      } catch (uploadError) {
+        console.error('Error handling Cloudinary upload:', uploadError);
+        
+        if (req.file && fs.existsSync(req.file.path)) {
+          if (product.imageUrl) {
+            const oldImagePath = path.join(__dirname, '..', 'public', product.imageUrl);
+            if (fs.existsSync(oldImagePath)) {
+              fs.unlinkSync(oldImagePath);
+              console.log(`Deleted previous local image: ${oldImagePath}`);
+            }
+          }
+          
+          product.imageUrl = `/uploads/products/${req.file.filename}`;
+          console.log(`Fallback to local storage: ${product.imageUrl}`);
+        } else {
+          console.warn('Could not use local fallback because file is not available');
         }
       }
-      
-      product.imageUrl = `/uploads/products/${req.file.filename}`;
     }
     
     const updatedProduct = await product.save();
@@ -145,9 +197,7 @@ const updateProduct = asyncHandler(async (req, res) => {
   }
 });
 
-// @desc    Delete a product
-// @route   DELETE /api/products/:id
-// @access  Admin
+
 const deleteProduct = asyncHandler(async (req, res) => {
   try {
     const product = await Product.findById(req.params.id);
@@ -156,8 +206,10 @@ const deleteProduct = asyncHandler(async (req, res) => {
       return res.status(404).json({ message: 'Product not found' });
     }
     
-    // Delete product image if exists
-    if (product.imageUrl) {
+    if (product.cloudinary && product.cloudinary.public_id) {
+      await deleteFromCloudinary(product.cloudinary.public_id);
+    } 
+    else if (product.imageUrl && product.imageUrl.startsWith('/uploads')) {
       const imagePath = path.join(__dirname, '..', 'public', product.imageUrl);
       if (fs.existsSync(imagePath)) {
         fs.unlinkSync(imagePath);

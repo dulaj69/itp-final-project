@@ -11,6 +11,8 @@ const {
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
+const { uploadToCloudinary, deleteFromCloudinary } = require('../utils/cloudinaryUpload');
+const Product = require('../models/Product');
 
 // Configure multer for image uploads
 const storage = multer.diskStorage({
@@ -45,7 +47,6 @@ const upload = multer({
   limits: { fileSize: 5 * 1024 * 1024 } // 5MB limit
 });
 
-// Add logging middleware
 router.use((req, res, next) => {
   console.log(`Product Route accessed: ${req.method} ${req.url}`);
   next();
@@ -60,7 +61,6 @@ router.post('/', protect, admin, upload.single('image'), createProduct);
 router.put('/:id', protect, admin, upload.single('image'), updateProduct);
 router.delete('/:id', protect, admin, deleteProduct);
 
-// Update product image separately
 router.put('/:id/image', protect, admin, upload.single('image'), async (req, res) => {
   try {
     const Product = require('../models/Product');
@@ -75,24 +75,86 @@ router.put('/:id/image', protect, admin, upload.single('image'), async (req, res
       return res.status(404).json({ message: 'Product not found' });
     }
     
-    // Delete old image if exists
-    if (product.imageUrl) {
-      const oldImagePath = path.join(__dirname, '..', 'public', product.imageUrl);
-      if (fs.existsSync(oldImagePath)) {
-        fs.unlinkSync(oldImagePath);
+    try {
+      console.log(`Separate image update: Uploading image for product ${product._id}`);
+      
+      if (product.cloudinary && product.cloudinary.public_id) {
+        console.log(`Deleting previous Cloudinary image: ${product.cloudinary.public_id}`);
+        await deleteFromCloudinary(product.cloudinary.public_id);
+      } 
+      else if (product.imageUrl && product.imageUrl.startsWith('/uploads')) {
+        const oldImagePath = path.join(__dirname, '..', 'public', product.imageUrl);
+        if (fs.existsSync(oldImagePath)) {
+          fs.unlinkSync(oldImagePath);
+          console.log(`Deleted previous local image: ${oldImagePath}`);
+        }
+      }
+      
+      const cloudinaryResult = await uploadToCloudinary(req.file.path);
+      console.log('Cloudinary upload successful:', cloudinaryResult);
+      
+      product.imageUrl = cloudinaryResult.url;
+      product.cloudinary = {
+        public_id: cloudinaryResult.public_id,
+        url: cloudinaryResult.url
+      };
+      
+      const updatedProduct = await product.save();
+      res.json({ 
+        success: true, 
+        imageUrl: cloudinaryResult.url, 
+        product: updatedProduct 
+      });
+    } catch (cloudinaryError) {
+      console.error('Error with Cloudinary upload in separate image update:', cloudinaryError);
+      
+      if (req.file && fs.existsSync(req.file.path)) {
+        if (product.imageUrl && product.imageUrl.startsWith('/uploads')) {
+          const oldImagePath = path.join(__dirname, '..', 'public', product.imageUrl);
+          if (fs.existsSync(oldImagePath)) {
+            fs.unlinkSync(oldImagePath);
+          }
+        }
+        
+        const imageUrl = `/uploads/products/${req.file.filename}`;
+        product.imageUrl = imageUrl;
+        product.cloudinary = { public_id: '', url: '' }; 
+        const updatedProduct = await product.save();
+        res.json({ 
+          success: true, 
+          imageUrl, 
+          product: updatedProduct,
+          note: 'Used local storage fallback due to Cloudinary error'
+        });
+      } else {
+        throw new Error('Failed to upload image to Cloudinary and local fallback not available');
       }
     }
-    
-    // Set new image URL
-    const imageUrl = `/uploads/products/${req.file.filename}`;
-    product.imageUrl = imageUrl;
-    
-    const updatedProduct = await product.save();
-    res.json({ success: true, imageUrl, product: updatedProduct });
   } catch (error) {
     console.error('Error updating product image:', error);
     res.status(500).json({ message: 'Error updating product image', error: error.message });
   }
+});
+
+// Reserve stock when adding to cart
+router.post('/:id/reserve', async (req, res) => {
+  const { quantity } = req.body;
+  const product = await Product.findById(req.params.id);
+  if (!product) return res.status(404).json({ message: 'Product not found' });
+  if (product.stock < quantity) return res.status(400).json({ message: 'Not enough stock' });
+  product.stock -= quantity;
+  await product.save();
+  res.json({ success: true, stock: product.stock });
+});
+
+// Release stock when removing from cart or abandoning cart
+router.post('/:id/release', async (req, res) => {
+  const { quantity } = req.body;
+  const product = await Product.findById(req.params.id);
+  if (!product) return res.status(404).json({ message: 'Product not found' });
+  product.stock += quantity;
+  await product.save();
+  res.json({ success: true, stock: product.stock });
 });
 
 module.exports = router; 

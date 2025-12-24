@@ -19,7 +19,8 @@ import {
 import {
   Payment as PaymentIcon,
   NavigateNext as NavigateNextIcon,
-  Home as HomeIcon
+  Home as HomeIcon,
+  Dashboard
 } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import api from '../../services/api';
@@ -52,17 +53,26 @@ const Payments = () => {
     <Box
       sx={{
         minHeight: '100vh',
-        width: '100vw',
-        position: 'fixed',
-        top: 0,
-        left: 0,
         bgcolor: theme.palette.grey[100],
-        p: 4,
-        overflow: 'auto'
+        py: 4,
+        px: { xs: 2, sm: 4 },
+        overflow: 'auto',
+        position: 'relative',
+        left: -80,
+        width: '100%',
+        display: 'flex',
+        justifyContent: 'center'
       }}
     >
-      <Card sx={{ maxWidth: 1200, margin: '0 auto', borderRadius: 3, boxShadow: theme.shadows[10] }}>
-        <CardContent sx={{ p: 4 }}>
+      <Card sx={{ 
+        width: '100%',
+        maxWidth: 1200, 
+        borderRadius: 3, 
+        boxShadow: theme.shadows[10],
+        display: 'flex',
+        flexDirection: 'column'
+      }}>
+        <CardContent sx={{ p: 4, flexGrow: 0 }}>
           <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 4 }}>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
               <PaymentIcon sx={{ fontSize: 40, color: theme.palette.primary.main }} />
@@ -71,7 +81,7 @@ const Payments = () => {
               </Typography>
             </Box>
             <IconButton
-              onClick={() => navigate('/')}
+              onClick={() => navigate('/dashboard')}
               sx={{
                 bgcolor: theme.palette.primary.main,
                 color: 'white',
@@ -82,20 +92,22 @@ const Payments = () => {
                 transition: 'all 0.3s ease'
               }}
             >
-              <HomeIcon />
+              <Dashboard />
             </IconButton>
           </Box>
+        </CardContent>
 
-          <TableContainer component={Paper} sx={{ borderRadius: 2 }}>
-            <Table>
+        <Box sx={{ flexGrow: 1, overflowY: 'auto', maxHeight: 'calc(100vh - 200px)', px: 4, pb: 4 }}>
+          <TableContainer component={Paper} sx={{ borderRadius: 2, boxShadow: theme.shadows[2] }}>
+            <Table stickyHeader>
               <TableHead>
                 <TableRow sx={{ bgcolor: theme.palette.grey[50] }}>
-                  <TableCell sx={{ fontWeight: 'bold' }}>Order Number</TableCell>
-                  <TableCell sx={{ fontWeight: 'bold' }}>Date</TableCell>
-                  <TableCell sx={{ fontWeight: 'bold' }}>Items</TableCell>
-                  <TableCell sx={{ fontWeight: 'bold' }}>Total Amount</TableCell>
-                  <TableCell sx={{ fontWeight: 'bold' }}>Status</TableCell>
-                  <TableCell sx={{ fontWeight: 'bold' }}>Action</TableCell>
+                  <TableCell sx={{ fontWeight: 'bold', bgcolor: theme.palette.grey[100] }}>Order Number</TableCell>
+                  <TableCell sx={{ fontWeight: 'bold', bgcolor: theme.palette.grey[100] }}>Date</TableCell>
+                  <TableCell sx={{ fontWeight: 'bold', bgcolor: theme.palette.grey[100] }}>Items</TableCell>
+                  <TableCell sx={{ fontWeight: 'bold', bgcolor: theme.palette.grey[100] }}>Total Amount</TableCell>
+                  <TableCell sx={{ fontWeight: 'bold', bgcolor: theme.palette.grey[100] }}>Status</TableCell>
+                  <TableCell sx={{ fontWeight: 'bold', bgcolor: theme.palette.grey[100] }}>Action</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -147,7 +159,7 @@ const Payments = () => {
               </TableBody>
             </Table>
           </TableContainer>
-        </CardContent>
+        </Box>
       </Card>
     </Box>
   );

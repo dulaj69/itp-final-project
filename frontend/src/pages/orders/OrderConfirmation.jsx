@@ -27,7 +27,8 @@ import {
   ShoppingBag,
   LocationOn,
   Payment,
-  Home as HomeIcon
+  Home as HomeIcon,
+  Dashboard
 } from '@mui/icons-material';
 import api from '../../services/api';
 
@@ -89,7 +90,7 @@ const OrderConfirmation = () => {
       });
     } finally {
       setEmailSending(false);
-      setTimeout(() => setEmailStatus(null), 5000);
+      setTimeout(() => setEmailStatus(null), 5001);
     }
   };
 
@@ -130,7 +131,7 @@ const OrderConfirmation = () => {
         <CardContent sx={{ p: 4 }}>
           <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 2 }}>
             <IconButton
-              onClick={() => navigate('/')}
+              onClick={() => navigate('/dashboard')}
               sx={{
                 bgcolor: theme.palette.primary.main,
                 color: 'white',
@@ -141,7 +142,7 @@ const OrderConfirmation = () => {
                 transition: 'all 0.3s ease'
               }}
             >
-              <HomeIcon />
+              <Dashboard />
             </IconButton>
           </Box>
 
@@ -340,7 +341,7 @@ const OrderConfirmation = () => {
       {emailStatus && (
         <Snackbar
           open={Boolean(emailStatus)}
-          autoHideDuration={5000}
+          autoHideDuration={5001}
           onClose={() => setEmailStatus(null)}
           anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
         >

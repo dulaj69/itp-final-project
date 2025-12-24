@@ -1,0 +1,53 @@
+[
+  {
+    "_id": "6816664816445d3e01f9a1fd",
+    "name": "Pepper",
+    "description": "Quality",
+    "price": 200,
+    "category": "Seed Spices",
+    "stock": 42,
+    "imageUrl": "https://res.cloudinary.com/dkntplasg/image/upload/v1746300127/products/vf52tw3iz7u10rwaricc.jpg",
+    "cloudinary": {
+      "public_id": "products/vf52tw3iz7u10rwaricc",
+      "url": "https://res.cloudinary.com/dkntplasg/image/upload/v1746300127/products/vf52tw3iz7u10rwaricc.jpg"
+    },
+    "status": "Active",
+    "createdAt": "2025-05-03T18:54:00.602Z",
+    "updatedAt": "2025-05-04T18:07:38.121Z",
+    "__v": 0
+  },
+  {
+    "_id": "68166c6b8d368f5a5812bfc8",
+    "name": "cinnamon",
+    "description": "qqq",
+    "price": 500,
+    "category": "Seed Spices",
+    "stock": 38,
+    "imageUrl": "https://res.cloudinary.com/dkntplasg/image/upload/v1746300011/products/mow7uuqybrnh6idttb9o.jpg",
+    "cloudinary": {
+      "public_id": "products/mow7uuqybrnh6idttb9o",
+      "url": "https://res.cloudinary.com/dkntplasg/image/upload/v1746300011/products/mow7uuqybrnh6idttb9o.jpg"
+    },
+    "status": "Active",
+    "createdAt": "2025-05-03T19:20:11.219Z",
+    "updatedAt": "2025-05-04T18:07:37.914Z",
+    "__v": 0
+  },
+  {
+    "_id": "6817ae684a6ddecdb8fa539b",
+    "name": "Turmeric powder",
+    "description": "Turmeric is a deep, golden-orange spice known for adding color, flavor and nutrition to foods",
+    "price": 180,
+    "category": "Resin/Aromatic Spices",
+    "stock": 48,
+    "imageUrl": "https://res.cloudinary.com/dkntplasg/image/upload/v1746382439/products/dskfmrofedplakllysaf.png",
+    "cloudinary": {
+      "public_id": "products/dskfmrofedplakllysaf",
+      "url": "https://res.cloudinary.com/dkntplasg/image/upload/v1746382439/products/dskfmrofedplakllysaf.png"
+    },
+    "status": "Active",
+    "createdAt": "2025-05-04T18:14:00.130Z",
+    "updatedAt": "2025-05-04T18:16:27.792Z",
+    "__v": 0
+  }
+]

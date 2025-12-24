@@ -20,7 +20,10 @@ import {
   Dashboard as DashboardIcon,
   Logout as LogoutIcon,
   Home as HomeIcon,
-  AddCircleOutline as AddIcon
+  AddCircleOutline as AddIcon,
+  Person as PersonIcon,
+  Notifications as NotificationsIcon,
+  Feedback as FeedbackIcon
 } from '@mui/icons-material';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
@@ -33,7 +36,7 @@ const Sidebar = ({ mobileOpen, handleDrawerToggle }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const theme = useTheme();
-  const { logout } = useAuth();
+  const { logout, user } = useAuth();
 
   const handleLogout = async () => {
     try {
@@ -51,6 +54,15 @@ const Sidebar = ({ mobileOpen, handleDrawerToggle }) => {
     { text: 'Order History', icon: <HistoryIcon />, path: '/orders' },
     { text: 'Payments', icon: <PaymentIcon />, path: '/payments' },
     { text: 'Shipping', icon: <ShippingIcon />, path: '/shipping' },
+  ];
+  const adminMenuItems = [
+    { text: 'Add User', icon: <PersonIcon />, path: '/admin/users/add' },
+    { text: 'User Details', icon: <PersonIcon />, path: '/admin/users/details' },
+    { text: 'Notifications', icon: <NotificationsIcon />, path: '/admin/notifications' },
+    { text: 'Reports', icon: <HistoryIcon />, path: '/admin/reports' },
+    { text: 'Backup', icon: <PaymentIcon />, path: '/admin/backup' },
+    { text: 'Inquiries', icon: <NotificationsIcon />, path: '/admin/inquiries' },
+    { text: 'Feedback', icon: <FeedbackIcon />, path: '/admin/feedback' },
   ];
   
   // Drawer content
@@ -80,6 +92,41 @@ const Sidebar = ({ mobileOpen, handleDrawerToggle }) => {
       <Divider />
       <List>
         {menuItems.map((item) => (
+          <ListItem key={item.text} disablePadding>
+            <ListItemButton
+              onClick={() => navigate(item.path)}
+              sx={{
+                borderRadius: '0 24px 24px 0',
+                mr: 2,
+                ml: 1,
+                mb: 0.5,
+                '&:hover': {
+                  backgroundColor: `${theme.palette.primary.main}15`
+                },
+                ...(location.pathname === item.path && {
+                  backgroundColor: `${theme.palette.primary.main}20`,
+                  '& .MuiListItemIcon-root': {
+                    color: theme.palette.primary.main
+                  },
+                  '& .MuiListItemText-primary': {
+                    fontWeight: 'bold',
+                    color: theme.palette.primary.main
+                  }
+                })
+              }}
+            >
+              <ListItemIcon sx={{ color: theme.palette.text.secondary, minWidth: 46 }}>
+                {item.icon}
+              </ListItemIcon>
+              <ListItemText 
+                primary={item.text} 
+                primaryTypographyProps={{ fontWeight: 500 }}
+              />
+            </ListItemButton>
+          </ListItem>
+        ))}
+        {/* Admin-only links */}
+        {user?.role === 'admin' && adminMenuItems.map((item) => (
           <ListItem key={item.text} disablePadding>
             <ListItemButton
               onClick={() => navigate(item.path)}

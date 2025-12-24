@@ -33,7 +33,6 @@ const PaymentsTable = ({ payments, onExportPdf }) => {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>Transaction ID</TableCell>
               <TableCell>Order Number</TableCell>
               <TableCell>Customer</TableCell>
               <TableCell>Amount</TableCell>
@@ -45,7 +44,6 @@ const PaymentsTable = ({ payments, onExportPdf }) => {
           <TableBody>
             {payments.map((payment) => (
               <TableRow key={payment._id}>
-                <TableCell>{payment.transactionId}</TableCell>
                 <TableCell>{payment.orderId?.orderNumber || 'N/A'}</TableCell>
                 <TableCell>{payment.orderId?.user?.name || 'N/A'}</TableCell>
                 <TableCell>${payment.amount.toFixed(2)}</TableCell>

@@ -22,6 +22,12 @@ import { ThemeProvider } from '@mui/material/styles';
 import theme from './theme';
 import HomePage from './pages/Home/HomePage';
 import AddProductPage from './pages/admin/products/AddProductPage';
+import EditProductPage from './pages/admin/products/EditProductPage';
+import CartPage from './pages/Cart/CartPage';
+import { AddUserPage, UserDetailsPage, NotificationsPage, ReportsPage, BackupPage } from './pages/admin/users';
+import { CartProvider } from './context/CartContext';
+import ContactPage from './pages/ContactPage';
+import AdminFeedbackPage from './pages/admin/AdminFeedbackPage';
 
 const ProtectedRoute = ({ children }) => {
   const { token } = useAuth();
@@ -35,41 +41,52 @@ const AdminRoute = ({ children }) => {
 
 function App() {
   return (
-    <ThemeProvider theme={theme}>
-      <LocalizationProvider dateAdapter={AdapterDateFns}>
-        <AuthProvider>
-          <BrowserRouter>
-            <CssBaseline />
-            <Routes>
-              {/* Public Routes */}
-              <Route path="/" element={<HomePage />} />
-              <Route path="/register" element={<Register />} />
-              <Route path="/login" element={<Login />} />
-              
-              {/* Protected Routes with Dashboard Layout */}
-              <Route path="/" element={<ProtectedRoute><DashboardLayout /></ProtectedRoute>}>
-                <Route path="/dashboard" element={<Dashboard />} />
-                <Route path="/orders" element={<OrderHistory />} />
-                <Route path="/order/new" element={<OrderForm />} />
-                <Route path="/track/:orderId" element={<OrderTracking />} />
-                <Route path="/payments" element={<Payments />} />
-                <Route path="/shipping" element={<ShippingTracking />} />
-                <Route path="/admin/dashboard" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
-                <Route path="/admin/products/new" element={<AdminRoute><AddProductPage /></AdminRoute>} />
-              </Route>
-              
-              {/* Routes with different layouts */}
-              <Route path="/create-order" element={<CreateOrder />} />
-              <Route path="/order-confirmation/:orderId" element={<OrderConfirmation />} />
-              <Route path="/payment/:orderId" element={<PaymentPage />} />
-              
-              {/* Admin redirect */}
-              <Route path="/admin" element={<Navigate to="/admin/dashboard" replace />} />
-            </Routes>
-          </BrowserRouter>
-        </AuthProvider>
-      </LocalizationProvider>
-    </ThemeProvider>
+    <CartProvider>
+      <ThemeProvider theme={theme}>
+        <LocalizationProvider dateAdapter={AdapterDateFns}>
+          <AuthProvider>
+            <BrowserRouter>
+              <CssBaseline />
+              <Routes>
+                {/* Public Routes */}
+                <Route path="/" element={<HomePage />} />
+                <Route path="/register" element={<Register />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/cart" element={<CartPage />} />
+                <Route path="/contact" element={<ContactPage />} />
+                
+                {/* Protected Routes with Dashboard Layout */}
+                <Route path="/" element={<ProtectedRoute><DashboardLayout /></ProtectedRoute>}>
+                  <Route path="/dashboard" element={<Dashboard />} />
+                  <Route path="/orders" element={<OrderHistory />} />
+                  <Route path="/order/new" element={<OrderForm />} />
+                  <Route path="/track/:orderId" element={<OrderTracking />} />
+                  <Route path="/payments" element={<Payments />} />
+                  <Route path="/shipping" element={<ShippingTracking />} />
+                  <Route path="/admin/dashboard" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
+                  <Route path="/admin/products/new" element={<AdminRoute><AddProductPage /></AdminRoute>} />
+                  <Route path="/admin/products/edit/:id" element={<AdminRoute><EditProductPage /></AdminRoute>} />
+                  <Route path="/admin/users/add" element={<AdminRoute><AddUserPage /></AdminRoute>} />
+                  <Route path="/admin/users/details" element={<AdminRoute><UserDetailsPage /></AdminRoute>} />
+                  <Route path="/admin/notifications" element={<AdminRoute><NotificationsPage /></AdminRoute>} />
+                  <Route path="/admin/reports" element={<AdminRoute><ReportsPage /></AdminRoute>} />
+                  <Route path="/admin/backup" element={<AdminRoute><BackupPage /></AdminRoute>} />
+                  <Route path="/admin/feedback" element={<AdminRoute><AdminFeedbackPage /></AdminRoute>} />
+                </Route>
+                
+                {/* Routes with different layouts */}
+                <Route path="/create-order" element={<CreateOrder />} />
+                <Route path="/order-confirmation/:orderId" element={<OrderConfirmation />} />
+                <Route path="/payment/:orderId" element={<PaymentPage />} />
+                
+                {/* Admin redirect */}
+                <Route path="/admin" element={<Navigate to="/admin/dashboard" replace />} />
+              </Routes>
+            </BrowserRouter>
+          </AuthProvider>
+        </LocalizationProvider>
+      </ThemeProvider>
+    </CartProvider>
   );
 }
 

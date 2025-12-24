@@ -1,0 +1,132 @@
+[
+  {
+    "_id": "6816651e16445d3e01f9a1d3",
+    "name": "gihan",
+    "email": "sonalperera0@gmail.com",
+    "password": "$2b$10$NEAvJIoseyiczL.iPuigGe9ys0T2nsmgybP5BEzVdJFJ9zdCZUpbW",
+    "role": "user",
+    "createdAt": "2025-05-03T18:49:02.584Z",
+    "updatedAt": "2025-05-03T18:49:02.584Z",
+    "__v": 0
+  },
+  {
+    "_id": "68177d6eb5d85e9e6d816307",
+    "name": "Nirmal",
+    "email": "nirmal@gmail.com",
+    "password": "$2b$10$YTuipo.nNfdBWS0BJmO9iunSbxqRwY3ypxFGa/U8sjSGzsLVsXReK",
+    "role": "admin",
+    "createdAt": "2025-05-04T14:45:02.573Z",
+    "updatedAt": "2025-05-04T14:45:02.573Z",
+    "__v": 0
+  },
+  {
+    "_id": "68177f8a586e3511c52a7c94",
+    "name": "samajith",
+    "email": "samajith3@gmail.com",
+    "password": "$2b$10$KsDhsSJ5WlqacMqPTDcO6.0sG7ygk8TzjhxGbwq7a.suxIrG/5/Me",
+    "role": "admin",
+    "createdAt": "2025-05-04T14:54:02.878Z",
+    "updatedAt": "2025-05-04T14:54:02.878Z",
+    "__v": 0
+  },
+  {
+    "_id": "68189edce2c0450910c9633d",
+    "name": "sanmith",
+    "email": "sanmith@gmial.com",
+    "password": "$2b$10$rgighNIGFxeSjshevTYAvOx2Kg2UAfKV.lUtJicnD2/DMhI80f5IC",
+    "role": "user",
+    "createdAt": "2025-05-05T11:19:56.162Z",
+    "updatedAt": "2025-05-05T11:19:56.162Z",
+    "__v": 0
+  },
+  {
+    "_id": "681a111464e150a0d08eb50e",
+    "name": "chaminda",
+    "email": "chaminda@gmail.com",
+    "password": "$2b$10$ib9tuNOtf1tWYyOxBrTNfOY1aqTylZ1tjyASCgYvvB0stsDEpL7Wu",
+    "role": "user",
+    "createdAt": "2025-05-06T13:39:32.095Z",
+    "updatedAt": "2025-05-06T13:39:32.095Z",
+    "__v": 0
+  },
+  {
+    "_id": "681ade26582f68a58c6c6636",
+    "name": "shan",
+    "email": "shan@gmail.com",
+    "password": "$2b$10$MBbyuj.fQxqyV5FQ4FifkunRjgkTq5wi2ykXQ3E8wEEs0x793553e",
+    "role": "admin",
+    "createdAt": "2025-05-07T04:14:30.623Z",
+    "updatedAt": "2025-05-07T04:14:30.623Z",
+    "__v": 0
+  },
+  {
+    "_id": "681b241c2b3dc9468163d564",
+    "name": "aah",
+    "email": "aah@gmail.com",
+    "password": "$2b$10$SDnSnHSwy2bG3Sy5s525hunVUQSB7g0K31EvQzRb0z2g2BNznkGZi",
+    "role": "admin",
+    "createdAt": "2025-05-07T09:13:00.436Z",
+    "updatedAt": "2025-05-07T09:13:00.436Z",
+    "__v": 0
+  },
+  {
+    "_id": "681b7cef827b8c4f7c522a33",
+    "name": "Dulaj Sanmith",
+    "email": "dulaj.sanmith@gmail.com",
+    "password": "$2b$10$FKNS6FCUFZKpEFJqY4MAeeLodQ47bN0R4miwJYj98bILjQ.//qMVG",
+    "role": "user",
+    "createdAt": "2025-05-07T15:31:59.828Z",
+    "updatedAt": "2025-05-07T15:31:59.828Z",
+    "__v": 0
+  },
+  {
+    "_id": "681c4e851b0658a48d14267b",
+    "name": "uuuyyya",
+    "email": "aayyya@gmmgm",
+    "password": "$2b$10$KbekxAe1IRE1tVnu8oWZNuxOjhyCQ5.NlvnQIR3VrVUeHZWbSy.9a",
+    "role": "user",
+    "createdAt": "2025-05-08T06:26:13.523Z",
+    "updatedAt": "2025-05-08T06:26:13.523Z",
+    "__v": 0
+  },
+  {
+    "_id": "681df523f174f1664007bce3",
+    "name": "sujayasamajith",
+    "email": "samajith4@gmail.com",
+    "password": "$2b$10$KazW8u3LmfprxW.n3NbkAOFUrSpL/pp5lnBB3jsaGB2QDmtG/BW6y",
+    "role": "user",
+    "createdAt": "2025-05-09T12:29:23.708Z",
+    "updatedAt": "2025-05-09T12:29:23.708Z",
+    "__v": 0
+  },
+  {
+    "_id": "681e0ad3e7755b0bf2fc0aa0",
+    "name": "lolo",
+    "email": "lol@dd",
+    "password": "$2b$10$n3mymNmHA/phecjPxU7IEO6K3oKzzio4rr110hqjVsz8/Rmt8uGMS",
+    "role": "user",
+    "createdAt": "2025-05-09T14:01:55.529Z",
+    "updatedAt": "2025-05-09T14:01:55.529Z",
+    "__v": 0
+  },
+  {
+    "_id": "681e194b8dbacd418ccf9e97",
+    "name": "dulaj amazing ",
+    "email": "amazing@gmail.com",
+    "password": "$2b$10$MrEBP5hIgXANN7sg25F5/eGi9RPooLfatAy8..jT.Eio6.nZR8NGW",
+    "role": "admin",
+    "createdAt": "2025-05-09T15:03:39.007Z",
+    "updatedAt": "2025-05-09T15:03:39.007Z",
+    "__v": 0
+  },
+  {
+    "_id": "681e1a238dbacd418ccf9eca",
+    "name": "ss",
+    "email": "sjsj@qjqj",
+    "password": "$2b$10$tjLlSQmFk2ytbv42BNaBaO7RM9xIV7dOCu1AjlTeAL2fFXUaQweo.",
+    "role": "user",
+    "createdAt": "2025-05-09T15:07:15.117Z",
+    "updatedAt": "2025-05-09T15:07:15.117Z",
+    "__v": 0
+  }
+]

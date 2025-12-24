@@ -36,7 +36,8 @@ import {
   PictureAsPdf as PdfIcon,
   TableChart as ExcelIcon,
   Print as PrintIcon,
-  KeyboardReturn as RefundIcon
+  KeyboardReturn as RefundIcon,
+  Dashboard
 } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import api from '../../services/api';
@@ -68,63 +69,64 @@ const OrderHistory = () => {
   });
 
   useEffect(() => {
-    const fetchOrderHistory = async () => {
-      if (!user?._id) {
-        console.log('No user ID found:', user);
-        setError('User not authenticated');
-        setLoading(false);
-        return;
-      }
-
-      try {
-        const token = localStorage.getItem('token');
-        console.log('Token present:', !!token);
-        
-        const response = await api.get('/orders/history', {
-          headers: {
-            'Authorization': `Bearer ${token}`
-          }
-        });
-        
-        console.log('Response received:', response.status);
-        
-        if (response.data) {
-          console.log('Orders found:', response.data.length);
-          // Log more details about orders to debug refund button visibility
-          response.data.forEach(order => {
-            console.log(`Order ${order.orderNumber}:`, {
-              orderStatus: order.orderStatus,
-              paymentStatus: order.paymentStatus,
-              refundStatus: order.refundStatus,
-              refundEligible: (
-                order.paymentStatus === 'paid' &&
-                (order.orderStatus === 'completed' || order.orderStatus === 'processing') &&
-                order.orderStatus !== 'cancelled' &&
-                (!order.refundStatus || order.refundStatus === 'not_applicable')
-              )
-            });
-          });
-          setOrders(response.data);
-        } else {
-          console.log('No orders found');
-          setOrders([]);
-        }
-      } catch (error) {
-        console.error('Error details:', {
-          message: error.message,
-          response: error.response?.data,
-          status: error.response?.status,
-          url: error.config?.url,
-          token: !!localStorage.getItem('token')
-        });
-        setError(error.response?.data?.message || 'Failed to load order history');
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchOrderHistory();
-  }, [user]);
+  }, []);
+
+  const fetchOrderHistory = async () => {
+    if (!user?._id) {
+      console.log('No user ID found:', user);
+      setError('User not authenticated');
+      setLoading(false);
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const token = localStorage.getItem('token');
+      console.log('Token present:', !!token);
+      
+      const response = await api.get('/orders/history', {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      
+      console.log('Response received:', response.status);
+      
+      if (response.data) {
+        console.log('Orders found:', response.data.length);
+        // Log more details about orders to debug refund button visibility
+        response.data.forEach(order => {
+          console.log(`Order ${order.orderNumber}:`, {
+            orderStatus: order.orderStatus,
+            paymentStatus: order.paymentStatus,
+            refundStatus: order.refundStatus,
+            refundEligible: (
+              order.paymentStatus === 'paid' &&
+              (order.orderStatus === 'completed' || order.orderStatus === 'processing') &&
+              order.orderStatus !== 'cancelled' &&
+              (!order.refundStatus || order.refundStatus === 'not_applicable')
+            )
+          });
+        });
+        setOrders(response.data);
+      } else {
+        console.log('No orders found');
+        setOrders([]);
+      }
+    } catch (error) {
+      console.error('Error details:', {
+        message: error.message,
+        response: error.response?.data,
+        status: error.response?.status,
+        url: error.config?.url,
+        token: !!localStorage.getItem('token')
+      });
+      setError(error.response?.data?.message || 'Failed to load order history');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const getStatusColor = (status) => {
     const statusColors = {
@@ -400,8 +402,19 @@ const OrderHistory = () => {
 
   if (loading) {
     return (
-      <Box display="flex" justifyContent="center" alignItems="center" minHeight="400px">
-        <CircularProgress />
+      <Box 
+        display="flex" 
+        justifyContent="center" 
+        alignItems="center" 
+        minHeight="400px"
+        sx={{
+          width: '100%',
+          position: 'relative',
+          left: -80,
+          py: 4
+        }}
+      >
+        <CircularProgress size={60} />
       </Box>
     );
   }
@@ -410,13 +423,15 @@ const OrderHistory = () => {
     <Box
       sx={{
         minHeight: '100vh',
-        width: '100vw',
-        position: 'fixed',
-        top: 0,
-        left: 0,
         bgcolor: theme.palette.grey[100],
-        p: 4,
-        overflow: 'auto'
+        py: 4,
+        px: { xs: 2, sm: 4 },
+        overflow: 'auto',
+        position: 'relative',
+        left: -80,
+        width: '100%',
+        display: 'flex',
+        justifyContent: 'center'
       }}
     >
       {/* Snackbar for notifications */}
@@ -438,13 +453,15 @@ const OrderHistory = () => {
 
       <Card
         sx={{
+          width: '100%',
           maxWidth: 1200,
-          margin: '0 auto',
           borderRadius: 3,
-          boxShadow: theme.shadows[10]
+          boxShadow: theme.shadows[10],
+          display: 'flex',
+          flexDirection: 'column'
         }}
       >
-        <CardContent sx={{ p: 4 }}>
+        <CardContent sx={{ p: 4, flexGrow: 0 }}>
           <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 4 }}>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
               <HistoryIcon sx={{ fontSize: 40, color: theme.palette.primary.main }} />
@@ -467,7 +484,7 @@ const OrderHistory = () => {
                 </Button>
               </Tooltip>
               <IconButton
-                onClick={() => navigate('/')}
+                onClick={() => navigate('/dashboard')}
                 sx={{
                   bgcolor: theme.palette.primary.main,
                   color: 'white',
@@ -478,22 +495,24 @@ const OrderHistory = () => {
                   transition: 'all 0.3s ease'
                 }}
               >
-                <HomeIcon />
+                <Dashboard />
               </IconButton>
             </Box>
           </Box>
+        </CardContent>
 
-          <TableContainer component={Paper} sx={{ borderRadius: 2, mb: 3 }} id="orderHistoryTable">
-            <Table>
+        <Box sx={{ flexGrow: 1, overflowY: 'auto', maxHeight: 'calc(100vh - 220px)', px: 4, pb: 4 }}>
+          <TableContainer component={Paper} sx={{ borderRadius: 2, mb: 3, boxShadow: theme.shadows[2] }} id="orderHistoryTable">
+            <Table stickyHeader>
               <TableHead>
                 <TableRow sx={{ bgcolor: theme.palette.grey[50] }}>
-                  <TableCell sx={{ fontWeight: 'bold' }}>Order Number</TableCell>
-                  <TableCell sx={{ fontWeight: 'bold' }}>Items</TableCell>
-                  <TableCell sx={{ fontWeight: 'bold' }}>Total Amount</TableCell>
-                  <TableCell sx={{ fontWeight: 'bold' }}>Order Status</TableCell>
-                  <TableCell sx={{ fontWeight: 'bold' }}>Payment Status</TableCell>
-                  <TableCell sx={{ fontWeight: 'bold' }}>Date</TableCell>
-                  <TableCell sx={{ fontWeight: 'bold' }}>Actions</TableCell>
+                  <TableCell sx={{ fontWeight: 'bold', bgcolor: theme.palette.grey[100] }}>Order Number</TableCell>
+                  <TableCell sx={{ fontWeight: 'bold', bgcolor: theme.palette.grey[100] }}>Items</TableCell>
+                  <TableCell sx={{ fontWeight: 'bold', bgcolor: theme.palette.grey[100] }}>Total Amount</TableCell>
+                  <TableCell sx={{ fontWeight: 'bold', bgcolor: theme.palette.grey[100] }}>Order Status</TableCell>
+                  <TableCell sx={{ fontWeight: 'bold', bgcolor: theme.palette.grey[100] }}>Payment Status</TableCell>
+                  <TableCell sx={{ fontWeight: 'bold', bgcolor: theme.palette.grey[100] }}>Date</TableCell>
+                  <TableCell sx={{ fontWeight: 'bold', bgcolor: theme.palette.grey[100] }}>Actions</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -610,7 +629,7 @@ const OrderHistory = () => {
             onRowsPerPageChange={handleChangeRowsPerPage}
             rowsPerPageOptions={[5, 10, 25]}
           />
-        </CardContent>
+        </Box>
       </Card>
 
       {/* Report Generation Menu */}

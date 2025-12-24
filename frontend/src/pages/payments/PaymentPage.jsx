@@ -1,32 +1,27 @@
 import React, { useEffect, useState } from 'react';
-import { 
-  Box, 
-  Card, 
-  CardContent, 
-  Typography, 
-  Button, 
-  Grid, 
+import {
+  Box,
+  Card,
+  CardContent,
+  Typography,
+  Button,
+  Grid,
   CircularProgress,
   IconButton,
-  Chip,
   Stack,
   Container,
   Paper,
-  Divider,
-  Avatar
+  Divider
 } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import { 
+import {
   PaymentOutlined as PaymentIcon,
   Home as HomeIcon,
   AccessTime,
-  Receipt,
-  ArrowForward,
   CreditCard,
   ShoppingBag,
-  LocalShipping,
-  Info,
-  Security
+  Security,
+  Info
 } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
@@ -85,22 +80,19 @@ const PaymentPage = () => {
   }
 
   return (
-    <Box sx={{ 
+    <Box sx={{
       minHeight: '100vh',
       width: '100vw',
-      position: 'fixed',
-      top: 0,
-      left: 0,
       bgcolor: theme.palette.grey[50],
-      overflow: 'auto'
+      overflowY: 'auto',
+      py: 4
     }}>
-      <Container maxWidth="xl" sx={{ py: 4 }}>
-        {/* Header Section */}
-        <Paper 
-          elevation={0} 
-          sx={{ 
-            p: 4, 
-            mb: 4, 
+      <Container maxWidth={false} disableGutters sx={{ px: 4 }}>
+        <Paper
+          elevation={0}
+          sx={{
+            p: 4,
+            mb: 4,
             background: 'linear-gradient(135deg, #1976d2 0%, #1565c0 100%)',
             borderRadius: 3,
             color: 'white'
@@ -136,12 +128,11 @@ const PaymentPage = () => {
         </Paper>
 
         <Grid container spacing={4}>
-          {/* Main Content - Payment Cards */}
           <Grid item xs={12} lg={8}>
             <Grid container spacing={3}>
               {pendingPayments.map((order) => (
                 <Grid item xs={12} md={6} key={order._id}>
-                  <Card sx={{ 
+                  <Card sx={{
                     height: '100%',
                     borderRadius: 3,
                     boxShadow: '0 8px 32px rgba(0,0,0,0.1)',
@@ -185,16 +176,23 @@ const PaymentPage = () => {
                             Order Details:
                           </Typography>
                           <Stack spacing={1}>
-                            {order.items?.map((item, index) => (
-                              <Box key={index} sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                                <Typography variant="body2">
-                                  {item.product.name} x {item.quantity}
+                            {order.items?.map((item, index) => {
+                              if (!item.product) return (
+                                <Typography key={index} variant="body2" color="error">
+                                  Invalid product info
                                 </Typography>
-                                <Typography variant="body2" fontWeight="medium">
-                                  ${(item.product.price * item.quantity).toFixed(2)}
-                                </Typography>
-                              </Box>
-                            ))}
+                              );
+                              return (
+                                <Box key={index} sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                                  <Typography variant="body2">
+                                    {item.product.name} x {item.quantity}
+                                  </Typography>
+                                  <Typography variant="body2" fontWeight="medium">
+                                    ${(item.product.price * item.quantity).toFixed(2)}
+                                  </Typography>
+                                </Box>
+                              );
+                            })}
                           </Stack>
                         </Box>
 
@@ -224,14 +222,9 @@ const PaymentPage = () => {
             </Grid>
           </Grid>
 
-          {/* Side Panel */}
           <Grid item xs={12} lg={4}>
             <Stack spacing={3}>
-              {/* Payment Summary */}
-              <Card sx={{ 
-                borderRadius: 3,
-                background: 'linear-gradient(145deg, #ffffff 0%, #f8faff 100%)'
-              }}>
+              <Card sx={{ borderRadius: 3 }}>
                 <CardContent sx={{ p: 3 }}>
                   <Typography variant="h6" gutterBottom fontWeight="bold">
                     Payment Summary
@@ -251,7 +244,6 @@ const PaymentPage = () => {
                 </CardContent>
               </Card>
 
-              {/* Secure Payment Info */}
               <Card sx={{ borderRadius: 3 }}>
                 <CardContent sx={{ p: 3 }}>
                   <Stack spacing={2}>
@@ -265,9 +257,9 @@ const PaymentPage = () => {
                       We use industry-standard encryption to protect your payment information.
                       All transactions are secure and processed through Stripe.
                     </Typography>
-                    <Box sx={{ 
-                      p: 2, 
-                      bgcolor: 'primary.light', 
+                    <Box sx={{
+                      p: 2,
+                      bgcolor: 'primary.light',
                       borderRadius: 2,
                       color: 'primary.main'
                     }}>
@@ -279,7 +271,6 @@ const PaymentPage = () => {
                 </CardContent>
               </Card>
 
-              {/* Need Help Section */}
               <Card sx={{ borderRadius: 3 }}>
                 <CardContent sx={{ p: 3 }}>
                   <Stack spacing={2}>
@@ -308,4 +299,4 @@ const PaymentPage = () => {
   );
 };
 
-export default PaymentPage; 
+export default PaymentPage;

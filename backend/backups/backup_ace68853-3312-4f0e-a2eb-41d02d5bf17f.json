@@ -1,0 +1,654 @@
+{
+  "id": "ace68853-3312-4f0e-a2eb-41d02d5bf17f",
+  "timestamp": "2025-05-05T12:55:43.067Z",
+  "collections": [
+    "users",
+    "payments",
+    "products",
+    "companies",
+    "quotas",
+    "orders",
+    "notifications"
+  ],
+  "data": {
+    "users": [
+      {
+        "_id": "6816651e16445d3e01f9a1d3",
+        "name": "gihan",
+        "email": "sonalperera0@gmail.com",
+        "password": "$2b$10$NEAvJIoseyiczL.iPuigGe9ys0T2nsmgybP5BEzVdJFJ9zdCZUpbW",
+        "role": "user",
+        "createdAt": "2025-05-03T18:49:02.584Z",
+        "updatedAt": "2025-05-03T18:49:02.584Z",
+        "__v": 0
+      },
+      {
+        "_id": "6816659516445d3e01f9a1df",
+        "name": "sonal",
+        "email": "sonal@gmail.com",
+        "password": "$2b$10$itACKszxtVbaBEC9yqJ8c.Yl/lUyQ2vJ0QGp.G2cCg7BmwYHdRqgC",
+        "role": "admin",
+        "createdAt": "2025-05-03T18:51:01.359Z",
+        "updatedAt": "2025-05-03T18:51:01.359Z",
+        "__v": 0
+      },
+      {
+        "_id": "6817177618a6651c89e02249",
+        "name": "sujaya",
+        "email": "sujayasamajith2003@gmail.com",
+        "password": "$2b$10$a6kc7i/jMnW43Drg8pF58OI7F68J6/vYkDnzA5WQ.ASC0o1KUx/zm",
+        "role": "user",
+        "createdAt": "2025-05-04T07:29:58.574Z",
+        "updatedAt": "2025-05-04T07:29:58.574Z",
+        "__v": 0
+      },
+      {
+        "_id": "681743bc8d368f5a5812c195",
+        "name": "Dulaj",
+        "email": "dulaj@gmail.com",
+        "password": "$2b$10$zMp1EH1Es1ku75Zpsog8guP0/W19hpu3h9SrFF8QEvFAv12Pod1/.",
+        "role": "admin",
+        "createdAt": "2025-05-04T10:38:52.426Z",
+        "updatedAt": "2025-05-04T10:38:52.426Z",
+        "__v": 0
+      },
+      {
+        "_id": "68177d6eb5d85e9e6d816307",
+        "name": "Nirmal",
+        "email": "nirmal@gmail.com",
+        "password": "$2b$10$YTuipo.nNfdBWS0BJmO9iunSbxqRwY3ypxFGa/U8sjSGzsLVsXReK",
+        "role": "admin",
+        "createdAt": "2025-05-04T14:45:02.573Z",
+        "updatedAt": "2025-05-04T14:45:02.573Z",
+        "__v": 0
+      },
+      {
+        "_id": "68177f8a586e3511c52a7c94",
+        "name": "samajith",
+        "email": "samajith3@gmail.com",
+        "password": "$2b$10$KsDhsSJ5WlqacMqPTDcO6.0sG7ygk8TzjhxGbwq7a.suxIrG/5/Me",
+        "role": "admin",
+        "createdAt": "2025-05-04T14:54:02.878Z",
+        "updatedAt": "2025-05-04T14:54:02.878Z",
+        "__v": 0
+      },
+      {
+        "_id": "6817a8eab5d85e9e6d8163cf",
+        "name": "woxy",
+        "email": "woxy@gmail.com",
+        "password": "$2b$10$uzhmv98cfH7wZF.kTgfDr./5.MiYsL2ICwoCbv7sbEoGvPPIlyNHq",
+        "role": "user",
+        "createdAt": "2025-05-04T17:50:34.600Z",
+        "updatedAt": "2025-05-04T17:50:34.600Z",
+        "__v": 0
+      },
+      {
+        "_id": "681862949060dd26224b7f3a",
+        "name": "dulajss",
+        "email": "dulajss@gmail.gov",
+        "password": "$2b$10$v0HaXpt4poHsgq70YyiaNu0hADa6QW8erRqwPyFjdP0XhwU5XKWJ2",
+        "role": "user",
+        "createdAt": "2025-05-05T07:02:44.032Z",
+        "updatedAt": "2025-05-05T07:02:44.032Z",
+        "__v": 0
+      },
+      {
+        "_id": "681862b89060dd26224b7f3e",
+        "name": "hiiii",
+        "email": "sanmith@gmail.com",
+        "password": "$2b$10$.AwEPhSxpM277r9/BLCSj.vzibLxaxnRnmLZVOWtsDBsjI4h9LNWe",
+        "role": "user",
+        "createdAt": "2025-05-05T07:03:20.203Z",
+        "updatedAt": "2025-05-05T07:03:20.203Z",
+        "__v": 0
+      },
+      {
+        "_id": "68189edce2c0450910c9633d",
+        "name": "sanmith",
+        "email": "sanmith@gmial.com",
+        "password": "$2b$10$rgighNIGFxeSjshevTYAvOx2Kg2UAfKV.lUtJicnD2/DMhI80f5IC",
+        "role": "user",
+        "createdAt": "2025-05-05T11:19:56.162Z",
+        "updatedAt": "2025-05-05T11:19:56.162Z",
+        "__v": 0
+      },
+      {
+        "_id": "6818aa87c1b3d549e20d0e4c",
+        "name": "lolla",
+        "email": "lolla@gmail.com",
+        "password": "$2b$10$rHefrIHZnVG0jHuY8yUt.O19Bi6rpmGzVQH38yenoavPvukQPTucC",
+        "role": "user",
+        "createdAt": "2025-05-05T12:09:43.926Z",
+        "updatedAt": "2025-05-05T12:09:43.926Z",
+        "__v": 0
+      },
+      {
+        "_id": "6818abe8f4be994103d1db72",
+        "name": "lolla2",
+        "email": "lolla@gmail.lk",
+        "password": "$2b$10$6WM.PV3KN.t1ocmlIb3c7eEQiBgoXxzCK0tsO6.TJRYP9FMt2bLWG",
+        "role": "admin",
+        "createdAt": "2025-05-05T12:15:36.590Z",
+        "updatedAt": "2025-05-05T12:15:36.590Z",
+        "__v": 0
+      },
+      {
+        "_id": "6818af04c92a8c17dd297897",
+        "name": "lola",
+        "email": "lola@gmail.com",
+        "password": "$2b$10$N.DC6fXbuGk5e04/2fClG./lr1xdv.IafgClbIE/LD6kGBcbph.5y",
+        "role": "admin",
+        "createdAt": "2025-05-05T12:28:52.419Z",
+        "updatedAt": "2025-05-05T12:28:52.419Z",
+        "__v": 0
+      }
+    ],
+    "payments": [
+      {
+        "_id": "681740b68d368f5a5812c04c",
+        "orderId": "6817409e8d368f5a5812c03f",
+        "paymentIntentId": "pi_3RKzk9QtHIgpSU040FTgCFsT",
+        "amount": 200,
+        "paymentMethod": "STRIPE",
+        "status": "completed",
+        "createdAt": "2025-05-04T10:25:58.965Z",
+        "__v": 0
+      },
+      {
+        "_id": "681742048d368f5a5812c112",
+        "orderId": "6817409e8d368f5a5812c03f",
+        "paymentIntentId": "REFUND-pi_3RKzk9QtHIgpSU040FTgCFsT",
+        "amount": -200,
+        "paymentMethod": "STRIPE",
+        "status": "completed",
+        "createdAt": "2025-05-04T10:31:32.560Z",
+        "__v": 0
+      },
+      {
+        "_id": "68176cf08d368f5a5812c1fd",
+        "orderId": "68176ce68d368f5a5812c1f2",
+        "amount": 600,
+        "paymentMethod": "CASH",
+        "status": "pending",
+        "createdAt": "2025-05-04T13:34:40.266Z",
+        "__v": 0
+      },
+      {
+        "_id": "6818444295796b1194fc91b3",
+        "orderId": "6818442595796b1194fc91a6",
+        "paymentIntentId": "pi_3RLH1pQtHIgpSU041AheMTBN",
+        "amount": 180,
+        "paymentMethod": "STRIPE",
+        "status": "completed",
+        "createdAt": "2025-05-05T04:53:22.510Z",
+        "__v": 0
+      }
+    ],
+    "products": [
+      {
+        "_id": "6816664816445d3e01f9a1fd",
+        "name": "Pepper",
+        "description": "Quality",
+        "price": 200,
+        "category": "Seed Spices",
+        "stock": 42,
+        "imageUrl": "https://res.cloudinary.com/dkntplasg/image/upload/v1746300127/products/vf52tw3iz7u10rwaricc.jpg",
+        "cloudinary": {
+          "public_id": "products/vf52tw3iz7u10rwaricc",
+          "url": "https://res.cloudinary.com/dkntplasg/image/upload/v1746300127/products/vf52tw3iz7u10rwaricc.jpg"
+        },
+        "status": "Active",
+        "createdAt": "2025-05-03T18:54:00.602Z",
+        "updatedAt": "2025-05-04T18:07:38.121Z",
+        "__v": 0
+      },
+      {
+        "_id": "68166c6b8d368f5a5812bfc8",
+        "name": "cinnamon",
+        "description": "qqq",
+        "price": 500,
+        "category": "Seed Spices",
+        "stock": 38,
+        "imageUrl": "https://res.cloudinary.com/dkntplasg/image/upload/v1746300011/products/mow7uuqybrnh6idttb9o.jpg",
+        "cloudinary": {
+          "public_id": "products/mow7uuqybrnh6idttb9o",
+          "url": "https://res.cloudinary.com/dkntplasg/image/upload/v1746300011/products/mow7uuqybrnh6idttb9o.jpg"
+        },
+        "status": "Active",
+        "createdAt": "2025-05-03T19:20:11.219Z",
+        "updatedAt": "2025-05-04T18:07:37.914Z",
+        "__v": 0
+      },
+      {
+        "_id": "6817ae684a6ddecdb8fa539b",
+        "name": "Turmeric powder",
+        "description": "Turmeric is a deep, golden-orange spice known for adding color, flavor and nutrition to foods",
+        "price": 180,
+        "category": "Resin/Aromatic Spices",
+        "stock": 48,
+        "imageUrl": "https://res.cloudinary.com/dkntplasg/image/upload/v1746382439/products/dskfmrofedplakllysaf.png",
+        "cloudinary": {
+          "public_id": "products/dskfmrofedplakllysaf",
+          "url": "https://res.cloudinary.com/dkntplasg/image/upload/v1746382439/products/dskfmrofedplakllysaf.png"
+        },
+        "status": "Active",
+        "createdAt": "2025-05-04T18:14:00.130Z",
+        "updatedAt": "2025-05-04T18:16:27.792Z",
+        "__v": 0
+      }
+    ],
+    "companies": [
+      {
+        "_id": "68179938ca872765bccbc7ff",
+        "companyId": "C001",
+        "companyName": "SrilankaSpiceProductions(pvt)ltd",
+        "category": "Spice Production",
+        "contactNumber": "+94 11 2345678",
+        "emailAddress": "info@srilankaspice.com",
+        "createdAt": "2025-05-04T16:43:36.355Z",
+        "updatedAt": "2025-05-04T16:43:36.355Z",
+        "__v": 0
+      },
+      {
+        "_id": "68179938ca872765bccbc804",
+        "companyId": "C002",
+        "companyName": "SouthSpice(pvt)ltd",
+        "category": "Spice Trading",
+        "contactNumber": "+94 41 2345678",
+        "emailAddress": "info@southspice.com",
+        "createdAt": "2025-05-04T16:43:36.888Z",
+        "updatedAt": "2025-05-04T16:43:36.888Z",
+        "__v": 0
+      },
+      {
+        "_id": "68179939ca872765bccbc807",
+        "companyId": "C003",
+        "companyName": "MatharaKulubadu(pvt)ltd",
+        "category": "Food Processing",
+        "contactNumber": "+94 41 3456789",
+        "emailAddress": "info@matharakulubadu.com",
+        "createdAt": "2025-05-04T16:43:37.001Z",
+        "updatedAt": "2025-05-04T16:43:37.001Z",
+        "__v": 0
+      },
+      {
+        "_id": "68179939ca872765bccbc809",
+        "companyId": "C004",
+        "companyName": "Liu Oasis",
+        "category": "Food & Beverage",
+        "contactNumber": "+94 11 9876543",
+        "emailAddress": "info@liuoasis.com",
+        "createdAt": "2025-05-04T16:43:37.098Z",
+        "updatedAt": "2025-05-04T16:43:37.098Z",
+        "__v": 0
+      }
+    ],
+    "quotas": [
+      {
+        "_id": "68178b09c1272a2ff6fffca3",
+        "quotaId": "Q1746373385402l026yw",
+        "items": [
+          {
+            "name": "chilli",
+            "quantity": 20,
+            "unitPrice": 100,
+            "unitWeight": 50,
+            "weightUnit": "g",
+            "totalPrice": 2000,
+            "_id": "68178b09c1272a2ff6fffca4"
+          }
+        ],
+        "createdAt": "2025-05-04T15:43:05.530Z",
+        "__v": 0
+      },
+      {
+        "_id": "68178d60eb4ce99dcfafdc77",
+        "quotaId": "Q174637398401688dhf2",
+        "items": [
+          {
+            "name": "chilli",
+            "quantity": 20,
+            "unitPrice": 100,
+            "unitWeight": 20,
+            "weightUnit": "g",
+            "totalPrice": 2000,
+            "_id": "68178d60eb4ce99dcfafdc78"
+          }
+        ],
+        "createdAt": "2025-05-04T15:53:04.155Z",
+        "__v": 0
+      },
+      {
+        "_id": "681795e006f1a30d6441ce58",
+        "quotaId": "Q1746376160056e1n3ua",
+        "items": [
+          {
+            "name": "chilli",
+            "quantity": 40,
+            "unitPrice": 100,
+            "unitWeight": 50,
+            "weightUnit": "g",
+            "totalPrice": 4000,
+            "_id": "681795e006f1a30d6441ce59"
+          }
+        ],
+        "createdAt": "2025-05-04T16:29:20.171Z",
+        "__v": 0
+      },
+      {
+        "_id": "6817966306f1a30d6441ce6d",
+        "quotaId": "Q17463762912341t6mqj",
+        "items": [
+          {
+            "name": "chilli",
+            "quantity": 40,
+            "unitPrice": 1000,
+            "unitWeight": 50,
+            "weightUnit": "g",
+            "totalPrice": 40000,
+            "_id": "6817966306f1a30d6441ce6e"
+          }
+        ],
+        "createdAt": "2025-05-04T16:31:31.351Z",
+        "__v": 0
+      },
+      {
+        "_id": "681796f006f1a30d6441ce7c",
+        "quotaId": "Q1746376432796l44ev5",
+        "items": [
+          {
+            "name": "chilli",
+            "quantity": 50,
+            "unitPrice": 200,
+            "unitWeight": 50,
+            "weightUnit": "g",
+            "totalPrice": 10000,
+            "_id": "681796f006f1a30d6441ce7d"
+          }
+        ],
+        "createdAt": "2025-05-04T16:33:52.918Z",
+        "__v": 0
+      },
+      {
+        "_id": "6817982306f1a30d6441cec1",
+        "quotaId": "Q1746376739474eagsu4",
+        "items": [
+          {
+            "name": "chilli",
+            "quantity": 30,
+            "unitPrice": 200,
+            "unitWeight": 150,
+            "weightUnit": "g",
+            "totalPrice": 6000,
+            "_id": "6817982306f1a30d6441cec2"
+          }
+        ],
+        "createdAt": "2025-05-04T16:38:59.606Z",
+        "__v": 0
+      }
+    ],
+    "orders": [
+      {
+        "_id": "6817409e8d368f5a5812c03f",
+        "orderNumber": "ORD1746354334189",
+        "user": "6816651e16445d3e01f9a1d3",
+        "items": [
+          {
+            "product": "6816664816445d3e01f9a1fd",
+            "productName": "Pepper",
+            "quantity": 1,
+            "price": 200,
+            "_id": "6817409e8d368f5a5812c040"
+          }
+        ],
+        "totalAmount": 200,
+        "orderStatus": "processing",
+        "paymentStatus": "paid",
+        "paymentMethod": "credit_card",
+        "shippingAddress": {
+          "street": "sss",
+          "city": "sss",
+          "state": "sss",
+          "country": "Sri Lanka"
+        },
+        "cancellationReason": null,
+        "cancellationDate": null,
+        "refundStatus": "processed",
+        "refundReason": "cancel",
+        "refundRequestDate": "2025-05-04T10:31:09.484Z",
+        "refundProcessedDate": "2025-05-04T10:31:32.689Z",
+        "createdAt": "2025-05-04T10:25:34.334Z",
+        "updatedAt": "2025-05-04T10:31:32.689Z",
+        "__v": 0
+      },
+      {
+        "_id": "68176ce68d368f5a5812c1f2",
+        "orderNumber": "ORD1746365670306",
+        "user": "6816651e16445d3e01f9a1d3",
+        "items": [
+          {
+            "product": "6816664816445d3e01f9a1fd",
+            "productName": "Pepper",
+            "quantity": 3,
+            "price": 200,
+            "_id": "68176ce68d368f5a5812c1f3"
+          }
+        ],
+        "totalAmount": 600,
+        "orderStatus": "processing",
+        "paymentStatus": "pending",
+        "paymentMethod": "credit_card",
+        "shippingAddress": {
+          "street": "jjj",
+          "city": "jj",
+          "state": "jjjjjjjj",
+          "country": "Sri Lanka"
+        },
+        "cancellationReason": null,
+        "cancellationDate": null,
+        "refundStatus": "not_applicable",
+        "refundReason": null,
+        "refundRequestDate": null,
+        "refundProcessedDate": null,
+        "createdAt": "2025-05-04T13:34:30.471Z",
+        "updatedAt": "2025-05-04T13:34:40.437Z",
+        "__v": 0
+      },
+      {
+        "_id": "6817ac1a4a6ddecdb8fa5310",
+        "orderNumber": "ORD1746381849960",
+        "user": "6817a8eab5d85e9e6d8163cf",
+        "items": [
+          {
+            "product": "68166c6b8d368f5a5812bfc8",
+            "productName": "cinnamon",
+            "quantity": 1,
+            "price": 500,
+            "_id": "6817ac1a4a6ddecdb8fa5311"
+          },
+          {
+            "product": "6816664816445d3e01f9a1fd",
+            "productName": "Pepper",
+            "quantity": 1,
+            "price": 200,
+            "_id": "6817ac1a4a6ddecdb8fa5312"
+          }
+        ],
+        "totalAmount": 700,
+        "orderStatus": "pending",
+        "paymentStatus": "pending",
+        "paymentMethod": "credit_card",
+        "shippingAddress": {
+          "street": "827/3",
+          "city": "Kottawa",
+          "state": "fghefgh",
+          "country": "Sri Lanka"
+        },
+        "cancellationReason": null,
+        "cancellationDate": null,
+        "refundStatus": "not_applicable",
+        "refundReason": null,
+        "refundRequestDate": null,
+        "refundProcessedDate": null,
+        "createdAt": "2025-05-04T18:04:10.397Z",
+        "updatedAt": "2025-05-04T18:04:10.397Z",
+        "__v": 0
+      },
+      {
+        "_id": "6817acea4a6ddecdb8fa5371",
+        "orderNumber": "ORD1746382057814",
+        "user": "68177d6eb5d85e9e6d816307",
+        "items": [
+          {
+            "product": "68166c6b8d368f5a5812bfc8",
+            "productName": "cinnamon",
+            "quantity": 11,
+            "price": 500,
+            "_id": "6817acea4a6ddecdb8fa5372"
+          },
+          {
+            "product": "6816664816445d3e01f9a1fd",
+            "productName": "Pepper",
+            "quantity": 7,
+            "price": 200,
+            "_id": "6817acea4a6ddecdb8fa5373"
+          }
+        ],
+        "totalAmount": 6900,
+        "orderStatus": "pending",
+        "paymentStatus": "pending",
+        "paymentMethod": "credit_card",
+        "shippingAddress": {
+          "street": "gjrg",
+          "city": "hjrhkj",
+          "state": "yrkyrk",
+          "country": "Sri Lanka"
+        },
+        "cancellationReason": null,
+        "cancellationDate": null,
+        "refundStatus": "not_applicable",
+        "refundReason": null,
+        "refundRequestDate": null,
+        "refundProcessedDate": null,
+        "createdAt": "2025-05-04T18:07:38.221Z",
+        "updatedAt": "2025-05-04T18:07:38.221Z",
+        "__v": 0
+      },
+      {
+        "_id": "6817aefb4a6ddecdb8fa53fa",
+        "orderNumber": "ORD1746382587694",
+        "user": "6817a8eab5d85e9e6d8163cf",
+        "items": [
+          {
+            "product": "6817ae684a6ddecdb8fa539b",
+            "productName": "Turmeric powder",
+            "quantity": 2,
+            "price": 180,
+            "_id": "6817aefb4a6ddecdb8fa53fb"
+          }
+        ],
+        "totalAmount": 360,
+        "orderStatus": "pending",
+        "paymentStatus": "pending",
+        "paymentMethod": "credit_card",
+        "shippingAddress": {
+          "street": "gjh/3",
+          "city": "Kottawa",
+          "state": "dghfsh",
+          "country": "Sri Lanka"
+        },
+        "cancellationReason": null,
+        "cancellationDate": null,
+        "refundStatus": "not_applicable",
+        "refundReason": null,
+        "refundRequestDate": null,
+        "refundProcessedDate": null,
+        "createdAt": "2025-05-04T18:16:27.907Z",
+        "updatedAt": "2025-05-04T18:16:27.907Z",
+        "__v": 0
+      },
+      {
+        "_id": "6818442595796b1194fc91a6",
+        "orderNumber": "ORD1746420773765",
+        "user": "6816651e16445d3e01f9a1d3",
+        "items": [
+          {
+            "product": "6817ae684a6ddecdb8fa539b",
+            "productName": "Turmeric powder",
+            "quantity": 1,
+            "price": 180,
+            "_id": "6818442595796b1194fc91a7"
+          }
+        ],
+        "totalAmount": 180,
+        "orderStatus": "completed",
+        "paymentStatus": "paid",
+        "paymentMethod": "credit_card",
+        "shippingAddress": {
+          "street": "ffff",
+          "city": "fff",
+          "state": "fff",
+          "country": "Sri Lanka"
+        },
+        "cancellationReason": null,
+        "cancellationDate": null,
+        "refundStatus": "not_applicable",
+        "refundReason": null,
+        "refundRequestDate": null,
+        "refundProcessedDate": null,
+        "createdAt": "2025-05-05T04:52:53.930Z",
+        "updatedAt": "2025-05-05T04:58:17.803Z",
+        "__v": 0
+      },
+      {
+        "_id": "6818634e9060dd26224b7f44",
+        "orderNumber": "ORD1746428750154",
+        "user": "681862b89060dd26224b7f3e",
+        "items": [
+          {
+            "product": "6816664816445d3e01f9a1fd",
+            "productName": "Pepper",
+            "quantity": 3,
+            "price": 200,
+            "_id": "6818634e9060dd26224b7f45"
+          }
+        ],
+        "totalAmount": 600,
+        "orderStatus": "pending",
+        "paymentStatus": "pending",
+        "paymentMethod": "credit_card",
+        "shippingAddress": {
+          "street": "qoqooqoqo2111",
+          "city": "aoodoo",
+          "state": "addde",
+          "country": "India"
+        },
+        "cancellationReason": null,
+        "cancellationDate": null,
+        "refundStatus": "not_applicable",
+        "refundReason": null,
+        "refundRequestDate": null,
+        "refundProcessedDate": null,
+        "createdAt": "2025-05-05T07:05:50.271Z",
+        "updatedAt": "2025-05-05T07:05:50.271Z",
+        "__v": 0
+      }
+    ],
+    "notifications": [
+      {
+        "_id": "6818a9ffc1b3d549e20d0e47",
+        "toWhom": "lolla malli",
+        "description": "paduwe idpn hutto",
+        "date": "2025-05-05T12:07:27.952Z",
+        "__v": 0
+      },
+      {
+        "_id": "6818b3a0d18639615dace5d4",
+        "toWhom": "ane ane hutto",
+        "description": "pakayo ",
+        "date": "2025-05-05T12:48:32.347Z",
+        "__v": 0
+      }
+    ]
+  }
+}

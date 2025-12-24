@@ -13,7 +13,8 @@ import {
   Alert,
   CircularProgress,
   Breadcrumbs,
-  Link
+  Link,
+  LinearProgress
 } from '@mui/material';
 import {
   Save as SaveIcon,
@@ -24,16 +25,14 @@ import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import api from '../../../services/api';
 
 const categories = [
-  'Electronics',
-  'Clothing',
-  'Books',
-  'Home & Kitchen',
-  'Toys & Games',
-  'Sports & Outdoors',
-  'Beauty & Personal Care',
-  'Health & Household',
-  'Automotive',
-  'Other'
+  'Seed Spices',
+  'Fruit/Berry Spices',
+  'Bark Spices',
+  'Root Spices',
+  'Leaf/Herb Spices',
+  'Flower Spices',
+  'Resin/Aromatic Spices',
+  'Blended Spice Mixes'
 ];
 
 const AddProductPage = () => {
@@ -50,6 +49,8 @@ const AddProductPage = () => {
     price: '',
     category: '',
     stock: '',
+    addDate: '',
+    expiryDate: ''
   });
 
   const handleChange = (e) => {
@@ -72,8 +73,16 @@ const AddProductPage = () => {
     e.preventDefault();
     
     // Validation
-    if (!product.name || !product.price || !product.category || !product.stock) {
+    if (!product.name || !product.price || !product.category || !product.stock || !product.addDate || !product.expiryDate) {
       setError('Please fill all required fields');
+      return;
+    }
+    if (Number(product.price) <= 1) {
+      setError('Price must be greater than 1');
+      return;
+    }
+    if (product.expiryDate <= product.addDate) {
+      setError('Expiry date must be after add date');
       return;
     }
 
@@ -81,94 +90,49 @@ const AddProductPage = () => {
       setLoading(true);
       setError('');
       
-      // Format the product data
-      const productData = {
-        name: product.name,
-        description: product.description || '',
-        price: Number(product.price),
-        category: product.category,
-        stock: Number(product.stock)
-      };
+      // Always use FormData for product submission to handle image upload properly
+      const formData = new FormData();
       
-      console.log('Submitting product data:', productData);
+      // Add product data to form
+      formData.append('name', product.name);
+      formData.append('description', product.description || '');
+      formData.append('price', Number(product.price));
+      formData.append('category', product.category);
+      formData.append('stock', Number(product.stock));
+      formData.append('addDate', product.addDate);
+      formData.append('expiryDate', product.expiryDate);
       
-      // First try to submit as JSON
-      try {
-        const response = await api.post('/products', productData);
-        
-        // Handle image upload separately if we have an image and the product was created
-        if (imageFile && response.data._id) {
-          const formData = new FormData();
-          formData.append('image', imageFile);
-          
-          await api.put(`/products/${response.data._id}/image`, formData, {
-            headers: {
-              'Content-Type': 'multipart/form-data'
-            }
-          });
-        }
-        
-        setSuccess(true);
-        
-        // Reset form after successful submission
-        setProduct({
-          name: '',
-          description: '',
-          price: '',
-          category: '',
-          stock: '',
-        });
-        
-        setImageFile(null);
-        setImagePreview('');
-        
-        // Navigate back to products page after 2 seconds
-        setTimeout(() => {
-          navigate('/admin/dashboard');
-        }, 2000);
-      } catch (jsonError) {
-        console.error('Error with JSON submission, trying multipart:', jsonError);
-        
-        // If JSON submission fails, try with multipart/form-data
-        const formData = new FormData();
-        
-        // Add product data to form
-        formData.append('name', product.name);
-        formData.append('description', product.description || '');
-        formData.append('price', Number(product.price));
-        formData.append('category', product.category);
-        formData.append('stock', Number(product.stock));
-        
-        // Add image if available
-        if (imageFile) {
-          formData.append('image', imageFile);
-        }
-        
-        const response = await api.post('/products', formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data'
-          }
-        });
-        
-        setSuccess(true);
-        
-        // Reset form after successful submission
-        setProduct({
-          name: '',
-          description: '',
-          price: '',
-          category: '',
-          stock: '',
-        });
-        
-        setImageFile(null);
-        setImagePreview('');
-        
-        // Navigate back to products page after 2 seconds
-        setTimeout(() => {
-          navigate('/admin/dashboard');
-        }, 2000);
+      // Add image if available
+      if (imageFile) {
+        formData.append('image', imageFile);
       }
+      
+      const response = await api.post('/products', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      });
+      
+      setSuccess(true);
+      
+      // Reset form after successful submission
+      setProduct({
+        name: '',
+        description: '',
+        price: '',
+        category: '',
+        stock: '',
+        addDate: '',
+        expiryDate: ''
+      });
+      
+      setImageFile(null);
+      setImagePreview('');
+      
+      // Navigate back to products page after 2 seconds
+      setTimeout(() => {
+        navigate('/admin/dashboard');
+      }, 2000);
     } catch (error) {
       console.error('Error adding product:', error);
       if (error.response?.status === 404) {
@@ -288,49 +252,74 @@ const AddProductPage = () => {
                   />
                 </Grid>
               </Grid>
+              <Grid container spacing={2}>
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    required
+                    fullWidth
+                    label="Add Date"
+                    name="addDate"
+                    type="date"
+                    InputLabelProps={{ shrink: true }}
+                    value={product.addDate}
+                    onChange={handleChange}
+                    sx={{ mb: 3 }}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    required
+                    fullWidth
+                    label="Expiry Date"
+                    name="expiryDate"
+                    type="date"
+                    InputLabelProps={{ shrink: true }}
+                    value={product.expiryDate}
+                    onChange={handleChange}
+                    sx={{ mb: 3 }}
+                  />
+                </Grid>
+              </Grid>
             </Grid>
             
             <Grid item xs={12} md={4}>
-              <Paper
-                sx={{
-                  p: 2,
-                  border: '1px dashed grey',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  mb: 3,
-                  height: 250
-                }}
-              >
-                {imagePreview ? (
-                  <Box
-                    component="img"
-                    src={imagePreview}
-                    alt="Product preview"
-                    sx={{ maxHeight: '200px', maxWidth: '100%', objectFit: 'contain' }}
-                  />
-                ) : (
-                  <Typography variant="body2" color="text.secondary" align="center">
-                    No image selected
-                  </Typography>
-                )}
-              </Paper>
-              
-              <Button
-                component="label"
-                variant="outlined"
-                startIcon={<UploadIcon />}
-                sx={{ mb: 3, width: '100%' }}
-              >
-                Upload Image
+              <Box sx={{ mb: 3 }}>
                 <input
-                  type="file"
                   accept="image/*"
-                  hidden
+                  style={{ display: 'none' }}
+                  id="product-image"
+                  type="file"
                   onChange={handleImageChange}
                 />
-              </Button>
+                <label htmlFor="product-image">
+                  <Button
+                    variant="outlined"
+                    component="span"
+                    startIcon={<UploadIcon />}
+                    sx={{ mb: 2 }}
+                  >
+                    Upload Image
+                  </Button>
+                </label>
+                {imagePreview && (
+                  <Box sx={{ mt: 2, position: 'relative' }}>
+                    <img
+                      src={imagePreview}
+                      alt="Product preview"
+                      style={{ 
+                        maxWidth: '100%', 
+                        maxHeight: '200px', 
+                        display: 'block',
+                        border: '1px solid #eee',
+                        borderRadius: '4px'
+                      }}
+                    />
+                    <Typography variant="caption" color="textSecondary" sx={{ mt: 1, display: 'block' }}>
+                      Image will be uploaded to Cloudinary when you save the product
+                    </Typography>
+                  </Box>
+                )}
+              </Box>
             </Grid>
             
             <Grid item xs={12}>

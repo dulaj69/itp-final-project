@@ -42,6 +42,12 @@ const orderController = {
           if (!product) {
             return res.status(404).json({ message: `Product not found: ${item.product}` });
           }
+          if (product.stock < item.quantity) {
+            return res.status(400).json({ message: `Not enough stock for ${product.name}` });
+          }
+          product.stock -= item.quantity;
+          await product.save();
+
           orderItems.push({
             product: product._id,
             productName: product.name,

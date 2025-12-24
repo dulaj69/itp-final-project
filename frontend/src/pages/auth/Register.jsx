@@ -43,18 +43,41 @@ const Register = () => {
   const navigate = useNavigate();
   const theme = useTheme();
 
+  // Validation functions
+  const validateName = (name) => {
+    return /^[A-Za-z\s]+$/.test(name);
+  };
+
+  const validatePassword = (password) => {
+    return /^(?=.*[0-9])(?=.*[!@#$%^&*])[A-Za-z0-9!@#$%^&*]{5,}$/.test(password);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError('');
+
+    // Validation checks
+    if (!validateName(formData.name)) {
+      setError('Name must contain only letters and spaces');
+      return;
+    }
+
+    if (!validatePassword(formData.password)) {
+      setError('Password must be at least 5 characters long and contain at least one number and one special character');
+      return;
+    }
+
     if (formData.password !== formData.confirmPassword) {
       setError('Passwords do not match');
       return;
     }
+
     try {
       await api.post('/auth/register', {
         name: formData.name,
         email: formData.email,
         password: formData.password,
-        userType: formData.userType
+        userType: 'customer' // Always set to customer for regular registration
       });
       navigate('/login');
     } catch (error) {
@@ -177,9 +200,9 @@ const Register = () => {
                           <RoleIcon color="primary" />
                         </InputAdornment>
                       }
+                      disabled // Disable the select since we only allow customers
                     >
                       <MenuItem value="customer">Customer</MenuItem>
-                      <MenuItem value="admin">Admin</MenuItem>
                     </Select>
                   </FormControl>
 

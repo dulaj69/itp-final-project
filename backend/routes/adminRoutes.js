@@ -9,12 +9,17 @@ const {
   updateOrderStatus,
   cancelOrder,
   cancelOrderWithRefund,
-  rejectRefundRequest
+  rejectRefundRequest,
+  updateUser,
+  deleteUser,
+  updateUserRole
 } = require('../controllers/adminController');
 const productController = require('../controllers/productController');
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
+const Quota = require('../models/Quota');
+const Qitem = require('../models/Qitem');
 
 // Configure storage for product images
 const storage = multer.diskStorage({
@@ -67,5 +72,82 @@ router.get('/products', protect, admin, productController.getAllProducts);
 router.get('/products/:id', protect, admin, productController.getProductById);
 router.put('/products/:id', protect, admin, upload.single('image'), productController.updateProduct);
 router.delete('/products/:id', protect, admin, productController.deleteProduct);
+
+router.put('/users/:id', protect, admin, updateUser);
+router.delete('/users/:id', protect, admin, deleteUser);
+
+// Quota routes
+router.get('/quotas', protect, admin, async (req, res) => {
+  try {
+    const quotas = await Quota.find().sort({ createdAt: -1 });
+    res.json(quotas);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+router.post('/quotas', protect, admin, async (req, res) => {
+  try {
+    const quotaData = {
+      ...req.body,
+      quotaId: 'Q' + Date.now() + Math.random().toString(36).substr(2, 6)
+    };
+    const quota = new Quota(quotaData);
+    await quota.save();
+    res.status(201).json(quota);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+});
+
+router.put('/quotas/:id', protect, admin, async (req, res) => {
+  try {
+    const quota = await Quota.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true, runValidators: true }
+    );
+    if (!quota) {
+      return res.status(404).json({ message: 'Quota not found' });
+    }
+    res.json(quota);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+});
+
+router.delete('/quotas/:id', protect, admin, async (req, res) => {
+  try {
+    const quota = await Quota.findByIdAndDelete(req.params.id);
+    if (!quota) {
+      return res.status(404).json({ message: 'Quota not found' });
+    }
+    res.json({ message: 'Quota deleted successfully' });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+router.get('/quotas/:id', protect, admin, async (req, res) => {
+  try {
+    const quota = await Quota.findById(req.params.id);
+    if (!quota) {
+      return res.status(404).json({ message: 'Quota not found' });
+    }
+    res.json(quota);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+// Qitem route for quota autocomplete
+router.get('/qitems', protect, admin, async (req, res) => {
+  try {
+    const qitems = await Qitem.find({ availableItem: true });
+    res.json(qitems);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
 
 module.exports = router; 

@@ -30,10 +30,28 @@ const ProductSchema = new mongoose.Schema({
     type: String,
     default: ''
   },
+  cloudinary: {
+    public_id: {
+      type: String,
+      default: ''
+    },
+    url: {
+      type: String,
+      default: ''
+    }
+  },
   status: {
     type: String,
     enum: ['Active', 'Inactive', 'Discontinued'],
     default: 'Active'
+  },
+  addDate: {
+    type: Date,
+    required: true
+  },
+  expiryDate: {
+    type: Date,
+    required: true
   },
   createdAt: {
     type: Date,
