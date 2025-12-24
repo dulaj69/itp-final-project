@@ -1,12 +1,12 @@
-# 🍔 ITP_shiharayaluwa - Food Delivery & E-Commerce Platform
+# ITP_shiharayaluwa - Food Delivery & E-Commerce Platform
 
 A full-stack **MERN** (MongoDB, Express, React, Node.js) web application designed for seamless food ordering, inventory management, and business administration. This platform features secure payments, real-time order tracking, and a comprehensive admin dashboard for business analytics.
 
 ---
 
-## 🚀 Key Features
+##  Key Features
 
-### 👤 User Interface (Client Side)
+### User Interface (Client Side)
 * **Secure Authentication:** User registration and login with JWT encryption.
 * **Smart Product Browsing:** Search, filter, and view food items with dynamic categories.
 * **Shopping Cart:** Real-time cart management with quantity adjustments.
@@ -15,7 +15,7 @@ A full-stack **MERN** (MongoDB, Express, React, Node.js) web application designe
 * **AI Chatbot:** Intelligent support assistant for instant customer queries.
 * **User Dashboard:** Manage profile, view order history, and submit feedback.
 
-### 🛠 Admin Dashboard (Management Side)
+### Admin Dashboard (Management Side)
 * **Analytics & Reports:** Visual charts (Recharts) for sales data and downloadable reports (PDF/Excel).
 * **Inventory Management:** Full CRUD (Create, Read, Update, Delete) capabilities for products.
 * **Order Management:** Process refunds, update shipping status, and view transaction details.
@@ -25,7 +25,7 @@ A full-stack **MERN** (MongoDB, Express, React, Node.js) web application designe
 
 ---
 
-## 🛠 Tech Stack
+## Tech Stack
 
 ### **Frontend**
 * **Framework:** React (Vite)
