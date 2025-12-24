@@ -1,4 +1,4 @@
-# ITP_shiharayaluwa - Food Delivery & E-Commerce Platform
+# ITP project - Food Delivery & E-Commerce Platform
 
 A full-stack **MERN** (MongoDB, Express, React, Node.js) web application designed for seamless food ordering, inventory management, and business administration. This platform features secure payments, real-time order tracking, and a comprehensive admin dashboard for business analytics.
 
